@@ -1,0 +1,13 @@
+{
+  "release-type": "rust",
+  "bump-minor-pre-major": true,
+  "packages": {
+    ".": {
+      "exclude-paths": ["crates"]
+    },
+    "crates/core": {},
+    "crates/log": {},
+    "crates/macro": {}
+  },
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}
