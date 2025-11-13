@@ -2,7 +2,16 @@ name: test / main
 
 on:
   pull_request:
-    
+    paths:
+      - .github/workflows/shared--wasm-pack-test.yaml
+      - .github/workflows/test--main.yaml
+      - Cargo.lock
+      - Cargo.toml
+      - rust-toolchain.toml
+      - crates/**
+      - src/**
+      - tests/**
+
 jobs:
   run:
     uses: ./.github/workflows/shared--wasm-pack-test.yaml
