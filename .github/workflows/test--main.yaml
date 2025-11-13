@@ -1,0 +1,10 @@
+name: test / main
+
+on:
+  pull_request:
+    
+jobs:
+  run:
+    uses: ./.github/workflows/shared--wasm-pack-test.yaml
+    with:
+      path: .

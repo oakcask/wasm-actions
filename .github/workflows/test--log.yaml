@@ -1,0 +1,16 @@
+name: test / log
+
+on:
+  pull_request:
+    paths:
+      - Cargo.lock
+      - Cargo.toml
+      - rust-toolchain.tom
+      - crates/log/**
+    
+jobs:
+  run:
+    uses: ./.github/workflows/shared--wasm-pack-test.yaml
+    with:
+      path: crates/log
+

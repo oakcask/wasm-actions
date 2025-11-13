@@ -1,0 +1,15 @@
+name: test / macro
+
+on:
+  pull_request:
+    paths:
+      - Cargo.lock
+      - Cargo.toml
+      - rust-toolchain.tom
+      - crates/macro/**
+    
+jobs:
+  run:
+    uses: ./.github/workflows/shared--wasm-pack-test.yaml
+    with:
+      path: crates/macro
