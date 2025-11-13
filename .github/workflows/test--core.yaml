@@ -3,10 +3,11 @@ name: test / core
 on:
   pull_request:
     paths:
+      - .github/workflows/shared--wasm-pack-test.yaml
+      - .github/workflows/test--core.yaml
       - Cargo.lock
       - Cargo.toml
       - rust-toolchain.toml
-      - crates/core/**
     
 jobs:
   run:

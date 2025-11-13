@@ -3,10 +3,11 @@ name: test / log
 on:
   pull_request:
     paths:
+      - .github/workflows/shared--wasm-pack-test.yaml
+      - .github/workflows/test--log.yaml
       - Cargo.lock
       - Cargo.toml
-      - rust-toolchain.tom
-      - crates/log/**
+      - rust-toolchain.toml
     
 jobs:
   run:

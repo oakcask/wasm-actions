@@ -3,9 +3,11 @@ name: test / macro
 on:
   pull_request:
     paths:
+      - .github/workflows/shared--wasm-pack-test.yaml
+      - .github/workflows/test--macro.yaml
       - Cargo.lock
       - Cargo.toml
-      - rust-toolchain.tom
+      - rust-toolchain.toml
       - crates/macro/**
     
 jobs:
