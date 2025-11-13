@@ -1,0 +1,14 @@
+[package]
+name = "wasm-actions-macro"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = "2.0.101"
+
+[dev-dependencies]
+trybuild = "1.0.104"
+static_assertions = "1.1.0"

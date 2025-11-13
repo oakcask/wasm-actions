@@ -1,0 +1,26 @@
+[package]
+name = "wasm-actions"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["rlib"]
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/core",
+    "crates/log",
+    "crates/macro"]
+
+[dependencies]
+wasm-actions-core = { path = "crates/core" }
+wasm-actions-log = { path = "crates/log" }
+wasm-actions-macro = { path = "crates/macro" }
+wasm-bindgen-futures = "0.4.55"
+async-once-cell = "0.5.4"
+log = "0.4.28"
+
+[dev-dependencies]
+trybuild = "1.0.104"
+wasm-bindgen-test = "0.3.50"
