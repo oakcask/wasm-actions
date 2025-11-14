@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.2.0...wasm-actions-v0.2.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate syn to 2.0.110 ([#14](https://github.com/oakcask/wasm-actions/issues/14)) ([99712ce](https://github.com/oakcask/wasm-actions/commit/99712cebcea49c23a41276dfb3805cd0cfb39a5c))
+* **deps:** update rust-wasm-bindgen monorepo ([#16](https://github.com/oakcask/wasm-actions/issues/16)) ([cac474a](https://github.com/oakcask/wasm-actions/commit/cac474ab184e78716067db14edd6d9060469ad02))
+
 ## [0.2.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.1.0...wasm-actions-v0.2.0) (2025-11-14)
 
 
