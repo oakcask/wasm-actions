@@ -23,4 +23,4 @@ log = "0.4.28"
 
 [dev-dependencies]
 trybuild = "1.0.114"
-wasm-bindgen-test = "0.3.50"
+wasm-bindgen-test = "0.3.55"
