@@ -2,7 +2,7 @@ pub mod env;
 mod output;
 pub use output::save_state;
 pub use output::set_output;
-use wasm_actions_core::log;
+pub mod console;
 
 #[macro_export]
 macro_rules! get_input {
@@ -31,5 +31,5 @@ macro_rules! get_state {
 }
 
 pub fn add_mask(value: &str) {
-    log!("::add-mask::{}", value);
+    console::log!("::add-mask::{}", value);
 }
