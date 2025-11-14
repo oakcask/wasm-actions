@@ -7,7 +7,7 @@ edition = "2021"
 proc-macro = true
 
 [dependencies]
-syn = "2.0.101"
+syn = "2.0.110"
 
 [dev-dependencies]
 trybuild = "1.0.114"
