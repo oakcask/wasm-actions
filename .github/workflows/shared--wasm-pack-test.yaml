@@ -16,5 +16,6 @@ jobs:
       - uses: baptiste0928/cargo-install@v3
         with:
           crate: wasm-pack
+          # renovate: datasource=crate depName=wasm-pack
           version: "0.13.1"
       - run: wasm-pack test --node ${{inputs.path}} --locked
