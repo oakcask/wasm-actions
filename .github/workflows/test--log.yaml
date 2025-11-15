@@ -8,6 +8,8 @@ on:
       - Cargo.lock
       - Cargo.toml
       - rust-toolchain.toml
+      - crates/core/**
+      - crates/log/**
     
 jobs:
   run:
