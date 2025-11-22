@@ -6,6 +6,7 @@
       "exclude-paths": ["crates"]
     },
     "crates/core": {},
+    "crates/derive": {},
     "crates/log": {},
     "crates/macro": {},
     "crates/prelude": {}
