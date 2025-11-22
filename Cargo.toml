@@ -1,10 +1,35 @@
+[package]
+name = "wasm-actions"
+version = "0.5.0"
+edition = "2021"
+
+[lib]
+crate-type = ["rlib"]
+
+[features]
+default = ["derive"]
+derive = ["wasm-actions-prelude/derive", "wasm-actions-derive"]
+
 [workspace]
-resolver = "3"
+resolver = "2"
 members = [
-    "crates/wasm-actions",
-    "crates/wasm-actions-core",
-    "crates/wasm-actions-derive",
-    "crates/wasm-actions-log",
-    "crates/wasm-actions-macro",
-    "crates/wasm-actions-prelude"
+    "crates/core",
+    "crates/derive",
+    "crates/log",
+    "crates/macro",
+    "crates/prelude"
 ]
+
+[dependencies]
+wasm-actions-core = { path = "crates/core" }
+wasm-actions-derive = { path = "crates/derive", optional = true }
+wasm-actions-log = { path = "crates/log" }
+wasm-actions-macro = { path = "crates/macro" }
+wasm-actions-prelude = { path = "crates/prelude" }
+wasm-bindgen-futures = "0.4.55"
+async-once-cell = "0.5.4"
+log = "0.4.28"
+
+[dev-dependencies]
+trybuild = "1.0.114"
+wasm-bindgen-test = "0.3.55"

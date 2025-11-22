@@ -9,9 +9,11 @@ on:
       - Cargo.toml
       - rust-toolchain.toml
       - crates/**
+      - src/**
+      - tests/**
 
 jobs:
   run:
     uses: ./.github/workflows/shared--wasm-pack-test.yaml
     with:
-      path: crates/wasm-actions
+      path: .
