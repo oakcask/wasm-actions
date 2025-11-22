@@ -3,9 +3,7 @@ use quote::quote;
 use syn::{DataStruct, DeriveInput, Error, Fields, parse_macro_input, spanned::Spanned};
 use wasm_actions_parse::{InputAttr, OutputAttr, ParseFieldsNamed};
 
-use crate::{
-    codegen::{InputField, OutputField},
-};
+use crate::codegen::{InputField, OutputField};
 mod codegen;
 
 #[proc_macro_derive(ActionInput, attributes(input))]
@@ -17,14 +15,15 @@ pub fn derive_input(input: TokenStream) -> TokenStream {
             ..
         }) => {
             let fields = match InputAttr::parse_fields_named(fields) {
-                Ok(f) => f.into_iter().map(|e| {
-                   InputField {
-                    span: e.span,
-                    field: e.ident,
-                    attrs: e.attrs,
-                } 
-                }).collect(),
-                Err(e) => return compile_error(e).into()
+                Ok(f) => f
+                    .into_iter()
+                    .map(|e| InputField {
+                        span: e.span,
+                        field: e.ident,
+                        attrs: e.attrs,
+                    })
+                    .collect(),
+                Err(e) => return compile_error(e).into(),
             };
             let struct_name = input.ident;
             codegen::action_input_impl(struct_name, fields)
@@ -48,13 +47,14 @@ pub fn derive_output(input: TokenStream) -> TokenStream {
             ..
         }) => {
             let fields = match OutputAttr::parse_fields_named(fields) {
-                Ok(f) => f.into_iter().map(|e| {
-                   OutputField {
-                    field: e.ident,
-                    attrs: e.attrs,
-                } 
-                }).collect(),
-                Err(e) => return compile_error(e).into()
+                Ok(f) => f
+                    .into_iter()
+                    .map(|e| OutputField {
+                        field: e.ident,
+                        attrs: e.attrs,
+                    })
+                    .collect(),
+                Err(e) => return compile_error(e).into(),
             };
             let struct_name = input.ident;
             codegen::action_output_impl(struct_name, fields)
