@@ -2,6 +2,7 @@
 resolver = "3"
 members = [
     "crates/wasm-actions",
+    "crates/wasm-actions-build",
     "crates/wasm-actions-core",
     "crates/wasm-actions-derive",
     "crates/wasm-actions-log",
