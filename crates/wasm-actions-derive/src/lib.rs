@@ -34,7 +34,7 @@ pub fn derive_input(input: TokenStream) -> TokenStream {
             }
             let struct_name = input.ident;
             codegen::action_input_impl(struct_name, inputs)
-                .unwrap_or_else(|e| compile_error(e))
+                .unwrap_or_else(compile_error)
                 .into()
         }
         _ => compile_error(Error::new(
@@ -68,7 +68,7 @@ pub fn derive_output(input: TokenStream) -> TokenStream {
             }
             let struct_name = input.ident;
             codegen::action_output_impl(struct_name, inputs)
-                .unwrap_or_else(|e| compile_error(e))
+                .unwrap_or_else(compile_error)
                 .into()
         }
         _ => compile_error(Error::new(
@@ -83,7 +83,7 @@ pub fn derive_output(input: TokenStream) -> TokenStream {
 pub fn wasm_action(_attr: TokenStream, input: TokenStream) -> TokenStream {
     let mut output = input.clone();
     let start_fn =
-        codegen::start_fn(parse_macro_input!(input)).unwrap_or_else(|e| compile_error(e));
+        codegen::start_fn(parse_macro_input!(input)).unwrap_or_else(compile_error);
     let start_fn: TokenStream = start_fn.into();
     output.extend(start_fn);
     output
