@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.3.0...wasm-actions-v0.4.0) (2025-11-22)
+
+
+### Features
+
+* add clear_env which setup the test environment ([#30](https://github.com/oakcask/wasm-actions/issues/30)) ([7a4d018](https://github.com/oakcask/wasm-actions/commit/7a4d018d46f5f9f8f0a050fa0f8f4924dcc70202))
+* add wasm-actions-derive ([#23](https://github.com/oakcask/wasm-actions/issues/23)) ([27cc4f6](https://github.com/oakcask/wasm-actions/commit/27cc4f66b976f7c7462f0322359b97c9e4a9b8ac))
+
 ## [0.3.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.2.1...wasm-actions-v0.3.0) (2025-11-22)
 
 
