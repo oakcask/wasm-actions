@@ -339,6 +339,7 @@ dependencies = [
  "trybuild",
  "wasm-actions-core",
  "wasm-actions-macro",
+ "wasm-actions-parse",
  "wasm-actions-prelude",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -364,6 +365,15 @@ dependencies = [
  "static_assertions",
  "syn",
  "trybuild",
+]
+
+[[package]]
+name = "wasm-actions-parse"
+version = "0.0.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

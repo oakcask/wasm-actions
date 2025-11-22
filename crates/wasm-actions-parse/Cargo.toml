@@ -1,0 +1,18 @@
+[package]
+name = "wasm-actions-parse"
+version = "0.0.0"
+edition = "2024"
+
+[lib]
+crate-type = ["rlib"]
+
+[features]
+default = []
+proc-macro = ["proc-macro2", "quote"]
+
+[dependencies]
+syn = "2.0.110"
+proc-macro2 = { version = "1.0.103", optional = true}
+quote = { version = "1.0.42", optional = true }
+
+[dev-dependencies]

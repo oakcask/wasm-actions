@@ -15,6 +15,7 @@ wasm-bindgen-futures = "0.4.55"
 wasm-actions-core = { path = "../wasm-actions-core" }
 wasm-actions-macro = { path = "../wasm-actions-macro" }
 wasm-actions-prelude = { path = "../wasm-actions-prelude", features = ["derive"] }
+wasm-actions-parse = { path = "../wasm-actions-parse", features = ["proc-macro"] }
 serde_json = "1.0.145"
 
 [dev-dependencies]

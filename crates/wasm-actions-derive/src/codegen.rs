@@ -1,11 +1,7 @@
 use proc_macro2::{Span, TokenStream};
 use quote::{TokenStreamExt, quote};
 use syn::{DeriveInput, Error, Ident};
-
-use crate::{
-    InputAttr, InputSource,
-    parse::{OutputAttr, OutputName},
-};
+use wasm_actions_parse::{InputAttr, InputSource, OutputAttr, OutputName};
 
 pub(crate) fn start_fn(input: DeriveInput) -> Result<TokenStream, Error> {
     let ident = input.ident;
@@ -34,7 +30,7 @@ pub(crate) struct InputField {
 
 impl InputField {
     pub(crate) fn input_source<'a>(&'a self) -> Result<InputSource<'a>, Error> {
-        InputSource::try_from(self.span, &self.attrs)
+        InputSource::try_from(&self.attrs).map_err(|e| Error::new(self.span, e))
     }
 }
 
