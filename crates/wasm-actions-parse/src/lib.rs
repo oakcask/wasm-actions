@@ -1,6 +1,9 @@
 #[cfg(feature = "proc-macro")]
 use proc_macro2::Span;
-use syn::{Attribute, Error, Expr, ExprLit, FieldsNamed, Ident, Lit, LitBool, LitStr, Token, parse::Parse, punctuated::Punctuated, spanned::Spanned};
+use syn::{
+    Attribute, Error, Expr, ExprLit, FieldsNamed, Ident, Lit, LitBool, LitStr, Token, parse::Parse,
+    punctuated::Punctuated, spanned::Spanned,
+};
 
 pub struct FieldWithAttributes<T> {
     pub ident: Ident,
@@ -10,9 +13,13 @@ pub struct FieldWithAttributes<T> {
 }
 
 pub trait ParseFieldsNamed
-where Self: Sized {
+where
+    Self: Sized,
+{
     // provided
-    fn parse_fields_named(fields: FieldsNamed) -> Result<Vec<FieldWithAttributes<Self>>, syn::Error> {
+    fn parse_fields_named(
+        fields: FieldsNamed,
+    ) -> Result<Vec<FieldWithAttributes<Self>>, syn::Error> {
         let mut results = Vec::with_capacity(fields.named.len());
         for f in fields.named.into_iter() {
             #[cfg(feature = "proc-macro")]
@@ -39,10 +46,7 @@ where Self: Sized {
 pub enum InputSource<'a> {
     Input(&'a LitStr),
     Env(&'a LitStr),
-    InputThenEnv {
-        input: &'a LitStr,
-        env: &'a LitStr,
-    },
+    InputThenEnv { input: &'a LitStr, env: &'a LitStr },
 }
 
 impl<'a> InputSource<'a> {
@@ -71,7 +75,7 @@ pub enum InputAttr {
     Env(LitStr),
     Required(LitBool),
     Description(LitStr),
-    Default(LitStr)
+    Default(LitStr),
 }
 
 pub struct OutputName<'a>(&'a LitStr);
@@ -99,7 +103,7 @@ impl<'a> quote::ToTokens for OutputName<'a> {
 
 pub enum OutputAttr {
     Name(LitStr),
-    Description(LitStr)
+    Description(LitStr),
 }
 
 impl ParseFieldsNamed for InputAttr {
@@ -135,52 +139,55 @@ impl Parse for InputAttr {
             }
         };
         match key_s.as_str() {
-            "default" => {
-                match value {
-                    Expr::Lit(ExprLit { lit: Lit::Str(s), .. }) => {
-                        Ok(InputAttr::Default(s))
-                    },
-                    _ => Err(Error::new(t_assign.span, format!("expected literal string after `=`")))
-                }
+            "default" => match value {
+                Expr::Lit(ExprLit {
+                    lit: Lit::Str(s), ..
+                }) => Ok(InputAttr::Default(s)),
+                _ => Err(Error::new(
+                    t_assign.span,
+                    format!("expected literal string after `=`"),
+                )),
             },
-            "description" => {
-                match value {
-                    Expr::Lit(ExprLit { lit: Lit::Str(s), .. }) => {
-                        Ok(InputAttr::Description(s))
-                    },
-                    _ => Err(Error::new(t_assign.span, format!("expected literal string after `=`")))
-                }
-            }
-            "env" => {
-                match value {
-                    Expr::Lit(ExprLit { lit: Lit::Str(s), .. }) => {
-                        Ok(InputAttr::Env(s))
-                    },
-                    _ => Err(Error::new(t_assign.span, format!("expected literal string after `=`")))
-                }
-            }
-            "name" => {
-                match value {
-                    Expr::Lit(ExprLit { lit: Lit::Str(s), .. }) => {
-                        Ok(InputAttr::Name(s))
-                    },
-                    _ => Err(Error::new(t_assign.span, format!("expected literal string after `=`")))
-                }
-            }
-            "required" => {
-                match value {
-                    Expr::Lit(ExprLit { lit: Lit::Bool(s), .. }) => {
-                        Ok(InputAttr::Required(s))
-                    },
-                    _ => Err(Error::new(t_assign.span, format!("expected literal bool after `=`")))
-                }
-            }
-            unknown => {
-                Err(Error::new(
-                    key.span(),
-                    format!("#[input] cannot accept `{unknown}`"),
-                ))
-            }
+            "description" => match value {
+                Expr::Lit(ExprLit {
+                    lit: Lit::Str(s), ..
+                }) => Ok(InputAttr::Description(s)),
+                _ => Err(Error::new(
+                    t_assign.span,
+                    format!("expected literal string after `=`"),
+                )),
+            },
+            "env" => match value {
+                Expr::Lit(ExprLit {
+                    lit: Lit::Str(s), ..
+                }) => Ok(InputAttr::Env(s)),
+                _ => Err(Error::new(
+                    t_assign.span,
+                    format!("expected literal string after `=`"),
+                )),
+            },
+            "name" => match value {
+                Expr::Lit(ExprLit {
+                    lit: Lit::Str(s), ..
+                }) => Ok(InputAttr::Name(s)),
+                _ => Err(Error::new(
+                    t_assign.span,
+                    format!("expected literal string after `=`"),
+                )),
+            },
+            "required" => match value {
+                Expr::Lit(ExprLit {
+                    lit: Lit::Bool(s), ..
+                }) => Ok(InputAttr::Required(s)),
+                _ => Err(Error::new(
+                    t_assign.span,
+                    format!("expected literal bool after `=`"),
+                )),
+            },
+            unknown => Err(Error::new(
+                key.span(),
+                format!("#[input] cannot accept `{unknown}`"),
+            )),
         }
     }
 }
@@ -220,19 +227,17 @@ impl Parse for OutputAttr {
         match key_s.as_str() {
             "description" => Ok(OutputAttr::Description(value)),
             "name" => Ok(OutputAttr::Name(value)),
-            unknown => {
-                Err(Error::new(
-                    key.span(),
-                    format!("#[output] cannot accept `{unknown}`"),
-                ))
-            }
+            unknown => Err(Error::new(
+                key.span(),
+                format!("#[output] cannot accept `{unknown}`"),
+            )),
         }
     }
 }
 
 pub enum WasmActionAttr {
     Name(LitStr),
-    Description(LitStr)
+    Description(LitStr),
 }
 
 impl WasmActionAttr {
@@ -241,8 +246,7 @@ impl WasmActionAttr {
 
         for a in attrs {
             if a.path().is_ident("wasm_action") {
-                let kvs =
-                    a.parse_args_with(Punctuated::<Self, Token![,]>::parse_terminated)?;
+                let kvs = a.parse_args_with(Punctuated::<Self, Token![,]>::parse_terminated)?;
                 for kv in kvs {
                     input_attrs.push(kv)
                 }
@@ -264,17 +268,15 @@ impl Parse for WasmActionAttr {
             return Err(Error::new(
                 t_assign.span,
                 "expected literal string or expression after `=`",
-            ))
+            ));
         };
         match key_s.as_str() {
             "name" => Ok(WasmActionAttr::Name(value)),
             "description" => Ok(WasmActionAttr::Description(value)),
-            unknown => {
-                Err(Error::new(
-                    key.span(),
-                    format!("#[wasm_action] cannot accept `{unknown}`"),
-                ))
-            }
+            unknown => Err(Error::new(
+                key.span(),
+                format!("#[wasm_action] cannot accept `{unknown}`"),
+            )),
         }
     }
 }
