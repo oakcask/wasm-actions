@@ -8,6 +8,7 @@ crate-type = ["rlib"]
 
 [features]
 derive = []
+testing = []
 
 [dependencies]
 wasm-actions-core = { path = "../core" }
