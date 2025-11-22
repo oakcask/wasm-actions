@@ -8,12 +8,12 @@ on:
       - Cargo.lock
       - Cargo.toml
       - rust-toolchain.toml
-      - crates/core/**
-      - crates/log/**
+      - crates/wasm-actions-core/**
+      - crates/wasm-actions-log/**
     
 jobs:
   run:
     uses: ./.github/workflows/shared--wasm-pack-test.yaml
     with:
-      path: crates/log
+      path: crates/wasm-actions-log
 
