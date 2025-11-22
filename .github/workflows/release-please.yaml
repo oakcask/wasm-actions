@@ -26,6 +26,7 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     needs: matrix
+    if: ${{ needs.matrix.outputs.changed-crates != '' }}
     strategy:
       matrix:
         path: ${{ fromJson(needs.matrix.outputs.changed-crates) }}
