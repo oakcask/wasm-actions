@@ -15,4 +15,5 @@ jobs:
   run:
     uses: ./.github/workflows/shared--wasm-pack-test.yaml
     with:
-      path: .
+      path: crates/wasm-actions
+
