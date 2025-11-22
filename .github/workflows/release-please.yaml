@@ -18,10 +18,12 @@ jobs:
       - id: crates
         uses: actions/github-script@v8
         env:
-          DIRNAME: "crates/"
+          DIRNAME: "crates"
         with:
           script: |
-            await require('node:fs/promises').readdir(process.env.DIRNAME)
+            const fs = require('node:fs/promises');
+            const path = require('node:path');
+            return (await fs.readdir(process.env.DIRNAME)).map(o => path.join(process.env.DIRNAME, o))
 
   release-please:
     runs-on: ubuntu-latest
