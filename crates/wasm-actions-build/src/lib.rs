@@ -1,4 +1,10 @@
-use std::{env, error::Error, fs::{self, File}, path::{Path, PathBuf}, str::FromStr};
+use std::{
+    env,
+    error::Error,
+    fs::{self, File},
+    path::{Path, PathBuf},
+    str::FromStr,
+};
 
 use wasm_actions_parse::{InputAttr, OutputAttr, ParseFieldsNamed, WasmActionAttr};
 use yaml_rust::{Yaml, YamlEmitter, yaml};
@@ -20,7 +26,10 @@ pub fn generate_recommended() -> Result<(), Box<dyn std::error::Error>> {
     }
 }
 
-fn generate_metadata_yaml<T: std::io::Write>(w: &mut T, path: &Path) -> Result<(), Box<dyn std::error::Error>> {
+fn generate_metadata_yaml<T: std::io::Write>(
+    w: &mut T,
+    path: &Path,
+) -> Result<(), Box<dyn std::error::Error>> {
     let y = build_metadata_yaml(path)?;
     {
         let mut w = W(w);
@@ -28,10 +37,13 @@ fn generate_metadata_yaml<T: std::io::Write>(w: &mut T, path: &Path) -> Result<(
         emitter.dump(&y)?;
     }
     writeln!(w)?;
-    Ok(())    
+    Ok(())
 }
 
-fn generate_index_cjs<T: std::io::Write>(w: &mut T, crate_name: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn generate_index_cjs<T: std::io::Write>(
+    w: &mut T,
+    crate_name: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let path = format!("./pkg/{}.js", crate_name);
     // escape JS string
     let path = serde_json::to_string(&path)?;
@@ -41,7 +53,7 @@ fn generate_index_cjs<T: std::io::Write>(w: &mut T, crate_name: &str) -> Result<
 
 fn build_metadata_yaml(path: &Path) -> Result<Yaml, Box<dyn Error>> {
     let content = fs::read_to_string(path)?;
-    let tree  = syn::parse_file(&content)?;
+    let tree = syn::parse_file(&content)?;
 
     let mut metadata = yaml::Hash::new();
     let mut inputs = yaml::Hash::new();
@@ -54,10 +66,16 @@ fn build_metadata_yaml(path: &Path) -> Result<Yaml, Box<dyn Error>> {
                 for a in wasm_action_attrs {
                     match a {
                         WasmActionAttr::Name(s) => {
-                            metadata.insert(Yaml::String(String::from("name")), Yaml::String(s.value()));
+                            metadata.insert(
+                                Yaml::String(String::from("name")),
+                                Yaml::String(s.value()),
+                            );
                         }
                         WasmActionAttr::Description(s) => {
-                            metadata.insert(Yaml::String(String::from("description")), Yaml::String(s.value()));
+                            metadata.insert(
+                                Yaml::String(String::from("description")),
+                                Yaml::String(s.value()),
+                            );
                         }
                     }
                 }
@@ -76,13 +94,22 @@ fn build_metadata_yaml(path: &Path) -> Result<Yaml, Box<dyn Error>> {
                                         // ignore
                                     }
                                     InputAttr::Required(lit_bool) => {
-                                        input_attrs.insert(Yaml::String(String::from("required")), Yaml::Boolean(lit_bool.value()));
+                                        input_attrs.insert(
+                                            Yaml::String(String::from("required")),
+                                            Yaml::Boolean(lit_bool.value()),
+                                        );
                                     }
                                     InputAttr::Description(lit_str) => {
-                                        input_attrs.insert(Yaml::String(String::from("description")), Yaml::String(lit_str.value()));
+                                        input_attrs.insert(
+                                            Yaml::String(String::from("description")),
+                                            Yaml::String(lit_str.value()),
+                                        );
                                     }
                                     InputAttr::Default(lit_str) => {
-                                        input_attrs.insert(Yaml::String(String::from("deefault")), Yaml::String(lit_str.value()));
+                                        input_attrs.insert(
+                                            Yaml::String(String::from("deefault")),
+                                            Yaml::String(lit_str.value()),
+                                        );
                                     }
                                 }
                             }
@@ -96,25 +123,24 @@ fn build_metadata_yaml(path: &Path) -> Result<Yaml, Box<dyn Error>> {
                             let mut output_attrs = yaml::Hash::new();
                             for attr in f.attrs {
                                 match attr {
-                                    OutputAttr::Name(s) => { 
-                                        name = Some(Yaml::String(s.value()))
-                                    }
+                                    OutputAttr::Name(s) => name = Some(Yaml::String(s.value())),
                                     OutputAttr::Description(s) => {
-                                        output_attrs.insert(Yaml::String(String::from("description")), Yaml::String(String::from(s.value())));
-                                    } 
+                                        output_attrs.insert(
+                                            Yaml::String(String::from("description")),
+                                            Yaml::String(String::from(s.value())),
+                                        );
+                                    }
                                 }
                             }
                             if let Some(name) = name {
                                 outputs.insert(name, Yaml::Hash(output_attrs));
                             }
                         }
-                    },
+                    }
                     _ => {
                         // ignore
                     }
                 }
-
-
             }
             _ => {
                 // ignore
@@ -126,9 +152,18 @@ fn build_metadata_yaml(path: &Path) -> Result<Yaml, Box<dyn Error>> {
     metadata.insert(Yaml::String(String::from("outputs")), Yaml::Hash(outputs));
 
     let mut runs = yaml::Hash::new();
-    runs.insert(Yaml::String(String::from("using")), Yaml::String(String::from("node24")));
-    runs.insert(Yaml::String(String::from("main")), Yaml::String(String::from("index.cjs")));
-    runs.insert(Yaml::String(String::from("post")), Yaml::String(String::from("index.cjs")));
+    runs.insert(
+        Yaml::String(String::from("using")),
+        Yaml::String(String::from("node24")),
+    );
+    runs.insert(
+        Yaml::String(String::from("main")),
+        Yaml::String(String::from("index.cjs")),
+    );
+    runs.insert(
+        Yaml::String(String::from("post")),
+        Yaml::String(String::from("index.cjs")),
+    );
     metadata.insert(Yaml::String(String::from("runs")), Yaml::Hash(runs));
 
     Ok(Yaml::Hash(metadata))
