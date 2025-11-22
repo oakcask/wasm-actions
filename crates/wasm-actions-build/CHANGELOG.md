@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.1...wasm-actions-build-v0.1.2) (2025-11-22)
+
+
+### Bug Fixes
+
+* parameterize CARGO_CRATE_NAME to use correct value ([#61](https://github.com/oakcask/wasm-actions/issues/61)) ([fb5772a](https://github.com/oakcask/wasm-actions/commit/fb5772a71c19fcbd0637f37ec7fee8caaa544178))
+
 ## [0.1.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.0...wasm-actions-build-v0.1.1) (2025-11-22)
 
 

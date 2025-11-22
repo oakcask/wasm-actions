@@ -1,6 +1,6 @@
 {
   "crates/wasm-actions": "0.6.0",
-  "crates/wasm-actions-build": "0.1.1",
+  "crates/wasm-actions-build": "0.1.2",
   "crates/wasm-actions-core": "0.6.0",
   "crates/wasm-actions-derive": "0.6.0",
   "crates/wasm-actions-log": "0.6.0",
