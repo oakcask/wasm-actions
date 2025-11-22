@@ -25,10 +25,7 @@ where
             #[cfg(feature = "proc-macro")]
             let span = f.span();
             if let Some(ident) = f.ident {
-                let attrs = match Self::parse_attributes(&f.attrs) {
-                    Ok(a) => a,
-                    Err(e) => return Err(e),
-                };
+                let attrs = Self::parse_attributes(&f.attrs)?;
                 results.push(FieldWithAttributes {
                     ident,
                     attrs,
@@ -145,7 +142,7 @@ impl Parse for InputAttr {
                 }) => Ok(InputAttr::Default(s)),
                 _ => Err(Error::new(
                     t_assign.span,
-                    format!("expected literal string after `=`"),
+                    "expected literal string after `=`".to_string(),
                 )),
             },
             "description" => match value {
@@ -154,7 +151,7 @@ impl Parse for InputAttr {
                 }) => Ok(InputAttr::Description(s)),
                 _ => Err(Error::new(
                     t_assign.span,
-                    format!("expected literal string after `=`"),
+                    "expected literal string after `=`".to_string(),
                 )),
             },
             "env" => match value {
@@ -163,7 +160,7 @@ impl Parse for InputAttr {
                 }) => Ok(InputAttr::Env(s)),
                 _ => Err(Error::new(
                     t_assign.span,
-                    format!("expected literal string after `=`"),
+                    "expected literal string after `=`".to_string(),
                 )),
             },
             "name" => match value {
@@ -172,7 +169,7 @@ impl Parse for InputAttr {
                 }) => Ok(InputAttr::Name(s)),
                 _ => Err(Error::new(
                     t_assign.span,
-                    format!("expected literal string after `=`"),
+                    "expected literal string after `=`".to_string(),
                 )),
             },
             "required" => match value {
@@ -181,7 +178,7 @@ impl Parse for InputAttr {
                 }) => Ok(InputAttr::Required(s)),
                 _ => Err(Error::new(
                     t_assign.span,
-                    format!("expected literal bool after `=`"),
+                    "expected literal bool after `=`".to_string(),
                 )),
             },
             unknown => Err(Error::new(
