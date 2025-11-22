@@ -1,0 +1,17 @@
+[package]
+name = "wasm-actions-prelude"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["rlib"]
+
+[dependencies]
+wasm-actions-core = { path = "../core" }
+wasm-actions-log = { path = "../log" }
+wasm-actions-macro = { path = "../macro" }
+async-once-cell = "0.5.4"
+log = "0.4.28"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.55"

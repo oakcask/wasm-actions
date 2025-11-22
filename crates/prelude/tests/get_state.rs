@@ -1,4 +1,4 @@
-use wasm_actions::{env, get_state};
+use wasm_actions_prelude::{env, get_state};
 use wasm_bindgen_test::wasm_bindgen_test;
 
 #[wasm_bindgen_test]

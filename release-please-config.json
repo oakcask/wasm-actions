@@ -7,7 +7,8 @@
     },
     "crates/core": {},
     "crates/log": {},
-    "crates/macro": {}
+    "crates/macro": {},
+    "crates/prelude": {}
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
