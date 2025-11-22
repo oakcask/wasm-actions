@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 
-use wasm_actions_core::{crypto, error::Error, fs, io::WriteStream, log, os};
+use wasm_actions_core::{crypto, error::Error, fs, io::WriteStream, os};
 
 use crate::env;
 
