@@ -302,7 +302,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "async-once-cell",
  "log",
@@ -318,7 +318,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-core"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
@@ -329,7 +329,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-derive"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -347,7 +347,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-log"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "js-sys",
  "log",
@@ -359,7 +359,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-macro"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "static_assertions",
  "syn",
@@ -368,7 +368,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-prelude"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "async-once-cell",
  "log",
