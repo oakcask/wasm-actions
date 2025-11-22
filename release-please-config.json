@@ -4,6 +4,7 @@
   "include-component-in-tag": true,
   "packages": {
     "crates/wasm-actions": {},
+    "crates/wasm-actions-build": {},
     "crates/wasm-actions-core": {},
     "crates/wasm-actions-derive": {},
     "crates/wasm-actions-log": {},
