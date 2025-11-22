@@ -82,8 +82,7 @@ pub fn derive_output(input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn wasm_action(_attr: TokenStream, input: TokenStream) -> TokenStream {
     let mut output = input.clone();
-    let start_fn =
-        codegen::start_fn(parse_macro_input!(input)).unwrap_or_else(compile_error);
+    let start_fn = codegen::start_fn(parse_macro_input!(input)).unwrap_or_else(compile_error);
     let start_fn: TokenStream = start_fn.into();
     output.extend(start_fn);
     output
