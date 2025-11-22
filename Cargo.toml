@@ -7,11 +7,14 @@ edition = "2021"
 crate-type = ["rlib"]
 
 [features]
+default = ["derive"]
+derive = ["wasm-actions-prelude/derive", "wasm-actions-derive"]
 
 [workspace]
 resolver = "2"
 members = [
     "crates/core",
+    "crates/derive",
     "crates/log",
     "crates/macro",
     "crates/prelude"
@@ -19,6 +22,7 @@ members = [
 
 [dependencies]
 wasm-actions-core = { path = "crates/core" }
+wasm-actions-derive = { path = "crates/derive", optional = true }
 wasm-actions-log = { path = "crates/log" }
 wasm-actions-macro = { path = "crates/macro" }
 wasm-actions-prelude = { path = "crates/prelude" }

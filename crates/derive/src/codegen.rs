@@ -9,13 +9,13 @@ pub(crate) fn start_fn(input: DeriveInput) -> Result<TokenStream, Error> {
     Ok(quote!{
         #[wasm_bindgen::prelude::wasm_bindgen]
         pub async fn start() -> Result<(), wasm_bindgen::prelude::JsError> {
-            use wasm_actions::derive::Action;
+            use wasm_actions_prelude::derive::Action;
             let input = #ident::parse_input()?;
             if let Some(state) = #ident::parse_state()? {
               Ok(#ident::post(input, state).await?)
             } else {
               let output = #ident::main(input).await?;
-              use wasm_actions::derive::ActionOutput;
+              use wasm_actions_prelude::derive::ActionOutput;
               output.save().await?;
               Ok(())
             }
@@ -42,7 +42,7 @@ pub(crate) fn action_input_impl(struct_name: Ident, fields: Vec<InputField>) -> 
         ts.append_all(tokens);
     }
     let out = quote! {
-    impl wasm_actions::derive::ActionInput for #struct_name {
+    impl wasm_actions_prelude::derive::ActionInput for #struct_name {
         fn parse() -> Result<Self, wasm_actions_core::error::Error> {
             Ok(Self {
                 #ts
@@ -59,19 +59,23 @@ fn action_input_field_init(field: InputField) -> Result<TokenStream, Error> {
     let code = match source {
     InputSource::Input(name) => {
         quote! {
-            #field : (wasm_actions::derive::ParseInput::parse(wasm_actions::get_input!(#name).ok_or_else(|| wasm_actions_core::error::Error::from(std::format!("{} missing", #name)))?)?),
+            #field : (wasm_actions_prelude::derive::ParseInput::parse(
+                wasm_actions_prelude::get_input!(#name).ok_or_else(||
+                    wasm_actions_core::error::Error::from(std::format!("{} missing", #name)))?)?),
         }
     },
     InputSource::Env(env) => {
         quote! {
-            #field : (wasm_actions::derive::ParseInput::parse(wasm_actions::env::var(#env).ok_or_else(|| wasm_actions_core::error::Error::from(std::format!("${} missing", #env)))?)?),
+            #field : (wasm_actions_prelude::derive::ParseInput::parse(
+                wasm_actions_prelude::env::var(#env).ok_or_else(||
+                    wasm_actions_core::error::Error::from(std::format!("${} missing", #env)))?)?),
         }
     },
     InputSource::InputThenEnv { input: name, env } => {
         quote! {
-            #field : (wasm_actions::derive::ParseInput::parse(
-                wasm_actions::get_input!(#name).or_else(|_|
-                    wasm_actions::env::var(#env)
+            #field : (wasm_actions_prelude::derive::ParseInput::parse(
+                wasm_actions_prelude::get_input!(#name).or_else(|_|
+                    wasm_actions_prelude::env::var(#env)
                 ).ok_or_else(|| wasm_actions_core::error::Error::from("either {} or ${} missing"))?
             )?),
         }
@@ -94,9 +98,9 @@ pub(crate) fn action_output_impl(struct_name: Ident, fields: Vec<OutputField>) -
     }
 
     let code = quote! {
-        impl wasm_actions::derive::ActionOutput for #struct_name {
+        impl wasm_actions_prelude::derive::ActionOutput for #struct_name {
             fn parse() -> Result<Option<Self>, wasm_actions_core::error::Error> {
-                if let Some(state) = wasm_actions::get_state!("wasm_actions") {
+                if let Some(state) = wasm_actions_prelude::get_state!("wasm_actions") {
                     Ok(Some(serde_json::from_str(&state).map_err(Error::new)?))
                 } else {
                     Ok(None)
@@ -105,7 +109,7 @@ pub(crate) fn action_output_impl(struct_name: Ident, fields: Vec<OutputField>) -
 
             async fn save(self) -> Result<(), wasm_actions_core::error::Error> {
                 let json = serde_json::to_string(&self).map_err(wasm_actions_core::error::Error::new)?;
-                wasm_actions::save_state("wasm_actions", &json).await?;
+                wasm_actions_prelude::save_state("wasm_actions", &json).await?;
                 #ts
                 Ok(())
             }
@@ -118,8 +122,8 @@ fn action_output_set_output(field: OutputField) -> Result<Option<TokenStream>, E
     if let Some(name) = OutputName::try_from(&field.attrs) {
         let struct_field = field.field;
         Ok(Some(quote! {
-            let #struct_field = wasm_actions::derive::StringifyOutput::stringify(self.#struct_field);
-            wasm_actions::set_output(#name, &#struct_field).await?;
+            let #struct_field = wasm_actions_prelude::derive::StringifyOutput::stringify(self.#struct_field);
+            wasm_actions_prelude::set_output(#name, &#struct_field).await?;
         }))
     } else {
         Ok(None)
