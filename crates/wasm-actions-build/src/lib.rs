@@ -127,7 +127,7 @@ fn build_metadata_yaml(path: &Path) -> Result<Yaml, Box<dyn Error>> {
                                     OutputAttr::Description(s) => {
                                         output_attrs.insert(
                                             Yaml::String(String::from("description")),
-                                            Yaml::String(String::from(s.value())),
+                                            Yaml::String(s.value()),
                                         );
                                     }
                                 }
