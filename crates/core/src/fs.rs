@@ -40,6 +40,22 @@ impl Default for CreateWriteStreamOption {
     }
 }
 
+pub async fn create_exclusive(name: &str) -> Result<WriteStream, Error> {
+    let fd = open2(name, "wx");
+    let fd = Promise::new(fd, |js| Ok(FileHandle::from(js)));
+
+    match fd.await {
+        Ok(fd) => {
+            let opts = CreateWriteStreamOption {
+                flush: true,
+                ..Default::default()
+            };
+            Ok(fd.create_write_stream(opts))
+        }
+        Err(e) => Err(e)
+    }
+}
+
 pub async fn open_append(name: &str) -> Result<WriteStream, Error> {
     let fd = open2(name, "a");
     let fd = Promise::new(fd, |js| Ok(FileHandle::from(js)));

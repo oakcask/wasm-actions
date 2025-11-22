@@ -2,8 +2,8 @@ use wasm_actions_macro::input_var;
 use wasm_bindgen::{JsError, JsValue};
 use wasm_bindgen_test::wasm_bindgen_test;
 use wasm_actions_derive::{ wasm_action, ActionInput, ActionOutput };
-use wasm_actions_prelude::derive::Action;
-use wasm_actions_core::{error::Error, process};
+use wasm_actions_prelude::{derive::Action, env, testing::clear_env};
+use wasm_actions_core::{error::Error};
 
 #[wasm_action(
     name = "example",
@@ -41,7 +41,8 @@ impl Action<Input, Output> for Example {
 
 #[wasm_bindgen_test]
 async fn fail_if_called_without_input() -> Result<(), JsError> {
-    // TODO: reset process.env to ensure the environment clean.
+    let _guard = clear_env().await;
+
     if let Err(e) = start().await.map_err(|e| format!("{:?}", JsValue::from(e))) {
         assert!(e.starts_with("JsValue(Error: foo missing\n"))
     } else {
@@ -50,16 +51,17 @@ async fn fail_if_called_without_input() -> Result<(), JsError> {
     Ok(())
 }
 
-// TODO: enable this after we can reset process.env in test.
-// #[wasm_bindgen_test]
-#[allow(dead_code)]
+#[wasm_bindgen_test]
 async fn runs_main_if_inputs_are_filled() -> Result<(), JsError> {
-    process::set_env(input_var!("foo"), "42");
-    process::set_env("BAR", "4242");
+    let _guard = clear_env().await;
+
+    env::set_var(input_var!("foo"), "42");
+    env::set_var("BAR", "4242");
 
     if let Err(e) = start().await.map_err(|e| format!("{:?}", JsValue::from(e))) {
         unreachable!("{e}")
     } else {
+        // TODO: implement file read API and check the contents of $GITHUB_OUTPUT
         assert!(true)
     }
     Ok(())

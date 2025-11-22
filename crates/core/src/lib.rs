@@ -5,6 +5,9 @@ pub mod promise;
 pub mod fs;
 pub mod os;
 
+#[cfg(feature = "crypto")]
+pub mod crypto;
+
 #[macro_export]
 macro_rules! log {
     () => {
