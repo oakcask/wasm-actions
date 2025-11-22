@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-derive-v0.1.0...wasm-actions-derive-v0.2.0) (2025-11-22)
+
+
+### Features
+
+* prelude exposes Error from wasm_actions_core ([#38](https://github.com/oakcask/wasm-actions/issues/38)) ([76ee534](https://github.com/oakcask/wasm-actions/commit/76ee534e83d3a81cd6450401016dec8513075c86))
+
 ## 0.1.0 (2025-11-22)
 
 
