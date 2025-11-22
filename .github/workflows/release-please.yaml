@@ -13,23 +13,22 @@ jobs:
   matrix:
     runs-on: ubuntu-latest
     outputs:
-      changed-crates: ${{ steps.glob-changed-files.outputs.paths-json }}
+      crates: ${{ steps.crates.outputs.result }}
     steps:
-      - id: glob-changed-files
-        uses: int128/glob-changed-files-action@1a4f75e3ee971fc3840bda9d2cbd260dc87b6998 # v2
+      - id: crates
+        uses: actions/github-script@v8
+        env:
+          DIRNAME: "crates/"
         with:
-          paths: |
-            crates/:crate/**
-          transform: |
-            crates/:crate
+          script: |
+            await require('node:fs/promises').readdir(process.env.DIRNAME)
 
   release-please:
     runs-on: ubuntu-latest
     needs: matrix
-    if: ${{ needs.matrix.outputs.changed-crates != '' }}
     strategy:
       matrix:
-        path: ${{ fromJson(needs.matrix.outputs.changed-crates) }}
+        path: ${{ fromJson(needs.matrix.outputs.crates) }}
     concurrency:
       group: release-please-${{ matrix.path }}
       cancel-in-progress: false
