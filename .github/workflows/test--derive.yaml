@@ -1,15 +1,14 @@
-name: test / prelude
+name: test / derive
 
 on:
   pull_request:
     paths:
       - .github/workflows/shared--wasm-pack-test.yaml
-      - .github/workflows/test--prelude.yaml
+      - .github/workflows/test--derive.yaml
       - Cargo.lock
       - Cargo.toml
       - rust-toolchain.toml
       - crates/core/**
-      - crates/log/**
       - crates/macro/**
       - crates/prelude/**
     
@@ -17,4 +16,4 @@ jobs:
   run:
     uses: ./.github/workflows/shared--wasm-pack-test.yaml
     with:
-      path: crates/prelude
+      path: crates/derive
