@@ -16,7 +16,9 @@ macro_rules! get_input {
     ($name:expr) => {
         if let Some(value) = $crate::env::var(wasm_actions_macro::input_var!($name)) {
             Some(value)
-        } else if let Some(value) = $crate::env::var(wasm_actions_macro::input_var_underscore!($name)) {
+        } else if let Some(value) =
+            $crate::env::var(wasm_actions_macro::input_var_underscore!($name))
+        {
             Some(value)
         } else {
             None
@@ -29,7 +31,9 @@ macro_rules! get_state {
     ($name:expr) => {
         if let Some(value) = $crate::env::var(wasm_actions_macro::state_var!($name)) {
             Some(value)
-        } else if let Some(value) = $crate::env::var(wasm_actions_macro::state_var_underscore!($name)) {
+        } else if let Some(value) =
+            $crate::env::var(wasm_actions_macro::state_var_underscore!($name))
+        {
             Some(value)
         } else {
             None

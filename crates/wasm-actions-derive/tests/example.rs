@@ -1,27 +1,18 @@
+use wasm_actions_core::error::Error;
+use wasm_actions_derive::{ActionInput, ActionOutput, wasm_action};
 use wasm_actions_macro::input_var;
+use wasm_actions_prelude::{derive::Action, env, testing::clear_env};
 use wasm_bindgen::{JsError, JsValue};
 use wasm_bindgen_test::wasm_bindgen_test;
-use wasm_actions_derive::{ wasm_action, ActionInput, ActionOutput };
-use wasm_actions_prelude::{derive::Action, env, testing::clear_env};
-use wasm_actions_core::{error::Error};
 
-#[wasm_action(
-    name = "example",
-    description = "example action"
-)]
+#[wasm_action(name = "example", description = "example action")]
 struct Example;
 
 #[derive(ActionInput)]
 struct Input {
-    #[input(
-        name = "foo",
-        required = true,
-        description = "input parameter foo"
-    )]
+    #[input(name = "foo", required = true, description = "input parameter foo")]
     foo: String,
-    #[input(
-        env = "BAR",
-    )]
+    #[input(env = "BAR")]
     bar: String,
 }
 

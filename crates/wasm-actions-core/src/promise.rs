@@ -1,4 +1,8 @@
-use std::{future::Future, pin::Pin, task::{Context, Poll}};
+use std::{
+    future::Future,
+    pin::Pin,
+    task::{Context, Poll},
+};
 
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
@@ -10,14 +14,17 @@ pub struct Promise<T, F: Fn(JsValue) -> Result<T, Error>> {
     f: Box<F>,
 }
 
-impl<T, F> Promise<T, F> where F: Fn(JsValue) -> Result<T, Error> {
+impl<T, F> Promise<T, F>
+where
+    F: Fn(JsValue) -> Result<T, Error>,
+{
     pub fn new(promise: js_sys::Promise, f: F) -> Self {
         let fut = JsFuture::from(promise);
         let fut = Box::new(fut);
 
         Self {
             fut: Pin::new(fut),
-            f: Box::new(f)
+            f: Box::new(f),
         }
     }
 }
@@ -28,12 +35,8 @@ impl<T, F: Fn(JsValue) -> Result<T, Error>> Future for Promise<T, F> {
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let fut = self.fut.as_mut();
         match fut.poll(cx) {
-            Poll::Ready(Ok(js)) => {
-                Poll::Ready((self.f)(js))
-            },
-            Poll::Ready(Err(js)) => {
-                Poll::Ready(Err(Error::from(js)))
-            }
+            Poll::Ready(Ok(js)) => Poll::Ready((self.f)(js)),
+            Poll::Ready(Err(js)) => Poll::Ready(Err(Error::from(js))),
             Poll::Pending => Poll::Pending,
         }
     }

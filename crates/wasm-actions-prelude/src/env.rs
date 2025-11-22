@@ -1,6 +1,9 @@
 use std::path::PathBuf;
 
-use wasm_actions_core::{os, process::{self, EnvIterator}};
+use wasm_actions_core::{
+    os,
+    process::{self, EnvIterator},
+};
 
 pub fn var(name: &str) -> Option<String> {
     process::get_env(name)
@@ -27,4 +30,3 @@ pub fn runner_temp_dir() -> PathBuf {
     let runner_temp = var("RUNNER_TEMP").expect("$RUNNER_TEMP is expected to be set");
     PathBuf::from(runner_temp)
 }
-

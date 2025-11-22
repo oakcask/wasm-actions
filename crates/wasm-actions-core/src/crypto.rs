@@ -8,7 +8,5 @@ extern "C" {
 }
 
 pub fn random_uuid() -> String {
-    CRYPTO.with(move |c| {
-        c.random_uuid()
-    })
+    CRYPTO.with(move |c| c.random_uuid())
 }

@@ -5,7 +5,7 @@ use wasm_actions_core::{crypto, error::Error, fs, io::WriteStream, os};
 use crate::env;
 
 pub struct ClearEnvGuard {
-    envs: Vec<(String, String)>
+    envs: Vec<(String, String)>,
 }
 
 impl Drop for ClearEnvGuard {
@@ -31,9 +31,7 @@ pub async fn clear_env() -> ClearEnvGuard {
     outputws.end();
     env::set_var("GITHUB_STATE", state.to_str().unwrap());
     env::set_var("GITHUB_OUTPUT", output.to_str().unwrap());
-    ClearEnvGuard {
-        envs: snapshot,
-    }
+    ClearEnvGuard { envs: snapshot }
 }
 
 /// Create writable temporary file.
@@ -51,5 +49,7 @@ async fn tempfile() -> Result<(PathBuf, WriteStream), Error> {
         }
     }
 
-    Err(Error::from("retry attempt exceeded to create temporary file"))
+    Err(Error::from(
+        "retry attempt exceeded to create temporary file",
+    ))
 }

@@ -1,5 +1,5 @@
 use js_sys::{Promise, Uint8Array};
-use wasm_bindgen::{JsThreadLocal, JsValue, prelude::wasm_bindgen};
+use wasm_bindgen::{prelude::wasm_bindgen, JsThreadLocal, JsValue};
 
 #[wasm_bindgen]
 extern "C" {
@@ -7,11 +7,7 @@ extern "C" {
     pub type WriteStream;
 
     #[wasm_bindgen(method, js_name = "write")]
-    fn write_2(
-        this: &WriteStream,
-        chunk: &JsValue,
-        encoding: &JsValue,
-    ) -> Promise;
+    fn write_2(this: &WriteStream, chunk: &JsValue, encoding: &JsValue) -> Promise;
 
     #[wasm_bindgen(method, js_name = "end")]
     pub fn end(this: &WriteStream);
@@ -34,7 +30,7 @@ impl std::io::Write for WriteStream {
 }
 
 pub struct StaticWriteStream {
-    var: &'static JsThreadLocal<WriteStream>
+    var: &'static JsThreadLocal<WriteStream>,
 }
 
 impl StaticWriteStream {
@@ -50,9 +46,7 @@ impl std::io::Write for StaticWriteStream {
         let buf = JsValue::from(buf);
         let encoding = JsValue::null();
         // TODO: handle promise
-        let _ = self.var.with(move |this| {
-            this.write_2(&buf, &encoding)
-        });
+        let _ = self.var.with(move |this| this.write_2(&buf, &encoding));
         Ok(size)
     }
 
