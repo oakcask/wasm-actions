@@ -1,7 +1,7 @@
 use js_sys::{Array, Object, Reflect};
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 
-use crate::io::{WriteStream, StaticWriteStream};
+use crate::io::{StaticWriteStream, WriteStream};
 
 #[wasm_bindgen(module = "node:process")]
 extern "C" {
@@ -22,29 +22,26 @@ pub fn get_env(key: &str) -> Option<String> {
 }
 
 fn get_env_by_jsvalue(key: &JsValue) -> Option<String> {
-    let value= ENV.with(move |env| {Reflect::get(env, &key) });
+    let value = ENV.with(move |env| Reflect::get(env, key));
 
     if let Ok(value) = value {
         value.as_string()
     } else {
         None
-    }   
+    }
 }
 
 pub fn set_env(key: &str, value: &str) {
     let key = JsValue::from_str(key);
     let value = JsValue::from_str(value);
 
-    ENV.with(move |env| {
-        Reflect::set(env, &key, &value)
-    }).unwrap();
+    ENV.with(move |env| Reflect::set(env, &key, &value))
+        .unwrap();
 }
 
 pub fn delete_env(key: &str) {
     let key = JsValue::from_str(key);
-    let _ = ENV.with(move |env| {
-        Reflect::delete_property(env, &key)
-    });
+    let _ = ENV.with(move |env| Reflect::delete_property(env, &key));
 }
 
 pub struct EnvIterator {
@@ -53,16 +50,20 @@ pub struct EnvIterator {
     last_index: u32,
 }
 
+impl Default for EnvIterator {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl EnvIterator {
     pub fn new() -> Self {
-        let keys = ENV.with(move |env| {
-            Object::keys(env)
-        });
+        let keys = ENV.with(Object::keys);
         let last_index = keys.length();
         Self {
             keys,
             next_index: 0,
-            last_index
+            last_index,
         }
     }
 }
@@ -73,24 +74,25 @@ impl Iterator for EnvIterator {
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             if self.next_index >= self.last_index {
-                break
+                break;
             }
             let key = self.keys.get(self.next_index);
-            let key_s = key.as_string().expect("key of process.env is expected to be a string");
+            let key_s = key
+                .as_string()
+                .expect("key of process.env is expected to be a string");
             self.next_index += 1;
 
             // skip missing key.
             // ENV can be mutated while iterating over keys.
-            // And we don't want to copy all the values in environment variables at initialization of EnvIterator. 
+            // And we don't want to copy all the values in environment variables at initialization of EnvIterator.
             if let Some(entry) = get_env_by_jsvalue(&key).map(|val| (key_s, val)) {
-                return Some(entry)
+                return Some(entry);
             }
         }
 
         None
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -100,7 +102,10 @@ mod tests {
     fn test_env() {
         set_env("TEST_KEY", "TEST_VALUE");
         assert_eq!(get_env("TEST_KEY"), Some("TEST_VALUE".to_string()));
-        assert_eq!(EnvIterator::new().find(|(k, _v)| k == "TEST_KEY"), Some((String::from("TEST_KEY"), String::from("TEST_VALUE"))));
+        assert_eq!(
+            EnvIterator::new().find(|(k, _v)| k == "TEST_KEY"),
+            Some((String::from("TEST_KEY"), String::from("TEST_VALUE")))
+        );
         delete_env("TEST_KEY");
         assert_eq!(get_env("TEST_KEY"), None);
         assert_eq!(EnvIterator::new().find(|(k, _v)| k == "TEST_KEY"), None);

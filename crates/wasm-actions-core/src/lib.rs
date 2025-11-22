@@ -1,9 +1,9 @@
 pub mod error;
-pub mod process;
-pub mod io;
-pub mod promise;
 pub mod fs;
+pub mod io;
 pub mod os;
+pub mod process;
+pub mod promise;
 
 #[cfg(feature = "crypto")]
 pub mod crypto;

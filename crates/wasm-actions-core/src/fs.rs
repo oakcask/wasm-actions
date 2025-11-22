@@ -1,5 +1,5 @@
-use wasm_bindgen::prelude::wasm_bindgen;
 use crate::{error::Error, io::WriteStream, promise::Promise};
+use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen(module = "node:fs/promises")]
 extern "C" {
@@ -27,7 +27,7 @@ struct CreateWriteStreamOption {
     // highWaterMark
     #[wasm_bindgen(js_name = "flush")]
     #[allow(dead_code)]
-    flush: bool
+    flush: bool,
 }
 
 impl Default for CreateWriteStreamOption {
@@ -52,7 +52,7 @@ pub async fn create_exclusive(name: &str) -> Result<WriteStream, Error> {
             };
             Ok(fd.create_write_stream(opts))
         }
-        Err(e) => Err(e)
+        Err(e) => Err(e),
     }
 }
 
@@ -62,11 +62,11 @@ pub async fn open_append(name: &str) -> Result<WriteStream, Error> {
 
     match fd.await {
         Ok(fd) => {
-                let opts = CreateWriteStreamOption {
+            let opts = CreateWriteStreamOption {
                 flush: true,
                 ..Default::default()
             };
-            Ok(fd.create_write_stream(opts))                                
+            Ok(fd.create_write_stream(opts))
         }
         Err(e) => Err(e),
     }

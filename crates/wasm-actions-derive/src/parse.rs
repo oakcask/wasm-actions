@@ -1,15 +1,14 @@
-
 use proc_macro2::Span;
 use quote::ToTokens;
 use syn::{Attribute, Error, Expr, Ident, LitStr, Token, parse::Parse, punctuated::Punctuated};
 
 pub(crate) enum InputSource<'a> {
     Input(&'a AttrValue),
-    Env(&'a AttrValue),    
+    Env(&'a AttrValue),
     InputThenEnv {
         input: &'a AttrValue,
-        env: &'a AttrValue
-    }
+        env: &'a AttrValue,
+    },
 }
 
 impl<'a> InputSource<'a> {
@@ -21,12 +20,15 @@ impl<'a> InputSource<'a> {
                 InputAttrKey::Name => input = Some(&a.value),
 
                 InputAttrKey::Env => env = Some(&a.value),
-                _ => {},
+                _ => {}
             }
         }
 
         match (input, env) {
-            (None, None) => Err(Error::new(span, "#[input] expectes at least one name or env")),
+            (None, None) => Err(Error::new(
+                span,
+                "#[input] expectes at least one name or env",
+            )),
             (None, Some(e)) => Ok(Self::Env(e)),
             (Some(i), None) => Ok(Self::Input(i)),
             (Some(i), Some(e)) => Ok(Self::InputThenEnv { input: i, env: e }),
@@ -40,7 +42,7 @@ pub(crate) enum InputAttrKey {
     Env,
     Required,
     Description,
-    Default
+    Default,
 }
 
 pub(crate) struct InputAttr {
@@ -52,14 +54,14 @@ pub(crate) struct OutputName<'a>(&'a AttrValue);
 
 impl<'a> OutputName<'a> {
     pub(crate) fn try_from(attrs: &'a [OutputAttr]) -> Option<Self> {
-        attrs.iter().find(|a|
-            match a.key {
+        attrs
+            .iter()
+            .find(|a| match a.key {
                 crate::parse::OutputAttrKey::Name => true,
                 crate::parse::OutputAttrKey::Description => false,
-            }
-        ).map(|a| {
-          Some(Self(&a.value))
-        }).unwrap_or(None)
+            })
+            .map(|a| Some(Self(&a.value)))
+            .unwrap_or(None)
     }
 }
 
@@ -71,8 +73,6 @@ impl<'a> ToTokens for OutputName<'a> {
         }
     }
 }
-
-
 
 #[derive(Clone, Copy)]
 pub(crate) enum OutputAttrKey {
@@ -87,7 +87,7 @@ pub(crate) struct OutputAttr {
 
 pub(crate) enum AttrValue {
     LitStr(LitStr),
-    Expr(Expr)
+    Expr(Expr),
 }
 
 impl ToTokens for AttrValue {
@@ -105,7 +105,8 @@ impl InputAttr {
 
         for a in attrs {
             if a.path().is_ident("input") {
-                let kvs = a.parse_args_with(Punctuated::<InputAttr, Token![,]>::parse_terminated)?;
+                let kvs =
+                    a.parse_args_with(Punctuated::<InputAttr, Token![,]>::parse_terminated)?;
                 for kv in kvs {
                     input_attrs.push(kv)
                 }
@@ -126,7 +127,12 @@ impl Parse for InputAttr {
             "env" => InputAttrKey::Env,
             "name" => InputAttrKey::Name,
             "required" => InputAttrKey::Required,
-            unknown => return Err(Error::new(key.span(), format!("#[input] cannot accept `{unknown}`")))
+            unknown => {
+                return Err(Error::new(
+                    key.span(),
+                    format!("#[input] cannot accept `{unknown}`"),
+                ));
+            }
         };
         let t_assign = input.parse::<Token![=]>()?;
         let value = if input.peek(LitStr) {
@@ -135,7 +141,12 @@ impl Parse for InputAttr {
         } else {
             match input.parse::<Expr>() {
                 Ok(expr) => AttrValue::Expr(expr),
-                Err(_) => return Err(Error::new(t_assign.span, "expected literal string or expression after `=`")),
+                Err(_) => {
+                    return Err(Error::new(
+                        t_assign.span,
+                        "expected literal string or expression after `=`",
+                    ));
+                }
             }
         };
         Ok(Self { key, value })
@@ -148,7 +159,8 @@ impl OutputAttr {
 
         for a in attrs {
             if a.path().is_ident("output") {
-                let kvs = a.parse_args_with(Punctuated::<OutputAttr, Token![,]>::parse_terminated)?;
+                let kvs =
+                    a.parse_args_with(Punctuated::<OutputAttr, Token![,]>::parse_terminated)?;
                 for kv in kvs {
                     input_attrs.push(kv)
                 }
@@ -166,14 +178,22 @@ impl Parse for OutputAttr {
         let key = match key_s.as_str() {
             "description" => OutputAttrKey::Description,
             "name" => OutputAttrKey::Name,
-            unknown => return Err(Error::new(key.span(), format!("#[output] cannot accept `{unknown}`")))
+            unknown => {
+                return Err(Error::new(
+                    key.span(),
+                    format!("#[output] cannot accept `{unknown}`"),
+                ));
+            }
         };
         let t_assign = input.parse::<Token![=]>()?;
         let value = if input.peek(LitStr) {
             let lit: LitStr = input.parse()?;
             AttrValue::LitStr(lit)
         } else {
-            return Err(Error::new(t_assign.span, "expected literal string after `=`"));
+            return Err(Error::new(
+                t_assign.span,
+                "expected literal string after `=`",
+            ));
         };
         Ok(Self { key, value })
     }

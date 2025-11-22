@@ -16,7 +16,11 @@ impl ArgBuf {
 }
 
 impl<'kvs> log::kv::VisitSource<'kvs> for ArgBuf {
-    fn visit_pair(&mut self, key: log::kv::Key<'kvs>, value: log::kv::Value<'kvs>) -> Result<(), log::kv::Error> {
+    fn visit_pair(
+        &mut self,
+        key: log::kv::Key<'kvs>,
+        value: log::kv::Value<'kvs>,
+    ) -> Result<(), log::kv::Error> {
         use std::io::Write;
         let result = if self.0.is_empty() {
             write!(self.0, " {}={}", key, value)
@@ -45,7 +49,7 @@ impl log::Log for Logger {
             let msg = record.args();
             let mut buf = ArgBuf::new();
             if record.key_values().visit(&mut buf).is_ok() {
-                wasm_actions_core::log!("::{}{}::{}", level, buf.take(), msg);                
+                wasm_actions_core::log!("::{}{}::{}", level, buf.take(), msg);
             } else {
                 wasm_actions_core::log!("::{}::{}", level, msg);
             }
@@ -56,9 +60,9 @@ impl log::Log for Logger {
 }
 
 /// Initializes the logger.
-/// 
+///
 /// ## Example
-/// 
+///
 /// ```no_run
 /// let _ = wasm_actions_log::init();
 /// log::info!("this is notice message.");

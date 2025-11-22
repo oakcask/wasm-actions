@@ -1,12 +1,15 @@
 use proc_macro2::{Span, TokenStream};
-use syn::{DeriveInput, Error, Ident};
 use quote::{TokenStreamExt, quote};
+use syn::{DeriveInput, Error, Ident};
 
-use crate::{InputAttr, InputSource, parse::{OutputAttr, OutputName}};
+use crate::{
+    InputAttr, InputSource,
+    parse::{OutputAttr, OutputName},
+};
 
 pub(crate) fn start_fn(input: DeriveInput) -> Result<TokenStream, Error> {
     let ident = input.ident;
-    Ok(quote!{
+    Ok(quote! {
         #[wasm_bindgen::prelude::wasm_bindgen]
         pub async fn start() -> Result<(), wasm_bindgen::prelude::JsError> {
             use wasm_actions_prelude::derive::Action;
@@ -19,7 +22,7 @@ pub(crate) fn start_fn(input: DeriveInput) -> Result<TokenStream, Error> {
               output.save().await?;
               Ok(())
             }
-        }        
+        }
     })
 }
 
@@ -35,7 +38,10 @@ impl InputField {
     }
 }
 
-pub(crate) fn action_input_impl(struct_name: Ident, fields: Vec<InputField>) -> Result<TokenStream, Error> {
+pub(crate) fn action_input_impl(
+    struct_name: Ident,
+    fields: Vec<InputField>,
+) -> Result<TokenStream, Error> {
     let mut ts = TokenStream::new();
     for f in fields {
         let tokens = action_input_field_init(f)?;
@@ -48,7 +54,7 @@ pub(crate) fn action_input_impl(struct_name: Ident, fields: Vec<InputField>) -> 
                 #ts
             })
         }
-      }   
+      }
     };
     Ok(out)
 }
@@ -57,31 +63,31 @@ fn action_input_field_init(field: InputField) -> Result<TokenStream, Error> {
     let source = field.input_source()?;
     let field = field.field.clone();
     let code = match source {
-    InputSource::Input(name) => {
-        quote! {
-            #field : (wasm_actions_prelude::derive::ParseInput::parse(
-                wasm_actions_prelude::get_input!(#name).ok_or_else(||
-                    wasm_actions_prelude::Error::from(std::format!("{} missing", #name)))?)?),
+        InputSource::Input(name) => {
+            quote! {
+                #field : (wasm_actions_prelude::derive::ParseInput::parse(
+                    wasm_actions_prelude::get_input!(#name).ok_or_else(||
+                        wasm_actions_prelude::Error::from(std::format!("{} missing", #name)))?)?),
+            }
         }
-    },
-    InputSource::Env(env) => {
-        quote! {
-            #field : (wasm_actions_prelude::derive::ParseInput::parse(
-                wasm_actions_prelude::env::var(#env).ok_or_else(||
-                    wasm_actions_prelude::Error::from(std::format!("${} missing", #env)))?)?),
+        InputSource::Env(env) => {
+            quote! {
+                #field : (wasm_actions_prelude::derive::ParseInput::parse(
+                    wasm_actions_prelude::env::var(#env).ok_or_else(||
+                        wasm_actions_prelude::Error::from(std::format!("${} missing", #env)))?)?),
+            }
         }
-    },
-    InputSource::InputThenEnv { input: name, env } => {
-        quote! {
-            #field : (wasm_actions_prelude::derive::ParseInput::parse(
-                wasm_actions_prelude::get_input!(#name).or_else(|_|
-                    wasm_actions_prelude::env::var(#env)
-                ).ok_or_else(|| wasm_actions_prelude::Error::from("either {} or ${} missing"))?
-            )?),
+        InputSource::InputThenEnv { input: name, env } => {
+            quote! {
+                #field : (wasm_actions_prelude::derive::ParseInput::parse(
+                    wasm_actions_prelude::get_input!(#name).or_else(|_|
+                        wasm_actions_prelude::env::var(#env)
+                    ).ok_or_else(|| wasm_actions_prelude::Error::from("either {} or ${} missing"))?
+                )?),
+            }
         }
-    },
-  };
-  Ok(code)
+    };
+    Ok(code)
 }
 
 pub(crate) struct OutputField {
@@ -89,7 +95,10 @@ pub(crate) struct OutputField {
     pub(crate) attrs: Vec<OutputAttr>,
 }
 
-pub(crate) fn action_output_impl(struct_name: Ident, fields: Vec<OutputField>) -> Result<TokenStream, Error> {
+pub(crate) fn action_output_impl(
+    struct_name: Ident,
+    fields: Vec<OutputField>,
+) -> Result<TokenStream, Error> {
     let mut ts = TokenStream::new();
     for f in fields {
         if let Some(tokens) = action_output_set_output(f)? {
@@ -113,7 +122,7 @@ pub(crate) fn action_output_impl(struct_name: Ident, fields: Vec<OutputField>) -
                 #ts
                 Ok(())
             }
-        }   
+        }
     };
     Ok(code)
 }
