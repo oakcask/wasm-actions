@@ -15,9 +15,9 @@ jobs:
     outputs:
       crates: ${{ steps.crates.outputs.result }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - id: crates
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           DIRNAME: "crates"
         with:
