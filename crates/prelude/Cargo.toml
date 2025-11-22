@@ -11,9 +11,9 @@ derive = []
 testing = ["wasm-actions-core/crypto"]
 
 [dependencies]
-wasm-actions-core = { path = "../wasm-actions-core" }
-wasm-actions-log = { path = "../wasm-actions-log" }
-wasm-actions-macro = { path = "../wasm-actions-macro" }
+wasm-actions-core = { path = "../core" }
+wasm-actions-log = { path = "../log" }
+wasm-actions-macro = { path = "../macro" }
 async-once-cell = "0.5.4"
 log = "0.4.28"
 
