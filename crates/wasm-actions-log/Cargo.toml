@@ -8,7 +8,7 @@ crate-type = ["rlib"]
 
 [dependencies]
 log = { version = "0.4.28" }
-wasm-actions-core = { path = "../core" }
+wasm-actions-core = { path = "../wasm-actions-core" }
 
 [dev-dependencies]
 trybuild = "1.0.114"

@@ -12,9 +12,9 @@ quote = "1.0.42"
 syn = "2.0.110"
 wasm-bindgen = { version = "0.2.105", features = ["std"] }
 wasm-bindgen-futures = "0.4.55"
-wasm-actions-core = { path = "../core" }
-wasm-actions-macro = { path = "../macro" }
-wasm-actions-prelude = { path = "../prelude", features = ["derive", "testing"] }
+wasm-actions-core = { path = "../wasm-actions-core" }
+wasm-actions-macro = { path = "../wasm-actions-macro" }
+wasm-actions-prelude = { path = "../wasm-actions-prelude", features = ["derive", "testing"] }
 serde_json = "1.0.145"
 
 [dev-dependencies]
