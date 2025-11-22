@@ -147,6 +147,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e"
 dependencies = [
  "serde_core",
+ "serde_derive",
 ]
 
 [[package]]
@@ -307,6 +308,7 @@ dependencies = [
  "log",
  "trybuild",
  "wasm-actions-core",
+ "wasm-actions-derive",
  "wasm-actions-log",
  "wasm-actions-macro",
  "wasm-actions-prelude",
@@ -319,6 +321,24 @@ name = "wasm-actions-core"
 version = "0.3.0"
 dependencies = [
  "js-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "wasm-bindgen-test",
+]
+
+[[package]]
+name = "wasm-actions-derive"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde",
+ "serde_json",
+ "syn",
+ "trybuild",
+ "wasm-actions-core",
+ "wasm-actions-macro",
+ "wasm-actions-prelude",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "wasm-bindgen-test",
@@ -347,7 +367,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-prelude"
-version = "0.3.0"
+version = "0.1.0"
 dependencies = [
  "async-once-cell",
  "log",

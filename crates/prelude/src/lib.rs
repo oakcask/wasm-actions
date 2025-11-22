@@ -4,6 +4,9 @@ pub use output::save_state;
 pub use output::set_output;
 pub mod console;
 
+#[cfg(feature = "derive")]
+pub mod derive;
+
 #[macro_export]
 macro_rules! get_input {
     ($name:expr) => {
