@@ -12,11 +12,10 @@ extern "C" {
         chunk: &JsValue,
         encoding: &JsValue,
     ) -> Promise;
+
+    #[wasm_bindgen(method, js_name = "end")]
+    pub fn end(this: &WriteStream);
 }
-
-pub trait Write {}
-
-impl<T: std::io::Write> Write for T {}
 
 impl std::io::Write for WriteStream {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
