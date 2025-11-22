@@ -11,7 +11,7 @@ use yaml_rust::{Yaml, YamlEmitter, yaml};
 
 /// Generates metadata YAML and entrypoint script in
 /// recommended configuration.
-pub fn generate_recommended() -> Result<(), Box<dyn std::error::Error>> {
+pub fn generate_recommended(cargo_crate_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     {
         let mut metadata = File::create("action.yaml")?;
         let metadata_path = PathBuf::from_str("src/lib.rs")?;
@@ -19,10 +19,9 @@ pub fn generate_recommended() -> Result<(), Box<dyn std::error::Error>> {
         println!("cargo::rerun-if-changed=src/lib.rs");
     }
     {
-        let crate_name = env!("CARGO_CRATE_NAME");
         let index_cjs = PathBuf::from_str("index.cjs")?;
         let mut index_cjs = File::create(&index_cjs)?;
-        generate_index_cjs(&mut index_cjs, crate_name)
+        generate_index_cjs(&mut index_cjs, cargo_crate_name)
     }
 }
 
