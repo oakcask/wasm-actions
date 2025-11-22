@@ -22,7 +22,7 @@ pub fn get_env(key: &str) -> Option<String> {
 }
 
 fn get_env_by_jsvalue(key: &JsValue) -> Option<String> {
-    let value = ENV.with(move |env| Reflect::get(env, &key));
+    let value = ENV.with(move |env| Reflect::get(env, key));
 
     if let Ok(value) = value {
         value.as_string()
@@ -50,9 +50,15 @@ pub struct EnvIterator {
     last_index: u32,
 }
 
+impl Default for EnvIterator {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl EnvIterator {
     pub fn new() -> Self {
-        let keys = ENV.with(move |env| Object::keys(env));
+        let keys = ENV.with(Object::keys);
         let last_index = keys.length();
         Self {
             keys,
