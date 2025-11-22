@@ -8,10 +8,10 @@ on:
       - Cargo.lock
       - Cargo.toml
       - rust-toolchain.toml
-      - crates/macro/**
+      - crates/wasm-actions-macro/**
     
 jobs:
   run:
     uses: ./.github/workflows/shared--wasm-pack-test.yaml
     with:
-      path: crates/macro
+      path: crates/wasm-actions-macro

@@ -3,13 +3,18 @@
   "bump-minor-pre-major": true,
   "packages": {
     ".": {
-      "exclude-paths": ["crates"]
+      "exclude-paths": [
+        ".github",
+        "crates/wasm-actions-*",
+        "Cargo.lock",
+        "Cargo.toml"
+      ]
     },
-    "crates/core": {},
-    "crates/derive": {},
-    "crates/log": {},
-    "crates/macro": {},
-    "crates/prelude": {}
+    "crates/wasm-actions-core": {},
+    "crates/wasm-actions-derive": {},
+    "crates/wasm-actions-log": {},
+    "crates/wasm-actions-macro": {},
+    "crates/wasm-actions-prelude": {}
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
