@@ -8,9 +8,8 @@ on:
       - Cargo.lock
       - Cargo.toml
       - rust-toolchain.toml
+      - crates/wasm-actions/**
       - crates/wasm-actions-*/**
-      - src/**
-      - tests/**
 
 jobs:
   run:

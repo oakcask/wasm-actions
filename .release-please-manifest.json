@@ -1,3 +1,9 @@
 {
-  ".": "0.6.0"
+  ".": "0.6.0",
+  "crates/wasm-actions": "0.6.0",
+  "crates/wasm-actions-core": "0.6.0",
+  "crates/wasm-actions-derive": "0.6.0",
+  "crates/wasm-actions-log": "0.6.0",
+  "crates/wasm-actions-macro": "0.6.0",
+  "crates/wasm-actions-prelude": "0.6.0"
 }
