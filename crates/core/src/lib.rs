@@ -3,6 +3,7 @@ pub mod process;
 pub mod io;
 pub mod promise;
 pub mod fs;
+pub mod os;
 
 #[macro_export]
 macro_rules! log {
