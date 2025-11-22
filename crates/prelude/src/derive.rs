@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use wasm_actions_core::error::Error;
+use crate::Error;
 
 pub trait ActionInput {
     fn parse() -> Result<Self, Error> where Self: Sized;
