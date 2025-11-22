@@ -1,13 +1,10 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DataStruct, DeriveInput, Error, Fields, parse_macro_input, spanned::Spanned};
+use wasm_actions_parse::{InputAttr, OutputAttr, ParseFieldsNamed};
 
-use crate::{
-    codegen::{InputField, OutputField},
-    parse::{InputAttr, InputSource, OutputAttr},
-};
+use crate::codegen::{InputField, OutputField};
 mod codegen;
-mod parse;
 
 #[proc_macro_derive(ActionInput, attributes(input))]
 pub fn derive_input(input: TokenStream) -> TokenStream {
@@ -17,23 +14,19 @@ pub fn derive_input(input: TokenStream) -> TokenStream {
             fields: Fields::Named(fields),
             ..
         }) => {
-            let mut inputs = Vec::with_capacity(fields.named.len());
-            for f in fields.named.into_iter() {
-                let span = f.span();
-                if let Some(ident) = f.ident {
-                    let attrs = match InputAttr::parse_attributes(&f.attrs) {
-                        Ok(a) => a,
-                        Err(e) => return compile_error(e).into(),
-                    };
-                    inputs.push(InputField {
-                        span,
-                        field: ident,
-                        attrs,
-                    });
-                }
-            }
+            let fields = match InputAttr::parse_fields_named(fields) {
+                Ok(f) => f
+                    .into_iter()
+                    .map(|e| InputField {
+                        span: e.span,
+                        field: e.ident,
+                        attrs: e.attrs,
+                    })
+                    .collect(),
+                Err(e) => return compile_error(e).into(),
+            };
             let struct_name = input.ident;
-            codegen::action_input_impl(struct_name, inputs)
+            codegen::action_input_impl(struct_name, fields)
                 .unwrap_or_else(compile_error)
                 .into()
         }
@@ -53,21 +46,18 @@ pub fn derive_output(input: TokenStream) -> TokenStream {
             fields: Fields::Named(fields),
             ..
         }) => {
-            let mut inputs = Vec::with_capacity(fields.named.len());
-            for f in fields.named.into_iter() {
-                if let Some(ident) = f.ident {
-                    let attrs = match OutputAttr::parse_attributes(&f.attrs) {
-                        Ok(a) => a,
-                        Err(e) => return compile_error(e).into(),
-                    };
-                    inputs.push(OutputField {
-                        field: ident,
-                        attrs,
-                    });
-                }
-            }
+            let fields = match OutputAttr::parse_fields_named(fields) {
+                Ok(f) => f
+                    .into_iter()
+                    .map(|e| OutputField {
+                        field: e.ident,
+                        attrs: e.attrs,
+                    })
+                    .collect(),
+                Err(e) => return compile_error(e).into(),
+            };
             let struct_name = input.ident;
-            codegen::action_output_impl(struct_name, inputs)
+            codegen::action_output_impl(struct_name, fields)
                 .unwrap_or_else(compile_error)
                 .into()
         }

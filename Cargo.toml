@@ -6,5 +6,6 @@ members = [
     "crates/wasm-actions-derive",
     "crates/wasm-actions-log",
     "crates/wasm-actions-macro",
+    "crates/wasm-actions-parse",
     "crates/wasm-actions-prelude"
 ]
