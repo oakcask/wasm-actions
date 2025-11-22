@@ -7,6 +7,9 @@ pub mod console;
 #[cfg(feature = "derive")]
 pub mod derive;
 
+#[cfg(feature = "testing")]
+pub mod testing;
+
 #[macro_export]
 macro_rules! get_input {
     ($name:expr) => {
