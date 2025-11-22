@@ -43,7 +43,7 @@ pub(crate) fn action_input_impl(struct_name: Ident, fields: Vec<InputField>) -> 
     }
     let out = quote! {
     impl wasm_actions_prelude::derive::ActionInput for #struct_name {
-        fn parse() -> Result<Self, wasm_actions_core::error::Error> {
+        fn parse() -> Result<Self, wasm_actions_prelude::Error> {
             Ok(Self {
                 #ts
             })
@@ -61,14 +61,14 @@ fn action_input_field_init(field: InputField) -> Result<TokenStream, Error> {
         quote! {
             #field : (wasm_actions_prelude::derive::ParseInput::parse(
                 wasm_actions_prelude::get_input!(#name).ok_or_else(||
-                    wasm_actions_core::error::Error::from(std::format!("{} missing", #name)))?)?),
+                    wasm_actions_prelude::Error::from(std::format!("{} missing", #name)))?)?),
         }
     },
     InputSource::Env(env) => {
         quote! {
             #field : (wasm_actions_prelude::derive::ParseInput::parse(
                 wasm_actions_prelude::env::var(#env).ok_or_else(||
-                    wasm_actions_core::error::Error::from(std::format!("${} missing", #env)))?)?),
+                    wasm_actions_prelude::Error::from(std::format!("${} missing", #env)))?)?),
         }
     },
     InputSource::InputThenEnv { input: name, env } => {
@@ -76,7 +76,7 @@ fn action_input_field_init(field: InputField) -> Result<TokenStream, Error> {
             #field : (wasm_actions_prelude::derive::ParseInput::parse(
                 wasm_actions_prelude::get_input!(#name).or_else(|_|
                     wasm_actions_prelude::env::var(#env)
-                ).ok_or_else(|| wasm_actions_core::error::Error::from("either {} or ${} missing"))?
+                ).ok_or_else(|| wasm_actions_prelude::Error::from("either {} or ${} missing"))?
             )?),
         }
     },
@@ -99,7 +99,7 @@ pub(crate) fn action_output_impl(struct_name: Ident, fields: Vec<OutputField>) -
 
     let code = quote! {
         impl wasm_actions_prelude::derive::ActionOutput for #struct_name {
-            fn parse() -> Result<Option<Self>, wasm_actions_core::error::Error> {
+            fn parse() -> Result<Option<Self>, wasm_actions_prelude::Error> {
                 if let Some(state) = wasm_actions_prelude::get_state!("wasm_actions") {
                     Ok(Some(serde_json::from_str(&state).map_err(Error::new)?))
                 } else {
@@ -107,8 +107,8 @@ pub(crate) fn action_output_impl(struct_name: Ident, fields: Vec<OutputField>) -
                 }
             }
 
-            async fn save(self) -> Result<(), wasm_actions_core::error::Error> {
-                let json = serde_json::to_string(&self).map_err(wasm_actions_core::error::Error::new)?;
+            async fn save(self) -> Result<(), wasm_actions_prelude::Error> {
+                let json = serde_json::to_string(&self).map_err(wasm_actions_prelude::Error::new)?;
                 wasm_actions_prelude::save_state("wasm_actions", &json).await?;
                 #ts
                 Ok(())

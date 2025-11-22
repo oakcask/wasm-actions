@@ -2,6 +2,7 @@ pub mod env;
 mod output;
 pub use output::save_state;
 pub use output::set_output;
+pub use wasm_actions_core::error::Error;
 pub mod console;
 
 #[cfg(feature = "derive")]
