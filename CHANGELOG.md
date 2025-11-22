@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.4.0...wasm-actions-v0.5.0) (2025-11-22)
+
+
+### Features
+
+* expose wasm-actions-derive from derive module ([#32](https://github.com/oakcask/wasm-actions/issues/32)) ([3568bc8](https://github.com/oakcask/wasm-actions/commit/3568bc8a8adc6811c69bbf3f3c1e41df56c6ee12))
+
 ## [0.4.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.3.0...wasm-actions-v0.4.0) (2025-11-22)
 
 
