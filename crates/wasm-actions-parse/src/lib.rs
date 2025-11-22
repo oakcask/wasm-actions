@@ -1,9 +1,11 @@
-#[cfg(feature = "proc-macro")]
-use proc_macro2::Span;
 use syn::{
     Attribute, Error, Expr, ExprLit, FieldsNamed, Ident, Lit, LitBool, LitStr, Token, parse::Parse,
-    punctuated::Punctuated, spanned::Spanned,
+    punctuated::Punctuated,
 };
+#[cfg(feature = "proc-macro")]
+use proc_macro2::Span;
+#[cfg(feature = "proc-macro")]
+use syn::spanned::Spanned;
 
 pub struct FieldWithAttributes<T> {
     pub ident: Ident,
@@ -75,8 +77,10 @@ pub enum InputAttr {
     Default(LitStr),
 }
 
+#[cfg(feature = "proc-macro")]
 pub struct OutputName<'a>(&'a LitStr);
 
+#[cfg(feature = "proc-macro")]
 impl<'a> OutputName<'a> {
     pub fn try_from(attrs: &'a [OutputAttr]) -> Option<Self> {
         for a in attrs {
