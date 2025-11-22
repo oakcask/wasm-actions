@@ -1,11 +1,11 @@
-use syn::{
-    Attribute, Error, Expr, ExprLit, FieldsNamed, Ident, Lit, LitBool, LitStr, Token, parse::Parse,
-    punctuated::Punctuated,
-};
 #[cfg(feature = "proc-macro")]
 use proc_macro2::Span;
 #[cfg(feature = "proc-macro")]
 use syn::spanned::Spanned;
+use syn::{
+    Attribute, Error, Expr, ExprLit, FieldsNamed, Ident, Lit, LitBool, LitStr, Token, parse::Parse,
+    punctuated::Punctuated,
+};
 
 pub struct FieldWithAttributes<T> {
     pub ident: Ident,
