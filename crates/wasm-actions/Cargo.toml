@@ -11,11 +11,11 @@ default = ["derive"]
 derive = ["wasm-actions-prelude/derive", "wasm-actions-derive"]
 
 [dependencies]
-wasm-actions-core = { path = "crates/wasm-actions-core" }
-wasm-actions-derive = { path = "crates/wasm-actions-derive", optional = true }
-wasm-actions-log = { path = "crates/wasm-actions-log" }
-wasm-actions-macro = { path = "crates/wasm-actions-macro" }
-wasm-actions-prelude = { path = "crates/wasm-actions-prelude" }
+wasm-actions-core = { path = "../wasm-actions-core" }
+wasm-actions-derive = { path = "../wasm-actions-derive", optional = true }
+wasm-actions-log = { path = "../wasm-actions-log" }
+wasm-actions-macro = { path = "../wasm-actions-macro" }
+wasm-actions-prelude = { path = "../wasm-actions-prelude" }
 wasm-bindgen-futures = "0.4.55"
 async-once-cell = "0.5.4"
 log = "0.4.28"
