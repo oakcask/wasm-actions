@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.2...wasm-actions-build-v0.1.3) (2025-11-23)
+
+
+### Bug Fixes
+
+* generate actions.yaml / index.cjs based on Cargo.toml ([#64](https://github.com/oakcask/wasm-actions/issues/64)) ([59978ec](https://github.com/oakcask/wasm-actions/commit/59978ecd0878b466e707314b90917979c3d0b668))
+
 ## [0.1.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.1...wasm-actions-build-v0.1.2) (2025-11-22)
 
 

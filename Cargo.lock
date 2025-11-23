@@ -334,7 +334,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-build"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "cargo_toml",
  "serde_json",
