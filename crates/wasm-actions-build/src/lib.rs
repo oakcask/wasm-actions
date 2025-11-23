@@ -22,7 +22,7 @@ pub fn generate_recommended() -> Result<(), Box<dyn std::error::Error>> {
             path: Some(path), ..
         }) = &manifest.lib
         {
-            PathBuf::from_str(&path)?
+            PathBuf::from_str(path)?
         } else {
             PathBuf::from_str("src/lib.rs")?
         };
