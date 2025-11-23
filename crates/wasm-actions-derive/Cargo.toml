@@ -9,7 +9,7 @@ proc-macro = true
 [dependencies]
 proc-macro2 = "1.0.103"
 quote = "1.0.42"
-syn = "2.0.110"
+syn = "2.0.111"
 wasm-bindgen = { version = "0.2.105", features = ["std"] }
 wasm-bindgen-futures = "0.4.55"
 wasm-actions-core = { path = "../wasm-actions-core" }
