@@ -334,7 +334,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-build"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "cargo_toml",
  "serde_json",
@@ -356,7 +356,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-derive"
-version = "0.6.0"
+version = "0.6.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -387,7 +387,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-macro"
-version = "0.6.0"
+version = "0.6.1"
 dependencies = [
  "static_assertions",
  "syn",
@@ -396,7 +396,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-parse"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "proc-macro2",
  "quote",
