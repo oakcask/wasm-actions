@@ -1,27 +1,44 @@
 use std::{
+    env,
     error::Error,
     fs::{self, File},
     path::{Path, PathBuf},
     str::FromStr,
 };
 
+use cargo_toml::{Manifest, Product};
 use wasm_actions_parse::{InputAttr, OutputAttr, ParseFieldsNamed, WasmActionAttr};
 use yaml_rust::{Yaml, YamlEmitter, yaml};
 
 /// Generates metadata YAML and entrypoint script in
-/// recommended configuration.
-pub fn generate_recommended(cargo_crate_name: &str) -> Result<(), Box<dyn std::error::Error>> {
+/// recommended configuration based on Cargo.toml.
+pub fn generate_recommended() -> Result<(), Box<dyn std::error::Error>> {
+    let manifest_path = env::var("CARGO_MANIFEST_DIR")?;
+    let manifest_path = PathBuf::from(manifest_path).join("Cargo.toml");
+    let manifest = fs::read_to_string(&manifest_path)?;
+    let manifest = Manifest::from_str(&manifest)?;
     {
+        let metadata_read_path = if let Some(Product {
+            path: Some(path), ..
+        }) = &manifest.lib
+        {
+            PathBuf::from_str(&path)?
+        } else {
+            PathBuf::from_str("src/lib.rs")?
+        };
         let mut metadata = File::create("action.yaml")?;
-        let metadata_path = PathBuf::from_str("src/lib.rs")?;
-        generate_metadata_yaml(&mut metadata, &metadata_path)?;
-        println!("cargo::rerun-if-changed=src/lib.rs");
+        generate_metadata_yaml(&mut metadata, &metadata_read_path)?;
+        let metadata_read_path = metadata_read_path.to_str().unwrap();
+        println!("cargo::rerun-if-changed={metadata_read_path}");
     }
     {
+        let package_name = manifest.package().name();
+        let crate_name = package_name.replace("-", "_");
         let index_cjs = PathBuf::from_str("index.cjs")?;
         let mut index_cjs = File::create(&index_cjs)?;
-        generate_index_cjs(&mut index_cjs, cargo_crate_name)
+        generate_index_cjs(&mut index_cjs, &crate_name)?;
     }
+    Ok(())
 }
 
 fn generate_metadata_yaml<T: std::io::Write>(
