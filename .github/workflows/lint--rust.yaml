@@ -8,10 +8,23 @@ on:
       - '**/Cargo.toml'
 
 jobs:
-  matrix:
+  lockfile-matrix:
     runs-on: ubuntu-latest
     outputs:
-      changed-crates: ${{ steps.glob-changed-files.outputs.paths-json }}
+      changed-crates: ${{ steps.glob-changed-files.outputs.paths }}
+    steps:
+      - id: glob-changed-files
+        uses: int128/glob-changed-files-action@1a4f75e3ee971fc3840bda9d2cbd260dc87b6998 # v2
+        with:
+          paths: |
+            crates/:crate/Cargo.toml
+          transform: |
+            :crate
+
+  lint-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      changed-crates-json: ${{ steps.glob-changed-files.outputs.paths-json }}
     steps:
       - id: glob-changed-files
         uses: int128/glob-changed-files-action@1a4f75e3ee971fc3840bda9d2cbd260dc87b6998 # v2
@@ -23,6 +36,8 @@ jobs:
 
   lockfile:
     runs-on: ubuntu-latest
+    needs: lockfile-matrix
+    if: ${{ needs.lockfile-matrix.outputs.changed-crates != '' }}
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1
@@ -37,15 +52,15 @@ jobs:
           commit-message: "chore: update lockfile"
           token: ${{ steps.generate-token.outputs.token }}
 
-  run:
+  lint:
     runs-on: ubuntu-latest
     needs:
       - lockfile
-      - matrix
-    if: ${{ needs.matrix.outputs.changed-crates != '' }}
+      - lint-matrix
+    if: ${{ needs.lint-matrix.outputs.changed-crates-json != '' }}
     strategy:
       matrix:
-        crate: ${{ fromJson(needs.matrix.outputs.changed-crates) }}
+        crate: ${{ fromJson(needs.lint-matrix.outputs.changed-crates-json) }}
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1
