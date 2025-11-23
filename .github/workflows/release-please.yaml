@@ -10,30 +10,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      crates: ${{ steps.crates.outputs.result }}
-    steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
-      - id: crates
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
-        env:
-          DIRNAME: "crates"
-        with:
-          script: |
-            const fs = require('node:fs/promises');
-            const path = require('node:path');
-            return (await fs.readdir(process.env.DIRNAME)).map(o => path.join(process.env.DIRNAME, o))
-
   release-please:
     runs-on: ubuntu-latest
-    needs: matrix
-    strategy:
-      matrix:
-        path: ${{ fromJson(needs.matrix.outputs.crates) }}
     concurrency:
-      group: release-please-${{ matrix.path }}
+      group: release-please
       cancel-in-progress: false
     steps:
       - id: gh-token-gen
@@ -44,6 +24,5 @@ jobs:
       - uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4
         with:
           token: ${{ steps.gh-token-gen.outputs.token }}
-          path: ${{ matrix.path }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
