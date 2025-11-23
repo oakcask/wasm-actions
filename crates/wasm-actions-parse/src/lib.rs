@@ -192,7 +192,7 @@ impl Parse for InputAttr {
         }
     }
 }
-
+ 
 impl ParseFieldsNamed for OutputAttr {
     fn parse_attributes(attrs: &[Attribute]) -> Result<Vec<Self>, syn::Error> {
         let mut input_attrs = Vec::new();
