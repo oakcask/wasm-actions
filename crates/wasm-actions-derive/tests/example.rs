@@ -1,5 +1,5 @@
-use wasm_actions::prelude::*;
 use wasm_actions::derive::*;
+use wasm_actions::prelude::*;
 use wasm_actions::testing::*;
 use wasm_actions_macro::input_var;
 use wasm_bindgen::{JsError, JsValue};
