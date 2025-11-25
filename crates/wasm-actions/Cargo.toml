@@ -8,6 +8,7 @@ crate-type = ["rlib"]
 
 [features]
 default = ["derive"]
+testing = ["wasm-actions-prelude/testing"]
 derive = ["wasm-actions-prelude/derive", "wasm-actions-derive"]
 
 [dependencies]

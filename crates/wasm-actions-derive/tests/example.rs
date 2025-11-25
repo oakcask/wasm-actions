@@ -1,7 +1,7 @@
-use wasm_actions_core::error::Error;
-use wasm_actions_derive::{ActionInput, ActionOutput, wasm_action};
+use wasm_actions::derive::*;
+use wasm_actions::prelude::*;
+use wasm_actions::testing::*;
 use wasm_actions_macro::input_var;
-use wasm_actions_prelude::{derive::Action, env, testing::clear_env};
 use wasm_bindgen::{JsError, JsValue};
 use wasm_bindgen_test::wasm_bindgen_test;
 
