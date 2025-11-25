@@ -4,8 +4,8 @@ pub mod prelude {
 
 #[cfg(feature = "derive")]
 pub mod derive {
-    pub use wasm_actions_prelude::derive::*;
     pub use wasm_actions_derive::*;
+    pub use wasm_actions_prelude::derive::*;
 }
 
 #[cfg(feature = "testing")]
