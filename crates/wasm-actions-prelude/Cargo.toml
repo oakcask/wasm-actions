@@ -18,4 +18,4 @@ async-once-cell = "0.5.4"
 log = "0.4.28"
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3.55"
+wasm-bindgen-test = "0.3.56"
