@@ -3,7 +3,6 @@ pub mod fs;
 pub mod io;
 pub mod os;
 pub mod process;
-pub mod promise;
 
 #[cfg(feature = "crypto")]
 pub mod crypto;

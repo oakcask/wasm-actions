@@ -15,8 +15,10 @@ crypto = [
 [dependencies]
 wasm-bindgen = "0.2.106"
 js-sys = { version = "0.3.83" }
-wasm-bindgen-futures = "0.4.56"
 web-sys = { version = "0.3.83", default-features = false, optional = true }
+wasm-actions-node-sys = { path = "../wasm-actions-node-sys", features = ["fs"]}
+wasm-actions-futures = { path = "../wasm-actions-futures" }
+tokio = { version = "1.48.0", default-features = false, features = ["io-util"]}
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.56"

@@ -1,13 +1,16 @@
 use std::sync::Mutex;
 
 use async_once_cell::OnceCell;
-use wasm_actions_core::{error::Error, fs, io::WriteStream};
+use wasm_actions_core::{
+    error::Error,
+    fs::{File, OpenOptions},
+};
 
 use crate::env;
 
 struct Port {
     name: &'static str,
-    lock: Mutex<Option<Result<WriteStream, Error>>>,
+    lock: Mutex<Option<Result<File, Error>>>,
     init: OnceCell<()>,
 }
 
@@ -20,16 +23,17 @@ impl Port {
         }
     }
 
-    async fn open(&self) -> Result<WriteStream, Error> {
+    async fn open(&self) -> Result<File, Error> {
         let name =
             env::var(self.name).ok_or_else(|| Error::from(format!("${} unset", self.name)))?;
-        fs::open_append(&name).await
+        OpenOptions::new()
+            .append(true)
+            .open(&name)
+            .await
+            .map_err(Error::new)
     }
 
-    async fn with<'a, T, F: FnOnce(&'a mut WriteStream) -> T>(
-        &'a mut self,
-        f: F,
-    ) -> Result<T, Error> {
+    async fn with<'a, T, F: FnOnce(&'a mut File) -> T>(&'a mut self, f: F) -> Result<T, Error> {
         self.init
             .get_or_try_init(async {
                 let r = self.open().await;
@@ -68,25 +72,27 @@ static mut OUTPUT_PORT: Port = Port::new("GITHUB_OUTPUT");
 static mut STATE_PORT: Port = Port::new("GITHUB_STATE");
 
 pub async fn set_output(name: &str, value: &str) -> Result<(), Error> {
+    use std::io::Write;
+    let mut buf = Vec::<u8>::new();
+    writeln!(&mut buf, "{}={}", name, value).map_err(Error::new)?;
+
     let result = unsafe {
         // Safety: mutable reference `w` only lives in the period of the Port's lock is taken.
         #[allow(static_mut_refs)]
-        OUTPUT_PORT.with(|w| {
-            use std::io::Write;
-            let _ = std::writeln!(w, "{}={}", name, value);
-        })
+        OUTPUT_PORT.with(|w| wasm_actions_core::io::AsyncWriteExt::write_all(w, &buf))
     };
     result.await.map(|_| ())
 }
 
 pub async fn save_state(name: &str, value: &str) -> Result<(), Error> {
+    use std::io::Write;
+    let mut buf = Vec::<u8>::new();
+    writeln!(&mut buf, "{}={}", name, value).map_err(Error::new)?;
+
     let result = unsafe {
         // Safety: mutable reference `w` only lives in the period of the Port's lock is taken.
         #[allow(static_mut_refs)]
-        STATE_PORT.with(|w| {
-            use std::io::Write;
-            let _ = std::writeln!(w, "{}={}", name, value);
-        })
+        STATE_PORT.with(|w| wasm_actions_core::io::AsyncWriteExt::write_all(w, &buf))
     };
     result.await.map(|_| ())
 }
