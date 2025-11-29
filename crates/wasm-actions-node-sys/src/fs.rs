@@ -1,5 +1,4 @@
 use crate::Integer;
-use js_sys::Promise;
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 
 #[wasm_bindgen(module = "node:fs/promises")]

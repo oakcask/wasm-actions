@@ -69,8 +69,8 @@ macro_rules! safe_integers {
 
 safe_integers!(i32, u32, i16, u16, i8, u8);
 
-impl Into<f64> for Integer {
-    fn into(self) -> f64 {
-        self.0
+impl From<Integer> for f64 {
+    fn from(val: Integer) -> Self {
+        val.0
     }
 }
