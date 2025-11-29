@@ -118,6 +118,12 @@ macro_rules! file_option_setters {
     }
 }
 
+impl Default for OpenOptions {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl OpenOptions {
     pub fn new() -> Self {
         Self {

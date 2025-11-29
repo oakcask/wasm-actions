@@ -7,8 +7,7 @@ use wasm_bindgen::JsValue;
 use crate::{error::Error, fs::file::File};
 
 fn translate_error(js: JsValue) -> std::io::Error {
-    std::io::Error::new(
-        std::io::ErrorKind::Other, // really this is appropriate?
+    std::io::Error::other(
         Error::from(js),
     )
 }
