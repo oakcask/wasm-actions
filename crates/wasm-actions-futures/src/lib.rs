@@ -12,9 +12,9 @@ use wasm_bindgen::JsValue;
 /// Invokes queueMicrotask
 ///
 /// https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide
-pub fn queue_microtask<F: FnOnce() -> () + 'static>(f: F) {
+pub fn queue_microtask<F: FnOnce() + 'static>(f: F) {
     struct NeedsDrop {
-        callback: Option<Closure<dyn FnMut() -> ()>>,
+        callback: Option<Closure<dyn FnMut()>>,
     }
     let rc = Rc::new(RefCell::new(NeedsDrop { callback: None }));
     let task = rc.clone();
