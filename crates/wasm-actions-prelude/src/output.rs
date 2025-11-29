@@ -30,7 +30,7 @@ impl Port {
             .append(true)
             .open(&name)
             .await
-            .map_err(|e| Error::new(e))
+            .map_err(Error::new)
     }
 
     async fn with<'a, T, F: FnOnce(&'a mut File) -> T>(&'a mut self, f: F) -> Result<T, Error> {
