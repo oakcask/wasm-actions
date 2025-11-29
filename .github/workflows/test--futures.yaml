@@ -1,0 +1,18 @@
+name: test / futures
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/shared--wasm-pack-test.yaml
+      - .github/workflows/test--futures.yaml
+      - Cargo.lock
+      - Cargo.toml
+      - rust-toolchain.toml
+      - crates/wasm-actions-futures/**
+      - crates/wasm-actions-node-sys/**
+    
+jobs:
+  run:
+    uses: ./.github/workflows/shared--wasm-pack-test.yaml
+    with:
+      path: crates/wasm-actions-futures
