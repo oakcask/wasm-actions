@@ -1,0 +1,19 @@
+[package]
+name = "wasm-actions-node-sys"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["rlib"]
+
+[features]
+default = ["fs"]
+fs = []
+microtasks = []
+
+[dependencies]
+wasm-bindgen = "0.2.105"
+js-sys = { version = "0.3.82" }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.55"

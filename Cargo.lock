@@ -448,6 +448,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "wasm-actions-node-sys"
+version = "0.0.0"
+dependencies = [
+ "js-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-test",
+]
+
+[[package]]
 name = "wasm-actions-parse"
 version = "0.1.0"
 dependencies = [
