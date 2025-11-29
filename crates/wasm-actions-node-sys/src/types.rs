@@ -3,7 +3,7 @@ use core::f64;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 /// Integer type
-/// 
+///
 /// Primary usage is exporting Rust value into Node world.
 /// For most cases, it is prefered using i32 or u32 for integer parameter.
 /// Some Node library function, however, accept safe-integer and infinite as integer.
@@ -18,7 +18,7 @@ const INTEGER_SAFE_MIN: f64 = -9007199254740991.0;
 
 impl Integer {
     /// Lossy converts f64 into integer value.
-    /// 
+    ///
     /// - value out of safe-integer range converted into positive/negative infinity.
     /// - value is truncated (loses its fractional part).
     pub fn from_f64_lossy(f: f64) -> Self {
@@ -67,9 +67,7 @@ macro_rules! safe_integers {
     };
 }
 
-safe_integers!(
-    i32, u32, i16, u16, i8, u8
-);
+safe_integers!(i32, u32, i16, u16, i8, u8);
 
 impl Into<f64> for Integer {
     fn into(self) -> f64 {
