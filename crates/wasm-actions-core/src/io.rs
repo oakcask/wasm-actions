@@ -1,4 +1,3 @@
-
 use js_sys::{Promise, Uint8Array};
 use wasm_bindgen::{prelude::wasm_bindgen, JsThreadLocal, JsValue};
 
