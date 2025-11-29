@@ -1,7 +1,10 @@
 use std::sync::Mutex;
 
 use async_once_cell::OnceCell;
-use wasm_actions_core::{error::Error, fs::{File, OpenOptions}};
+use wasm_actions_core::{
+    error::Error,
+    fs::{File, OpenOptions},
+};
 
 use crate::env;
 
@@ -23,13 +26,14 @@ impl Port {
     async fn open(&self) -> Result<File, Error> {
         let name =
             env::var(self.name).ok_or_else(|| Error::from(format!("${} unset", self.name)))?;
-        OpenOptions::new().append(true).open(&name).await.map_err(|e| Error::new(e))
+        OpenOptions::new()
+            .append(true)
+            .open(&name)
+            .await
+            .map_err(|e| Error::new(e))
     }
 
-    async fn with<'a, T, F: FnOnce(&'a mut File) -> T>(
-        &'a mut self,
-        f: F,
-    ) -> Result<T, Error> {
+    async fn with<'a, T, F: FnOnce(&'a mut File) -> T>(&'a mut self, f: F) -> Result<T, Error> {
         self.init
             .get_or_try_init(async {
                 let r = self.open().await;
@@ -71,13 +75,11 @@ pub async fn set_output(name: &str, value: &str) -> Result<(), Error> {
     use std::io::Write;
     let mut buf = Vec::<u8>::new();
     writeln!(&mut buf, "{}={}", name, value).map_err(Error::new)?;
-    
+
     let result = unsafe {
         // Safety: mutable reference `w` only lives in the period of the Port's lock is taken.
         #[allow(static_mut_refs)]
-        OUTPUT_PORT.with(|w| {
-            wasm_actions_core::io::AsyncWriteExt::write_all( w, &buf)
-        })
+        OUTPUT_PORT.with(|w| wasm_actions_core::io::AsyncWriteExt::write_all(w, &buf))
     };
     result.await.map(|_| ())
 }
@@ -90,9 +92,7 @@ pub async fn save_state(name: &str, value: &str) -> Result<(), Error> {
     let result = unsafe {
         // Safety: mutable reference `w` only lives in the period of the Port's lock is taken.
         #[allow(static_mut_refs)]
-        STATE_PORT.with(|w| {
-            wasm_actions_core::io::AsyncWriteExt::write_all( w, &buf)
-        })
+        STATE_PORT.with(|w| wasm_actions_core::io::AsyncWriteExt::write_all(w, &buf))
     };
     result.await.map(|_| ())
 }
