@@ -3,6 +3,7 @@
   "crates/wasm-actions-build": "0.1.4",
   "crates/wasm-actions-core": "0.6.0",
   "crates/wasm-actions-derive": "0.6.1",
+  "crates/wasm-actions-futures": "0.0.0",
   "crates/wasm-actions-log": "0.6.0",
   "crates/wasm-actions-macro": "0.6.1",
   "crates/wasm-actions-node-sys": "0.0.0",
