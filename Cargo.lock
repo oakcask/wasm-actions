@@ -427,6 +427,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "wasm-actions-futures"
+version = "0.0.0"
+dependencies = [
+ "js-sys",
+ "wasm-actions-node-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-test",
+]
+
+[[package]]
 name = "wasm-actions-log"
 version = "0.6.0"
 dependencies = [

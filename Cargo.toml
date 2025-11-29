@@ -5,6 +5,7 @@ members = [
     "crates/wasm-actions-build",
     "crates/wasm-actions-core",
     "crates/wasm-actions-derive",
+    "crates/wasm-actions-futures",
     "crates/wasm-actions-log",
     "crates/wasm-actions-macro",
     "crates/wasm-actions-node-sys",
