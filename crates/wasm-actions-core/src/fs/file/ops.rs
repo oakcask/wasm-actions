@@ -7,9 +7,7 @@ use wasm_bindgen::JsValue;
 use crate::{error::Error, fs::file::File};
 
 fn translate_error(js: JsValue) -> std::io::Error {
-    std::io::Error::other(
-        Error::from(js),
-    )
+    std::io::Error::other(Error::from(js))
 }
 
 pub(super) fn open(path: &str, flags: &str, mode: u32) -> JoinHandle<Result<File>> {
