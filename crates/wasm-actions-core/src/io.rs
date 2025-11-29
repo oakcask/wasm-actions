@@ -1,16 +1,17 @@
+
 use js_sys::{Promise, Uint8Array};
 use wasm_bindgen::{prelude::wasm_bindgen, JsThreadLocal, JsValue};
 
+pub use tokio::io::AsyncWriteExt;
+
+// TODO: move this out to node-sys
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_name = "WriteStream")]
-    pub type WriteStream;
+    pub(crate) type WriteStream;
 
     #[wasm_bindgen(method, js_name = "write")]
-    fn write_2(this: &WriteStream, chunk: &JsValue, encoding: &JsValue) -> Promise;
-
-    #[wasm_bindgen(method, js_name = "end")]
-    pub fn end(this: &WriteStream);
+    pub(crate) fn write2(this: &WriteStream, chunk: &JsValue, encoding: &JsValue) -> Promise;
 }
 
 impl std::io::Write for WriteStream {
@@ -20,7 +21,7 @@ impl std::io::Write for WriteStream {
         let buf = JsValue::from(buf);
         let encoding = JsValue::null();
         // TODO: handle promise
-        let _ = self.write_2(&buf, &encoding);
+        let _ = self.write2(&buf, &encoding);
         Ok(size)
     }
 
@@ -34,7 +35,7 @@ pub struct StaticWriteStream {
 }
 
 impl StaticWriteStream {
-    pub fn new(var: &'static JsThreadLocal<WriteStream>) -> Self {
+    pub(crate) fn new(var: &'static JsThreadLocal<WriteStream>) -> Self {
         StaticWriteStream { var }
     }
 }
@@ -46,7 +47,7 @@ impl std::io::Write for StaticWriteStream {
         let buf = JsValue::from(buf);
         let encoding = JsValue::null();
         // TODO: handle promise
-        let _ = self.var.with(move |this| this.write_2(&buf, &encoding));
+        let _ = self.var.with(move |this| this.write2(&buf, &encoding));
         Ok(size)
     }
 

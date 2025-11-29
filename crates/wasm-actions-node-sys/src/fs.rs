@@ -9,9 +9,16 @@ extern "C" {
     #[wasm_bindgen(js_name = "open")]
     pub fn open3(path: &str, flags: &str, mode: u32) -> js_sys::Promise;
 
+    #[wasm_bindgen(method, js_name = "close")]
+    pub fn close(this: &FileHandle) -> js_sys::Promise;
+
     /// https://nodejs.org/api/fs.html#filehandlewritebuffer-options
     #[wasm_bindgen(method, js_name = "write")]
     pub fn write2(this: &FileHandle, buffer: &JsValue, options: WriteOption) -> js_sys::Promise;
+
+    /// https://nodejs.org/api/fs.html#filehandlesync
+    #[wasm_bindgen(method, js_name = "sync")]
+    pub fn sync(this: &FileHandle) -> js_sys::Promise;
 
     /// https://nodejs.org/api/fs.html#filehandlereadbuffer-options
     #[wasm_bindgen(method, js_name = "read")]

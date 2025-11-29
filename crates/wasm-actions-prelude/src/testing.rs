@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 
-use wasm_actions_core::{crypto, error::Error, fs, io::WriteStream, os};
+use wasm_actions_core::{crypto, error::Error, fs::File, os};
 
 use crate::env;
 
@@ -25,10 +25,9 @@ pub async fn clear_env() -> ClearEnvGuard {
     let tmpdir = os::tmpdir();
     env::set_var("TMPDIR", &tmpdir);
     env::set_var("RUNNER_TEMP", &tmpdir);
-    let (state, statews) = tempfile().await.unwrap();
-    let (output, outputws) = tempfile().await.unwrap();
-    statews.end();
-    outputws.end();
+    // TODO: should close
+    let (state, _) = tempfile().await.unwrap();
+    let (output, _) = tempfile().await.unwrap();
     env::set_var("GITHUB_STATE", state.to_str().unwrap());
     env::set_var("GITHUB_OUTPUT", output.to_str().unwrap());
     ClearEnvGuard { envs: snapshot }
@@ -36,7 +35,7 @@ pub async fn clear_env() -> ClearEnvGuard {
 
 /// Create writable temporary file.
 /// Maybe insecure. For testing purpose only.
-async fn tempfile() -> Result<(PathBuf, WriteStream), Error> {
+async fn tempfile() -> Result<(PathBuf, File), Error> {
     let tmpdir = os::tmpdir();
     let tmpdir = Path::new(&tmpdir);
     let mut attempt = 6;
@@ -44,7 +43,7 @@ async fn tempfile() -> Result<(PathBuf, WriteStream), Error> {
         attempt -= 1;
         let mut path = tmpdir.to_path_buf();
         path.push(crypto::random_uuid());
-        if let Ok(f) = fs::create_exclusive(&path.to_str().unwrap()).await {
+        if let Ok(f) = File::create_new(&path.to_str().unwrap()).await {
             return Ok((path, f));
         }
     }
