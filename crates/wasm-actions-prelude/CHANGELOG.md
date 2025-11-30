@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.7.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-prelude-v0.6.0...wasm-actions-prelude-v0.7.0) (2025-11-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* fs::open_append, fs::create_exclusive and apromise::Promise are removed from wasm-actions-core.
+
+### Features
+
+* implement File and write operation ([#80](https://github.com/oakcask/wasm-actions/issues/80)) ([6434863](https://github.com/oakcask/wasm-actions/commit/643486381e53d58fa8433adfdd65ebdfc07a9e00))
+
+
+### Bug Fixes
+
+* **deps:** update rust-wasm-bindgen monorepo ([#74](https://github.com/oakcask/wasm-actions/issues/74)) ([366535d](https://github.com/oakcask/wasm-actions/commit/366535d747e9dc47390ef7e98003f42268475dbd))
+* never safe calling `write_all` within `with` ([#83](https://github.com/oakcask/wasm-actions/issues/83)) ([2ca3e87](https://github.com/oakcask/wasm-actions/commit/2ca3e871ea28418ba35e05e1274c40da09c990da))
+
 ## [0.2.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-prelude-v0.1.0...wasm-actions-prelude-v0.2.0) (2025-11-22)
 
 

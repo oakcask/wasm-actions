@@ -1,12 +1,12 @@
 {
-  "crates/wasm-actions": "0.6.0",
+  "crates/wasm-actions": "0.6.1",
   "crates/wasm-actions-build": "0.1.4",
-  "crates/wasm-actions-core": "0.6.0",
-  "crates/wasm-actions-derive": "0.6.1",
-  "crates/wasm-actions-futures": "0.0.0",
-  "crates/wasm-actions-log": "0.6.0",
+  "crates/wasm-actions-core": "0.7.0",
+  "crates/wasm-actions-derive": "0.7.0",
+  "crates/wasm-actions-futures": "0.1.0",
+  "crates/wasm-actions-log": "0.6.1",
   "crates/wasm-actions-macro": "0.6.1",
-  "crates/wasm-actions-node-sys": "0.0.0",
+  "crates/wasm-actions-node-sys": "0.1.0",
   "crates/wasm-actions-parse": "0.1.0",
-  "crates/wasm-actions-prelude": "0.6.0"
+  "crates/wasm-actions-prelude": "0.7.0"
 }
