@@ -26,11 +26,9 @@ pub(super) fn write(fd: &FileHandle, buf: &[u8]) -> JoinHandle<Result<usize>> {
     fn parse_write(js: JsValue) -> Result<usize> {
         let bytes_written =
             Reflect::get(&js, &JsValue::from_str("bytesWritten")).map_err(translate_error)?;
-        let bytes_written = bytes_written.as_f64().ok_or_else(|| {
-            std::io::Error::other(
-                Error::from("bytesWritten is not number"),
-            )
-        })?;
+        let bytes_written = bytes_written
+            .as_f64()
+            .ok_or_else(|| std::io::Error::other(Error::from("bytesWritten is not number")))?;
         Integer::from_f64_lossy(bytes_written)
             .try_into()
             .map_err(|e| std::io::Error::other(Error::from(e)))
@@ -63,11 +61,9 @@ impl ReadResult {
     fn from_js(js: JsValue) -> Result<ReadResult> {
         let bytes_read =
             Reflect::get(&js, &JsValue::from_str("bytesRead")).map_err(translate_error)?;
-        let bytes_read = bytes_read.as_f64().ok_or_else(|| {
-            std::io::Error::other(
-                Error::from("bytesRead is not number"),
-            )
-        })?;
+        let bytes_read = bytes_read
+            .as_f64()
+            .ok_or_else(|| std::io::Error::other(Error::from("bytesRead is not number")))?;
         let buffer = Reflect::get(&js, &JsValue::from_str("buffer")).map_err(translate_error)?;
         let buffer = Uint8Array::try_from_js_value(buffer).map_err(translate_error)?;
         Ok(Self {
