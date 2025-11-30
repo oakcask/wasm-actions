@@ -37,7 +37,7 @@ async fn fail_if_called_without_input() -> Result<(), JsError> {
     if let Err(e) = start().await.map_err(|e| format!("{:?}", JsValue::from(e))) {
         assert!(e.starts_with("JsValue(Error: foo missing\n"))
     } else {
-        unreachable!()
+        panic!("unexpectedly succeeded")
     }
     Ok(())
 }
@@ -49,11 +49,13 @@ async fn runs_main_if_inputs_are_filled() -> Result<(), JsError> {
     env::set_var(input_var!("foo"), "42");
     env::set_var("BAR", "4242");
 
-    if let Err(e) = start().await.map_err(|e| format!("{:?}", JsValue::from(e))) {
-        unreachable!("{e}")
-    } else {
-        // TODO: implement file read API and check the contents of $GITHUB_OUTPUT
-        assert!(true)
-    }
+    start().await?;
+
+    let s = env::var("GITHUB_OUTPUT").unwrap();
+    let s = fs::read_to_string(&s)
+        .await
+        .expect("read_to_string() failed");
+    assert_eq!(&s, "message=foo = 42, bar = 4242\n");
+
     Ok(())
 }
