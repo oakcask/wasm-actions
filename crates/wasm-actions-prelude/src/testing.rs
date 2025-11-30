@@ -21,13 +21,15 @@ impl Drop for ClearEnvGuard {
 
 /// Setup pseudo-runner environment for unit testing.
 pub async fn clear_env() -> ClearEnvGuard {
+    use crate::io::AsyncWriteExt;
     let snapshot = env::vars().collect();
     let tmpdir = os::tmpdir();
     env::set_var("TMPDIR", &tmpdir);
     env::set_var("RUNNER_TEMP", &tmpdir);
-    // TODO: should close
-    let (state, _) = tempfile().await.unwrap();
-    let (output, _) = tempfile().await.unwrap();
+    let (state, mut f) = tempfile().await.unwrap();
+    let _ = f.shutdown().await;
+    let (output, mut f) = tempfile().await.unwrap();
+    let _ = f.shutdown().await;
     env::set_var("GITHUB_STATE", state.to_str().unwrap());
     env::set_var("GITHUB_OUTPUT", output.to_str().unwrap());
     ClearEnvGuard { envs: snapshot }
