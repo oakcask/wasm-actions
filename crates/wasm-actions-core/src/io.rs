@@ -2,6 +2,7 @@ use js_sys::{Promise, Uint8Array};
 use wasm_bindgen::{prelude::wasm_bindgen, JsThreadLocal, JsValue};
 
 pub use tokio::io::AsyncWriteExt;
+pub use tokio::io::AsyncReadExt;
 
 // TODO: move this out to node-sys
 #[wasm_bindgen]
