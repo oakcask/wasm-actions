@@ -35,13 +35,16 @@ impl tokio::io::AsyncRead for File {
         loop {
             match this.state {
                 State::Idle => {
-                    this.state = State::Busy(Operation::Read(Box::pin(ops::read(&this.handle, buf.remaining()))));
-                },
+                    this.state = State::Busy(Operation::Read(Box::pin(ops::read(
+                        &this.handle,
+                        buf.remaining(),
+                    ))));
+                }
                 State::Busy(Operation::Read(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx))?;
                     res.copy_to(buf);
                     this.state = State::Idle;
-                    return Poll::Ready(Ok(()))
+                    return Poll::Ready(Ok(()));
                 }
                 State::Busy(_) => {
                     unreachable!("cannot write while there is pending operation")
@@ -58,12 +61,13 @@ impl tokio::io::AsyncWrite for File {
             match this.state {
                 State::Idle => {
                     // need to write with position if we want to enable vectored writes.
-                    this.state = State::Busy(Operation::Write(Box::pin(ops::write(&this.handle, buf))));
-                },
+                    this.state =
+                        State::Busy(Operation::Write(Box::pin(ops::write(&this.handle, buf))));
+                }
                 State::Busy(Operation::Write(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx));
                     this.state = State::Idle;
-                    return Poll::Ready(res)
+                    return Poll::Ready(res);
                 }
                 State::Busy(_) => {
                     unreachable!("cannot write while there is pending operation")
@@ -85,7 +89,7 @@ impl tokio::io::AsyncWrite for File {
                 State::Busy(Operation::Flush(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx));
                     this.state = State::Idle;
-                    return Poll::Ready(res)
+                    return Poll::Ready(res);
                 }
                 State::Busy(_) => {
                     unreachable!("cannot flush while there is pending operation")
@@ -107,7 +111,7 @@ impl tokio::io::AsyncWrite for File {
                 State::Busy(Operation::Flush(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx));
                     this.state = State::Idle;
-                    return Poll::Ready(res)
+                    return Poll::Ready(res);
                 }
                 State::Busy(_) => {
                     unreachable!("cannot close while there is pending operation")
