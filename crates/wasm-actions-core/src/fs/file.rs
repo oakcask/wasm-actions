@@ -1,4 +1,5 @@
 use crate::error::Error;
+use crate::fs::file::ops::ReadResult;
 use std::future::Future;
 use std::io::{ErrorKind, Result};
 use std::pin::Pin;
@@ -11,7 +12,6 @@ mod ops;
 pub struct File {
     handle: FileHandle,
     state: State,
-    last_err: Option<std::io::Error>,
 }
 
 enum State {
@@ -20,27 +20,57 @@ enum State {
 }
 
 enum Operation {
-    Write(Pin<Box<JoinHandle<Result<()>>>>),
+    Read(Pin<Box<JoinHandle<Result<ReadResult>>>>),
+    Write(Pin<Box<JoinHandle<Result<usize>>>>),
+    Flush(Pin<Box<JoinHandle<Result<()>>>>),
+}
+
+impl tokio::io::AsyncRead for File {
+    fn poll_read(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut tokio::io::ReadBuf<'_>,
+    ) -> Poll<std::io::Result<()>> {
+        let this = self.as_mut().get_mut();
+        loop {
+            match this.state {
+                State::Idle => {
+                    this.state = State::Busy(Operation::Read(Box::pin(ops::read(
+                        &this.handle,
+                        buf.remaining(),
+                    ))));
+                }
+                State::Busy(Operation::Read(ref mut op)) => {
+                    let res = ready!(op.as_mut().poll(cx))?;
+                    res.copy_to(buf);
+                    this.state = State::Idle;
+                    return Poll::Ready(Ok(()));
+                }
+                State::Busy(_) => {
+                    unreachable!("cannot write while there is pending operation")
+                }
+            }
+        }
+    }
 }
 
 impl tokio::io::AsyncWrite for File {
     fn poll_write(mut self: Pin<&mut Self>, cx: &mut Context, buf: &[u8]) -> Poll<Result<usize>> {
         let this = self.as_mut().get_mut();
-        if let Some(e) = this.last_err.take() {
-            return Poll::Ready(Err(e));
-        }
-
         loop {
             match this.state {
                 State::Idle => {
+                    // need to write with position if we want to enable vectored writes.
                     this.state =
                         State::Busy(Operation::Write(Box::pin(ops::write(&this.handle, buf))));
-                    return Poll::Ready(Ok(buf.len()));
                 }
                 State::Busy(Operation::Write(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx));
                     this.state = State::Idle;
-                    res?;
+                    return Poll::Ready(res);
+                }
+                State::Busy(_) => {
+                    unreachable!("cannot write while there is pending operation")
                 }
             }
         }
@@ -51,20 +81,18 @@ impl tokio::io::AsyncWrite for File {
         cx: &mut std::task::Context,
     ) -> std::task::Poll<Result<()>> {
         let this = self.as_mut().get_mut();
-        if let Some(e) = this.last_err.take() {
-            return Poll::Ready(Err(e));
-        }
-
         loop {
             match this.state {
                 State::Idle => {
-                    this.state = State::Busy(Operation::Write(Box::pin(ops::flush(&this.handle))));
-                    return Poll::Ready(Ok(()));
+                    this.state = State::Busy(Operation::Flush(Box::pin(ops::flush(&this.handle))));
                 }
-                State::Busy(Operation::Write(ref mut op)) => {
+                State::Busy(Operation::Flush(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx));
                     this.state = State::Idle;
-                    res?
+                    return Poll::Ready(res);
+                }
+                State::Busy(_) => {
+                    unreachable!("cannot flush while there is pending operation")
                 }
             }
         }
@@ -75,20 +103,18 @@ impl tokio::io::AsyncWrite for File {
         cx: &mut std::task::Context,
     ) -> std::task::Poll<Result<()>> {
         let this = self.as_mut().get_mut();
-        if let Some(e) = this.last_err.take() {
-            return Poll::Ready(Err(e));
-        }
-
         loop {
             match this.state {
                 State::Idle => {
-                    this.state = State::Busy(Operation::Write(Box::pin(ops::close(&this.handle))));
-                    return Poll::Ready(Ok(()));
+                    this.state = State::Busy(Operation::Flush(Box::pin(ops::close(&this.handle))));
                 }
-                State::Busy(Operation::Write(ref mut op)) => {
+                State::Busy(Operation::Flush(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx));
                     this.state = State::Idle;
-                    res?
+                    return Poll::Ready(res);
+                }
+                State::Busy(_) => {
+                    unreachable!("cannot close while there is pending operation")
                 }
             }
         }
@@ -210,7 +236,6 @@ impl File {
         File {
             handle,
             state: State::Idle,
-            last_err: None,
         }
     }
 
