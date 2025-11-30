@@ -74,3 +74,20 @@ impl From<Integer> for f64 {
         val.0
     }
 }
+
+impl TryFrom<Integer> for usize {
+    type Error = &'static str;
+
+    fn try_from(value: Integer) -> Result<Self, Self::Error> {
+        if value.is_nan() {
+            Err("cannot cast NaN into usize")
+        } else if value.is_infinite() {
+            Err("cannot cast non-finite value into usize")
+        } else if value.signum() < 0.0 {
+            Err("cannot cast negative value into usize")
+        } else {
+            let value: f64 = value.into();
+            Ok(value as usize)
+        }
+    }
+}
