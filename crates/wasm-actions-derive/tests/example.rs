@@ -52,7 +52,9 @@ async fn runs_main_if_inputs_are_filled() -> Result<(), JsError> {
     start().await?;
 
     let s = env::var("GITHUB_OUTPUT").unwrap();
-    let s = fs::read_to_string(&s).await.expect("read_to_string() failed");
+    let s = fs::read_to_string(&s)
+        .await
+        .expect("read_to_string() failed");
     assert_eq!(&s, "message=foo = 42, bar = 4242\n");
 
     Ok(())
