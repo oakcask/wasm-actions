@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use wasm_bindgen::JsValue;
+use wasm_bindgen::{JsError, JsValue};
 
 #[derive(Debug, Clone)]
 pub struct Error {
@@ -26,6 +26,13 @@ impl From<JsValue> for Error {
         Error {
             message: format!("{:?}", value),
         }
+    }
+}
+
+impl From<JsError> for Error {
+    fn from(value: JsError) -> Self {
+        let value: JsValue = value.into();
+        value.into()
     }
 }
 
