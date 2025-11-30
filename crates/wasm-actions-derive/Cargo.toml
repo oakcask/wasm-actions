@@ -21,3 +21,6 @@ serde = { version = "1.0.228", features = ["derive"] }
 wasm-actions = { path = "../wasm-actions", features = ["derive", "testing"] }
 wasm-actions-macro = { path = "../wasm-actions-macro" }
 wasm-bindgen-futures = "0.4.56"
+
+[package.metadata.cargo-machete]
+ignored = ["wasm-bindgen-futures"]
