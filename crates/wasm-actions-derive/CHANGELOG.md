@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-derive-v0.6.1...wasm-actions-derive-v0.7.0) (2025-11-30)
+
+
+### Features
+
+* add read_to_string ([#86](https://github.com/oakcask/wasm-actions/issues/86)) ([e5e91aa](https://github.com/oakcask/wasm-actions/commit/e5e91aa12559610f5c6168a10dc054e48647f1e0))
+
+
+### Bug Fixes
+
+* **deps:** update rust-wasm-bindgen monorepo ([#74](https://github.com/oakcask/wasm-actions/issues/74)) ([366535d](https://github.com/oakcask/wasm-actions/commit/366535d747e9dc47390ef7e98003f42268475dbd))
+* fix dependency hell ([#72](https://github.com/oakcask/wasm-actions/issues/72)) ([baecfae](https://github.com/oakcask/wasm-actions/commit/baecfae3a1ee5ef9217ef83bd4f3d17096db6cfb))
+
 ## [0.6.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-derive-v0.6.0...wasm-actions-derive-v0.6.1) (2025-11-23)
 
 
