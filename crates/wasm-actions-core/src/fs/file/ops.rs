@@ -27,14 +27,13 @@ pub(super) fn write(fd: &FileHandle, buf: &[u8]) -> JoinHandle<Result<usize>> {
         let bytes_written =
             Reflect::get(&js, &JsValue::from_str("bytesWritten")).map_err(translate_error)?;
         let bytes_written = bytes_written.as_f64().ok_or_else(|| {
-            std::io::Error::new(
-                std::io::ErrorKind::Other,
+            std::io::Error::other(
                 Error::from("bytesWritten is not number"),
             )
         })?;
         Integer::from_f64_lossy(bytes_written)
             .try_into()
-            .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, Error::from(e)))
+            .map_err(|e| std::io::Error::other(Error::from(e)))
     }
 
     // we need to copy the slice because Promise returned by write2 lives longer than stack reference.
@@ -65,8 +64,7 @@ impl ReadResult {
         let bytes_read =
             Reflect::get(&js, &JsValue::from_str("bytesRead")).map_err(translate_error)?;
         let bytes_read = bytes_read.as_f64().ok_or_else(|| {
-            std::io::Error::new(
-                std::io::ErrorKind::Other,
+            std::io::Error::other(
                 Error::from("bytesRead is not number"),
             )
         })?;
