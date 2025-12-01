@@ -35,6 +35,77 @@ where
     state: Arc<Mutex<State>>,
 }
 
+impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
+    /// Converts untyped Promise into a typed Future that awaits Result<T, E>
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use wasm_bindgen::JsValue;
+    /// # use js_sys::Promise;
+    /// # use wasm_actions_futures::JoinHandle;
+    /// # #[wasm_bindgen_test::wasm_bindgen_test]
+    /// # async fn test() {
+    /// let promise = JsValue::from_str("resolved!");
+    /// let promise = Promise::resolve(&promise);
+    ///
+    /// let fut = JoinHandle::from_promise(promise, move |v| v.as_string().ok_or("failed"), move |_| Err("failed (rejected)"));
+    /// assert_eq!(fut.await, Ok(String::from("resolved!")));
+    /// # }
+    /// ```
+    pub fn from_promise<
+        ResolveFn: FnOnce(JsValue) -> Result<T, E> + 'static,
+        RejectFn: FnOnce(JsValue) -> Result<T, E> + 'static,
+    >(
+        promise: js_sys::Promise,
+        resolve: ResolveFn,
+        reject: RejectFn,
+    ) -> Self {
+        struct NeedsDrop<T, E> {
+            tx: Sender<Result<T, E>>,
+            state: Arc<Mutex<State>>,
+            cb: Option<(Closure<dyn FnMut(JsValue)>, Closure<dyn FnMut(JsValue)>)>,
+        }
+        let (tx, rx) = mpsc::channel();
+        let state = Arc::new(Mutex::new(State { waker: None }));
+        let slot = Rc::new(RefCell::new(NeedsDrop {
+            tx,
+            cb: None,
+            state: state.clone(),
+        }));
+        let resolve = {
+            let resolve_slot = slot.clone();
+            Closure::once(move |value| {
+                let mut s = resolve_slot.borrow_mut();
+                let _ = s.tx.send(resolve(value));
+                if let Ok(mut st) = s.state.clone().lock() {
+                    if let Some(w) = st.waker.take() {
+                        w.wake();
+                    }
+                }
+                drop(s.cb.take());
+            })
+        };
+        let reject = {
+            let reject_slot = slot.clone();
+            Closure::once(move |value| {
+                let mut s = reject_slot.borrow_mut();
+                let _ = s.tx.send(reject(value));
+                if let Ok(mut st) = s.state.clone().lock() {
+                    if let Some(w) = st.waker.take() {
+                        w.wake();
+                    }
+                }
+                drop(s.cb.take());
+            })
+        };
+
+        let _ = promise.then2(&resolve, &reject);
+        slot.borrow_mut().cb = Some((resolve, reject));
+        JoinHandle { rx, state }
+    }
+}
+
 struct State {
     waker: Option<Waker>,
 }
@@ -112,76 +183,6 @@ impl<F: Future<Output = T> + Send + 'static, T: Sized + Send + 'static> Wake for
     }
 }
 
-/// Converts untyped Promise into a typed Future that awaits Result<T, E>
-///
-/// # Example
-///
-/// ```
-/// # use wasm_bindgen::JsValue;
-/// # use js_sys::Promise;
-/// # #[wasm_bindgen_test::wasm_bindgen_test]
-/// # async fn test() {
-/// let promise = JsValue::from_str("resolved!");
-/// let promise = Promise::resolve(&promise);
-///
-/// let fut = wasm_actions_futures::from_promise(promise, move |v| v.as_string().ok_or("failed"), move |_| Err("failed (rejected)"));
-/// assert_eq!(fut.await, Ok(String::from("resolved!")));
-/// # }
-/// ```
-pub fn from_promise<
-    F: FnOnce(JsValue) -> Result<T, E> + 'static,
-    R: FnOnce(JsValue) -> Result<T, E> + 'static,
-    T: Sized + 'static,
-    E: Sized + 'static,
->(
-    promise: js_sys::Promise,
-    resolve: F,
-    reject: R,
-) -> JoinHandle<Result<T, E>> {
-    struct NeedsDrop<T, E> {
-        tx: Sender<Result<T, E>>,
-        state: Arc<Mutex<State>>,
-        cb: Option<(Closure<dyn FnMut(JsValue)>, Closure<dyn FnMut(JsValue)>)>,
-    }
-    let (tx, rx) = mpsc::channel();
-    let state = Arc::new(Mutex::new(State { waker: None }));
-    let slot = Rc::new(RefCell::new(NeedsDrop {
-        tx,
-        cb: None,
-        state: state.clone(),
-    }));
-    let resolve = {
-        let resolve_slot = slot.clone();
-        Closure::once(move |value| {
-            let mut s = resolve_slot.borrow_mut();
-            let _ = s.tx.send(resolve(value));
-            if let Ok(mut st) = s.state.clone().lock() {
-                if let Some(w) = st.waker.take() {
-                    w.wake();
-                }
-            }
-            drop(s.cb.take());
-        })
-    };
-    let reject = {
-        let reject_slot = slot.clone();
-        Closure::once(move |value| {
-            let mut s = reject_slot.borrow_mut();
-            let _ = s.tx.send(reject(value));
-            if let Ok(mut st) = s.state.clone().lock() {
-                if let Some(w) = st.waker.take() {
-                    w.wake();
-                }
-            }
-            drop(s.cb.take());
-        })
-    };
-
-    let _ = promise.then2(&resolve, &reject);
-    slot.borrow_mut().cb = Some((resolve, reject));
-    JoinHandle { rx, state }
-}
-
 /// Poll Rust future in microtask queue
 ///
 /// # Example
@@ -199,17 +200,4 @@ pub fn spawn_microtask<F: Future<Output = T> + Send + 'static, T: Sized + Send +
     let (task, joiner) = Microtask::new(fut);
     task.schedule();
     joiner
-}
-
-#[cfg(test)]
-mod tests {
-    use wasm_bindgen_test::wasm_bindgen_test;
-
-    use crate::spawn_microtask;
-
-    #[wasm_bindgen_test]
-    async fn test_spawn_microtask() {
-        let handle = spawn_microtask(async move { 42 });
-        assert_eq!(handle.await, 42);
-    }
 }
