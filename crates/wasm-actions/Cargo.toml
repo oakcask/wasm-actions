@@ -9,7 +9,7 @@ crate-type = ["rlib"]
 [features]
 default = ["derive"]
 testing = ["wasm-actions-prelude/testing"]
-derive = ["wasm-actions-prelude/derive", "wasm-actions-derive"]
+derive = ["wasm-actions-prelude/derive", "wasm-actions-derive", "wasm-bindgen-futures"]
 
 [dependencies]
 wasm-actions-core = { path = "../wasm-actions-core" }
@@ -17,7 +17,7 @@ wasm-actions-derive = { path = "../wasm-actions-derive", optional = true }
 wasm-actions-log = { path = "../wasm-actions-log" }
 wasm-actions-macro = { path = "../wasm-actions-macro" }
 wasm-actions-prelude = { path = "../wasm-actions-prelude" }
-wasm-bindgen-futures = "0.4.56"
+wasm-bindgen-futures = { version = "0.4.56", optional = true }
 async-once-cell = "0.5.4"
 log = "0.4.28"
 
