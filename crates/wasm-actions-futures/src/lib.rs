@@ -55,9 +55,13 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
     /// ```
     pub fn from_promise<
         ResolveFn: FnOnce(JsValue) -> Result<T, E> + 'static,
-        RejectFn: FnOnce(JsValue) -> Result<T, E> + 'static
-    >(promise: js_sys::Promise, resolve: ResolveFn, reject: RejectFn) -> Self {
-         struct NeedsDrop<T, E> {
+        RejectFn: FnOnce(JsValue) -> Result<T, E> + 'static,
+    >(
+        promise: js_sys::Promise,
+        resolve: ResolveFn,
+        reject: RejectFn,
+    ) -> Self {
+        struct NeedsDrop<T, E> {
             tx: Sender<Result<T, E>>,
             state: Arc<Mutex<State>>,
             cb: Option<(Closure<dyn FnMut(JsValue)>, Closure<dyn FnMut(JsValue)>)>,
@@ -98,8 +102,8 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
 
         let _ = promise.then2(&resolve, &reject);
         slot.borrow_mut().cb = Some((resolve, reject));
-        JoinHandle { rx, state }       
-    } 
+        JoinHandle { rx, state }
+    }
 }
 
 struct State {
