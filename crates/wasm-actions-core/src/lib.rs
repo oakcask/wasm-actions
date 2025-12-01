@@ -5,7 +5,9 @@ pub mod os;
 pub mod process;
 
 #[cfg(feature = "crypto")]
-pub mod crypto;
+pub mod crypto {
+    pub use wasm_actions_node_sys::crypto::*;
+}
 
 #[macro_export]
 macro_rules! log {

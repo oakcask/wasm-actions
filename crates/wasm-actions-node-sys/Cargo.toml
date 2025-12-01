@@ -8,11 +8,13 @@ crate-type = ["rlib"]
 
 [features]
 default = ["fs"]
+crypto = ["web-sys/Crypto"]
 fs = []
 microtasks = []
 
 [dependencies]
 wasm-bindgen = "0.2.106"
 js-sys = { version = "0.3.83" }
+web-sys = { version = "0.3.83", default-features = false, optional = true }
 
 [dev-dependencies]
