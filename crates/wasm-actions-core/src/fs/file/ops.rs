@@ -15,7 +15,7 @@ fn translate_error(js: JsValue) -> std::io::Error {
 }
 
 pub(super) fn open(path: &str, flags: &str, mode: u32) -> JoinHandle<Result<File>> {
-    wasm_actions_futures::from_promise(
+    JoinHandle::from_promise(
         fs::open3(path, flags, mode),
         move |fd| Ok(File::new(FileHandle::from(fd))),
         move |e| Err(translate_error(e)),
@@ -38,17 +38,17 @@ pub(super) fn write(fd: &FileHandle, buf: &[u8]) -> JoinHandle<Result<usize>> {
     let buf = Uint8Array::new_from_slice(buf);
     let buf = JsValue::from(buf);
     let promise = fd.write2(&buf, WriteOption::default());
-    wasm_actions_futures::from_promise(promise, parse_write, move |e| Err(translate_error(e)))
+    JoinHandle::from_promise(promise, parse_write, move |e| Err(translate_error(e)))
 }
 
 pub(super) fn flush(fd: &FileHandle) -> JoinHandle<Result<()>> {
     let promise = fd.sync();
-    wasm_actions_futures::from_promise(promise, move |_| Ok(()), move |e| Err(translate_error(e)))
+    JoinHandle::from_promise(promise, move |_| Ok(()), move |e| Err(translate_error(e)))
 }
 
 pub(super) fn close(fd: &FileHandle) -> JoinHandle<Result<()>> {
     let promise = fd.close();
-    wasm_actions_futures::from_promise(promise, move |_| Ok(()), move |e| Err(translate_error(e)))
+    JoinHandle::from_promise(promise, move |_| Ok(()), move |e| Err(translate_error(e)))
 }
 
 /// https://nodejs.org/api/fs.html#filehandlereadbuffer-options
@@ -94,7 +94,7 @@ pub(super) fn read(fd: &FileHandle, size: usize) -> JoinHandle<Result<ReadResult
     let buffer = Uint8Array::new_with_length(size);
     let buffer = JsValue::from(buffer);
     let promise = fd.read1(&buffer);
-    wasm_actions_futures::from_promise(promise, ReadResult::from_js, move |e| {
+    JoinHandle::from_promise(promise, ReadResult::from_js, move |e| {
         Err(translate_error(e))
     })
 }
