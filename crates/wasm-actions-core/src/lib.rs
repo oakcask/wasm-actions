@@ -1,8 +1,8 @@
+pub mod env;
 pub mod error;
 pub mod fs;
 pub mod io;
 pub mod process;
-pub mod env;
 
 #[cfg(feature = "crypto")]
 pub mod crypto {
