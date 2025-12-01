@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.7.0...wasm-actions-core-v0.8.0) (2025-12-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* move Node library bindings to node-sys ([#90](https://github.com/oakcask/wasm-actions/issues/90))
+
+### Code Refactoring
+
+* move Node library bindings to node-sys ([#90](https://github.com/oakcask/wasm-actions/issues/90)) ([c228303](https://github.com/oakcask/wasm-actions/commit/c228303207b1720e2b4e9c3ab024e003f8f84cd8))
+
 ## [0.7.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.6.0...wasm-actions-core-v0.7.0) (2025-11-30)
 
 
