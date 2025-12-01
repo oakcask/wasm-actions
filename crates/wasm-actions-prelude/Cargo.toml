@@ -14,8 +14,6 @@ testing = ["wasm-actions-core/crypto"]
 wasm-actions-core = { path = "../wasm-actions-core" }
 wasm-actions-log = { path = "../wasm-actions-log" }
 wasm-actions-macro = { path = "../wasm-actions-macro" }
-async-once-cell = "0.5.4"
-log = "0.4.28"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.56"
