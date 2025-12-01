@@ -410,7 +410,6 @@ dependencies = [
  "wasm-actions-node-sys",
  "wasm-bindgen",
  "wasm-bindgen-test",
- "web-sys",
 ]
 
 [[package]]
@@ -463,6 +462,7 @@ version = "0.1.0"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]
