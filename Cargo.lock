@@ -402,7 +402,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-core"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "js-sys",
  "tokio",
@@ -458,7 +458,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-node-sys"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
@@ -476,7 +476,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-prelude"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "wasm-actions-core",
  "wasm-actions-log",
