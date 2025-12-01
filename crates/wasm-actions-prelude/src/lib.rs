@@ -4,6 +4,9 @@ pub use output::set_output;
 pub use wasm_actions_core::error::Error;
 pub mod console;
 pub use wasm_actions_core::{env, fs, io};
+pub mod macros {
+    pub use wasm_actions_macro::*;
+}
 
 #[cfg(feature = "derive")]
 pub mod derive;
@@ -14,10 +17,10 @@ pub mod testing;
 #[macro_export]
 macro_rules! get_input {
     ($name:expr) => {
-        if let Some(value) = $crate::env::var(wasm_actions_macro::input_var!($name)) {
+        if let Some(value) = $crate::env::var($crate::macros::input_var!($name)) {
             Some(value)
         } else if let Some(value) =
-            $crate::env::var(wasm_actions_macro::input_var_underscore!($name))
+            $crate::env::var($crate::macros::input_var_underscore!($name))
         {
             Some(value)
         } else {
@@ -29,10 +32,10 @@ macro_rules! get_input {
 #[macro_export]
 macro_rules! get_state {
     ($name:expr) => {
-        if let Some(value) = $crate::env::var(wasm_actions_macro::state_var!($name)) {
+        if let Some(value) = $crate::env::var($crate::macros::state_var!($name)) {
             Some(value)
         } else if let Some(value) =
-            $crate::env::var(wasm_actions_macro::state_var_underscore!($name))
+            $crate::env::var($crate::macros::state_var_underscore!($name))
         {
             Some(value)
         } else {

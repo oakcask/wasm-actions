@@ -422,7 +422,6 @@ dependencies = [
  "serde_json",
  "syn",
  "wasm-actions",
- "wasm-actions-macro",
  "wasm-actions-parse",
  "wasm-bindgen",
  "wasm-bindgen-futures",
