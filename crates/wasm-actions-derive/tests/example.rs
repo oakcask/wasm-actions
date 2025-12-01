@@ -1,7 +1,7 @@
 use wasm_actions::derive::*;
+use wasm_actions::prelude::macros::input_var;
 use wasm_actions::prelude::*;
 use wasm_actions::testing::*;
-use wasm_actions_macro::input_var;
 use wasm_bindgen::{JsError, JsValue};
 use wasm_bindgen_test::wasm_bindgen_test;
 
