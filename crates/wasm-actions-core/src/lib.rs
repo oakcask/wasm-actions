@@ -1,12 +1,15 @@
+pub mod env;
 pub mod error;
 pub mod fs;
 pub mod io;
-pub mod os;
 pub mod process;
 
 #[cfg(feature = "crypto")]
 pub mod crypto {
     pub use wasm_actions_node_sys::crypto::*;
+}
+pub mod os {
+    pub use wasm_actions_node_sys::os::tmpdir;
 }
 
 #[macro_export]

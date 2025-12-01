@@ -1,8 +1,6 @@
 use std::path::{Path, PathBuf};
 
-use wasm_actions_core::{crypto, error::Error, fs::File, os};
-
-use crate::env;
+use wasm_actions_core::{crypto, env, error::Error, fs::File, os};
 
 pub struct ClearEnvGuard {
     envs: Vec<(String, String)>,
