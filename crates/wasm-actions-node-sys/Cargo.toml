@@ -10,7 +10,10 @@ crate-type = ["rlib"]
 default = ["fs"]
 crypto = ["web-sys/Crypto"]
 fs = []
+io = []
 microtasks = []
+os = []
+process = []
 
 [dependencies]
 wasm-bindgen = "0.2.106"

@@ -1,16 +1,11 @@
-pub mod env;
 mod output;
 pub use output::save_state;
 pub use output::set_output;
 pub use wasm_actions_core::error::Error;
 pub mod console;
-
-pub mod fs {
-    pub use wasm_actions_core::fs::*;
-}
-pub mod io {
-    pub use wasm_actions_core::io::*;
-}
+pub use wasm_actions_core::{
+    env,fs,io
+};
 
 #[cfg(feature = "derive")]
 pub mod derive;

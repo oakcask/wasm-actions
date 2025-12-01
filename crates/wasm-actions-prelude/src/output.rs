@@ -1,6 +1,4 @@
-use wasm_actions_core::{error::Error, fs::OpenOptions, io::AsyncWriteExt as _};
-
-use crate::env;
+use wasm_actions_core::{env, error::Error, fs::OpenOptions, io::AsyncWriteExt as _};
 
 pub async fn set_output(name: &str, value: &str) -> Result<(), Error> {
     use std::io::Write;
