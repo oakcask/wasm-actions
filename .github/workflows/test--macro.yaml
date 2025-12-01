@@ -3,7 +3,7 @@ name: test / macro
 on:
   pull_request:
     paths:
-      - .github/workflows/shared--wasm-pack-test.yaml
+      - .github/workflows/shared--cargo-test.yaml
       - .github/workflows/test--macro.yaml
       - Cargo.lock
       - Cargo.toml
@@ -12,6 +12,6 @@ on:
     
 jobs:
   run:
-    uses: ./.github/workflows/shared--wasm-pack-test.yaml
+    uses: ./.github/workflows/shared--cargo-test.yaml
     with:
-      path: crates/wasm-actions-macro
+      package-name: wasm-actions-macro
