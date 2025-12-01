@@ -9,10 +9,10 @@ pub mod derive {
     // This provide small help for users to know that wasm-bindgen-futures
     // is needed as dependency.
     // But... it is painful so we might have to return a Promise directly.
-    #[doc(hidden)]
-    pub use wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen;
     pub use wasm_actions_derive::*;
     pub use wasm_actions_prelude::derive::*;
+    #[doc(hidden)]
+    pub use wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen;
 }
 
 #[cfg(feature = "testing")]
