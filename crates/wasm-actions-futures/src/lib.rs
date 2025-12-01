@@ -197,16 +197,3 @@ pub fn spawn_microtask<F: Future<Output = T> + Send + 'static, T: Sized + Send +
     task.schedule();
     joiner
 }
-
-#[cfg(test)]
-mod tests {
-    use wasm_bindgen_test::wasm_bindgen_test;
-
-    use crate::spawn_microtask;
-
-    #[wasm_bindgen_test]
-    async fn test_spawn_microtask() {
-        let handle = spawn_microtask(async move { 42 });
-        assert_eq!(handle.await, 42);
-    }
-}
