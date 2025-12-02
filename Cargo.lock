@@ -435,6 +435,7 @@ dependencies = [
  "js-sys",
  "wasm-actions-node-sys",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
  "wasm-bindgen-test",
 ]
 
