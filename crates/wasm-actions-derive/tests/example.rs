@@ -1,8 +1,9 @@
 use wasm_actions::derive::*;
+use wasm_actions::futures::JoinHandle;
 use wasm_actions::prelude::macros::input_var;
 use wasm_actions::prelude::*;
 use wasm_actions::testing::*;
-use wasm_bindgen::{JsError, JsValue};
+use wasm_bindgen::JsError;
 use wasm_bindgen_test::wasm_bindgen_test;
 
 #[wasm_action(name = "example", description = "example action")]
@@ -34,7 +35,9 @@ impl Action<Input, Output> for Example {
 async fn fail_if_called_without_input() -> Result<(), JsError> {
     let _guard = clear_env().await;
 
-    if let Err(e) = start().await.map_err(|e| format!("{:?}", JsValue::from(e))) {
+    let fut = JoinHandle::from_promise(start(), move |_| Ok(()), move |e| Err(format!("{:?}", e)));
+
+    if let Err(e) = fut.await {
         assert!(e.starts_with("JsValue(Error: foo missing\n"))
     } else {
         panic!("unexpectedly succeeded")
@@ -49,7 +52,9 @@ async fn runs_main_if_inputs_are_filled() -> Result<(), JsError> {
     env::set_var(input_var!("foo"), "42");
     env::set_var("BAR", "4242");
 
-    start().await?;
+    JoinHandle::from_promise(start(), move |_| Ok(()), move |_| Err(()))
+        .await
+        .unwrap();
 
     let s = env::var("GITHUB_OUTPUT").unwrap();
     let s = fs::read_to_string(&s)
