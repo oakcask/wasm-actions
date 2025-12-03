@@ -108,35 +108,27 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
             state,
         }
     }
+}
 
+impl<T: Into<JsValue> + Sized + 'static, E: Into<JsValue> + Sized + 'static> From<JoinHandle<Result<T, E>>> for Promise {
     /// Converts JoinHandle to Promise
     ///
     /// # Example
-    ///
-    /// ```
-    /// # use js_sys::Promise;
-    /// # use wasm_actions_futures::JoinHandle;
-    /// # use wasm_actions_futures::spawn_microtask;
     /// # #[wasm_bindgen_test::wasm_bindgen_test]
     /// # async fn test() {
     /// let fut: JoinHandle<Result<i32, ()>> = spawn_microtask(async move { Ok(42) });
-    /// let promise = fut.into_promise();
+    /// let promise: Promise = fut.into();
     /// # let result = wasm_bindgen_futures::JsFuture::from(promise).await;
     /// # assert_eq!(result.map(|js| js.as_f64()), Ok(Some(42.0)));
     /// # }
     /// ```  
-    pub fn into_promise(self) -> Promise
-    where
-        T: Into<JsValue>,
-        E: Into<JsValue>,
-    {
-        let this = self;
+    fn from(value: JoinHandle<Result<T, E>>) -> Self {
         wasm_bindgen_futures::future_to_promise(async move {
-            match this.await {
+            match value.await {
                 Ok(ok) => Ok(ok.into()),
                 Err(err) => Err(err.into()),
             }
-        })
+        }) 
     }
 }
 
