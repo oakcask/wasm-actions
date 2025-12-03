@@ -7,7 +7,7 @@ edition = "2021"
 crate-type = ["rlib"]
 
 [dependencies]
-log = { version = "0.4.28" }
+log = { version = "0.4.29" }
 wasm-actions-core = { path = "../wasm-actions-core" }
 
 [dev-dependencies]
