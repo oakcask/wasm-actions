@@ -4,14 +4,15 @@ use std::pin::Pin;
 use std::rc::Rc;
 use std::sync::mpsc::{self, *};
 use std::sync::{Arc, Mutex};
-use std::task::{self, Context, Wake, Waker};
+use std::task::{self, Context, Waker};
 
+use js_sys::Promise;
 use wasm_bindgen::prelude::Closure;
 use wasm_bindgen::JsValue;
 
 /// Invokes queueMicrotask
 ///
-/// https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide
+/// <https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide>
 pub fn queue_microtask<F: FnOnce() + 'static>(f: F) {
     struct NeedsDrop {
         callback: Option<Closure<dyn FnMut()>>,
@@ -31,7 +32,7 @@ pub struct JoinHandle<T>
 where
     T: Sized,
 {
-    rx: Receiver<T>,
+    rx: Option<Receiver<T>>,
     state: Arc<Mutex<State>>,
 }
 
@@ -102,7 +103,38 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
 
         let _ = promise.then2(&resolve, &reject);
         slot.borrow_mut().cb = Some((resolve, reject));
-        JoinHandle { rx, state }
+        JoinHandle {
+            rx: Some(rx),
+            state,
+        }
+    }
+}
+
+impl<T: Into<JsValue> + Sized + 'static, E: Into<JsValue> + Sized + 'static>
+    From<JoinHandle<Result<T, E>>> for Promise
+{
+    /// Converts JoinHandle to Promise
+    ///
+    /// # Example
+    /// ```
+    /// # use wasm_bindgen::JsError;
+    /// # use wasm_actions_futures::spawn_microtask;
+    /// # use wasm_actions_futures::JoinHandle;
+    /// # #[wasm_bindgen_test::wasm_bindgen_test]
+    /// # async fn test() {
+    /// let fut: JoinHandle<Result<i32, JsError>> = spawn_microtask(async move { Ok(42) });
+    /// let promise: js_sys::Promise = fut.into();
+    /// # let result = wasm_bindgen_futures::JsFuture::from(promise).await;
+    /// # assert_eq!(result.map(|js| js.as_f64()), Ok(Some(42.0)));
+    /// # }
+    /// ```  
+    fn from(value: JoinHandle<Result<T, E>>) -> Self {
+        wasm_bindgen_futures::future_to_promise(async move {
+            match value.await {
+                Ok(ok) => Ok(ok.into()),
+                Err(err) => Err(err.into()),
+            }
+        })
     }
 }
 
@@ -117,69 +149,18 @@ where
     type Output = T;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> task::Poll<Self::Output> {
-        let rx = &self.rx;
-        let mut state = self.state.lock().unwrap();
-        match rx.try_recv() {
-            Ok(t) => task::Poll::Ready(t),
+        let this = self.get_mut();
+        match this.rx.as_ref().unwrap().try_recv() {
+            Ok(t) => {
+                this.rx.take(); // drop rx
+                task::Poll::Ready(t)
+            }
             Err(_) => {
+                let mut state = this.state.lock().unwrap();
                 state.waker = Some(cx.waker().clone());
                 task::Poll::Pending
             }
         }
-    }
-}
-
-struct Microtask<F, T>
-where
-    F: Future<Output = T> + Send,
-    T: Sized + Send,
-{
-    tx: Sender<T>,
-    state: Arc<Mutex<State>>,
-    // this lock is not exactly needed but Rust requires Mutex
-    // because this Future is behind Arc to implement Wake.
-    fut: Mutex<Pin<Box<F>>>,
-}
-
-impl<F: Future<Output = T> + Send + 'static, T: Sized + Send + 'static> Microtask<F, T> {
-    fn new(fut: F) -> (Arc<Self>, JoinHandle<T>) {
-        let (tx, rx) = mpsc::channel();
-        let state = Arc::new(Mutex::new(State { waker: None }));
-        let task = Arc::new(Self {
-            tx,
-            fut: Mutex::new(Box::pin(fut)),
-            state: state.clone(),
-        });
-        let joiner = JoinHandle::<_> { rx, state };
-        (task, joiner)
-    }
-
-    fn poll(self: Arc<Self>) {
-        let this = self.clone();
-        let p = {
-            let mut fut = this.fut.lock().unwrap();
-            let waker = self.into();
-            let mut cx = Context::from_waker(&waker);
-            fut.as_mut().poll(&mut cx)
-        };
-
-        if let task::Poll::Ready(outcome) = p {
-            let _ = this.tx.send(outcome);
-            let mut st = this.state.lock().unwrap();
-            if let Some(waker) = st.waker.take() {
-                waker.wake();
-            }
-        }
-    }
-
-    fn schedule(self: Arc<Self>) {
-        queue_microtask(move || self.poll());
-    }
-}
-
-impl<F: Future<Output = T> + Send + 'static, T: Sized + Send + 'static> Wake for Microtask<F, T> {
-    fn wake(self: Arc<Self>) {
-        self.schedule();
     }
 }
 
@@ -194,10 +175,21 @@ impl<F: Future<Output = T> + Send + 'static, T: Sized + Send + 'static> Wake for
 /// assert_eq!(handle.await, 42);
 /// # }
 /// ```
-pub fn spawn_microtask<F: Future<Output = T> + Send + 'static, T: Sized + Send + 'static>(
+pub fn spawn_microtask<F: Future<Output = T> + 'static, T: Sized + 'static>(
     fut: F,
 ) -> JoinHandle<T> {
-    let (task, joiner) = Microtask::new(fut);
-    task.schedule();
-    joiner
+    let (tx, rx) = mpsc::channel();
+    let state = Arc::new(Mutex::new(State { waker: None }));
+    let state_for_microtask = state.clone();
+    wasm_bindgen_futures::spawn_local(async move {
+        let _ = tx.send(fut.await); // send may fail but it's okay.
+        let mut st = state_for_microtask.lock().unwrap();
+        if let Some(waker) = st.waker.take() {
+            waker.wake();
+        }
+    });
+    JoinHandle {
+        rx: Some(rx),
+        state,
+    }
 }

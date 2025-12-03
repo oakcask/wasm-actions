@@ -12,3 +12,9 @@ members = [
     "crates/wasm-actions-parse",
     "crates/wasm-actions-prelude"
 ]
+package.repository = "https://github.com/oakcask/wasm-actions"
+package.homepage = "https://github.com/oakcask/wasm-actions"
+package.license = "MIT OR Apache-2.0"
+package.readme = "README.md"
+package.categories = ["wasm"]
+package.keywords = ["wasm", "github"]
