@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-log-v0.6.1...wasm-actions-log-v0.6.2) (2025-12-03)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate log to 0.4.29 ([#103](https://github.com/oakcask/wasm-actions/issues/103)) ([0f7e263](https://github.com/oakcask/wasm-actions/commit/0f7e263abf7de5c511ddd0884536ee4e8f7f8d86))
+
 ## [0.6.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-log-v0.6.0...wasm-actions-log-v0.6.1) (2025-11-30)
 
 
