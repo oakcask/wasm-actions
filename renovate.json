@@ -14,8 +14,8 @@
       "automerge": true
     },
     {
-      "matchDatasources":[
-        "github-actions"
+      "matchDepTypes":[
+        "action"
       ],
       "matchCurrentAge": "> 5 days",
       "automerge": true
