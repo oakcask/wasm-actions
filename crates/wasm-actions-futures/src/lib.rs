@@ -110,7 +110,9 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
     }
 }
 
-impl<T: Into<JsValue> + Sized + 'static, E: Into<JsValue> + Sized + 'static> From<JoinHandle<Result<T, E>>> for Promise {
+impl<T: Into<JsValue> + Sized + 'static, E: Into<JsValue> + Sized + 'static>
+    From<JoinHandle<Result<T, E>>> for Promise
+{
     /// Converts JoinHandle to Promise
     ///
     /// # Example
@@ -128,7 +130,7 @@ impl<T: Into<JsValue> + Sized + 'static, E: Into<JsValue> + Sized + 'static> Fro
                 Ok(ok) => Ok(ok.into()),
                 Err(err) => Err(err.into()),
             }
-        }) 
+        })
     }
 }
 
