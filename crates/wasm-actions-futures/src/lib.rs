@@ -6,7 +6,8 @@ use std::sync::mpsc::{self, *};
 use std::sync::{Arc, Mutex};
 use std::task::{self, Context, Waker};
 
-use js_sys::Promise;
+#[doc(hidden)]
+pub use js_sys::Promise;
 use wasm_bindgen::prelude::Closure;
 use wasm_bindgen::JsValue;
 

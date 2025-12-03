@@ -14,17 +14,24 @@ pub(crate) fn start_fn(input: DeriveInput) -> Result<TokenStream, Error> {
     // see wasm-actions.
     Ok(quote! {
         #[wasm_actions::derive::wasm_bindgen]
-        pub async fn start() -> Result<(), wasm_bindgen::prelude::JsError> {
-            use wasm_actions::derive::Action;
-            let input = #ident::parse_input()?;
-            if let Some(state) = #ident::parse_state()? {
-              Ok(#ident::post(input, state).await?)
-            } else {
-              let output = #ident::main(input).await?;
-              use wasm_actions::derive::ActionOutput;
-              output.save().await?;
-              Ok(())
-            }
+        pub fn start() -> wasm_actions::futures::Promise {
+            let j: wasm_actions::futures::JoinHandle<
+                Result<wasm_actions::derive::JsValue, wasm_actions::derive::JsError>
+            > = wasm_actions::futures::spawn_microtask(
+                    (async || {
+                        use wasm_actions::derive::Action;
+                        let input = #ident::parse_input()?;
+                        if let Some(state) = #ident::parse_state()? {
+                            #ident::post(input, state).await?
+                        } else {
+                            let output = #ident::main(input).await?;
+                            use wasm_actions::derive::ActionOutput;
+                            output.save().await?;
+                        }
+                        Ok(wasm_actions::derive::JsValue::UNDEFINED)
+                    })()
+                );
+            j.into()
         }
     })
 }

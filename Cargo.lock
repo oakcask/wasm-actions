@@ -385,8 +385,9 @@ name = "wasm-actions"
 version = "0.6.1"
 dependencies = [
  "wasm-actions-derive",
+ "wasm-actions-futures",
  "wasm-actions-prelude",
- "wasm-bindgen-futures",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -424,7 +425,6 @@ dependencies = [
  "wasm-actions",
  "wasm-actions-parse",
  "wasm-bindgen",
- "wasm-bindgen-futures",
  "wasm-bindgen-test",
 ]
 
