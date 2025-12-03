@@ -116,10 +116,14 @@ impl<T: Into<JsValue> + Sized + 'static, E: Into<JsValue> + Sized + 'static>
     /// Converts JoinHandle to Promise
     ///
     /// # Example
+    /// ```
+    /// # use wasm_bindgen::JsError;
+    /// # use wasm_actions_futures::spawn_microtask;
+    /// # use wasm_actions_futures::JoinHandle;
     /// # #[wasm_bindgen_test::wasm_bindgen_test]
     /// # async fn test() {
-    /// let fut: JoinHandle<Result<i32, ()>> = spawn_microtask(async move { Ok(42) });
-    /// let promise: Promise = fut.into();
+    /// let fut: JoinHandle<Result<i32, JsError>> = spawn_microtask(async move { Ok(42) });
+    /// let promise: js_sys::Promise = fut.into();
     /// # let result = wasm_bindgen_futures::JsFuture::from(promise).await;
     /// # assert_eq!(result.map(|js| js.as_f64()), Ok(Some(42.0)));
     /// # }
