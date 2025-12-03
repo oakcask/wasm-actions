@@ -103,7 +103,10 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
 
         let _ = promise.then2(&resolve, &reject);
         slot.borrow_mut().cb = Some((resolve, reject));
-        JoinHandle { rx: Some(rx), state }
+        JoinHandle {
+            rx: Some(rx),
+            state,
+        }
     }
 
     /// Converts JoinHandle to Promise
@@ -123,14 +126,17 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
     /// # }
     /// ```  
     pub fn into_promise(self) -> Promise
-    where T: Into<JsValue>, E: Into<JsValue> {
+    where
+        T: Into<JsValue>,
+        E: Into<JsValue>,
+    {
         let this = self;
         wasm_bindgen_futures::future_to_promise(async move {
             match this.await {
                 Ok(ok) => Ok(ok.into()),
                 Err(err) => Err(err.into()),
             }
-        }) 
+        })
     }
 }
 
@@ -184,5 +190,8 @@ pub fn spawn_microtask<F: Future<Output = T> + 'static, T: Sized + 'static>(
             waker.wake();
         }
     });
-    JoinHandle { rx: Some(rx), state }
+    JoinHandle {
+        rx: Some(rx),
+        state,
+    }
 }
