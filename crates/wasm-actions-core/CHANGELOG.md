@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.9.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.8.0...wasm-actions-core-v0.9.0) (2025-12-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* from_promise is now associated function of JoinHandle ([#97](https://github.com/oakcask/wasm-actions/issues/97))
+
+### Bug Fixes
+
+* unecessary allocation ([#94](https://github.com/oakcask/wasm-actions/issues/94)) ([ee9357f](https://github.com/oakcask/wasm-actions/commit/ee9357f5d5a8b0a54e4310ad1a3597dd3a125b94))
+
+
+### Code Refactoring
+
+* from_promise is now associated function of JoinHandle ([#97](https://github.com/oakcask/wasm-actions/issues/97)) ([ee53204](https://github.com/oakcask/wasm-actions/commit/ee53204ca2a5c8fc1cdcba620f487c6110fdcac2))
+
 ## [0.8.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.7.0...wasm-actions-core-v0.8.0) (2025-12-01)
 
 

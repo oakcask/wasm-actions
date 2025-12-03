@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.8.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-derive-v0.7.0...wasm-actions-derive-v0.8.0) (2025-12-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* reduce dependencies needed for `wasm_action` ([#105](https://github.com/oakcask/wasm-actions/issues/105))
+
+### Code Refactoring
+
+* reduce dependencies needed for `wasm_action` ([#105](https://github.com/oakcask/wasm-actions/issues/105)) ([75481d7](https://github.com/oakcask/wasm-actions/commit/75481d756d758b0a391e9d29b58d52f1bdca3cff))
+
 ## [0.7.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-derive-v0.6.1...wasm-actions-derive-v0.7.0) (2025-11-30)
 
 
