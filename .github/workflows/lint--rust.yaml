@@ -4,24 +4,9 @@ on:
   pull_request:
     paths:
       - 'crates/**/*.rs'
-      - '**/Cargo.lock'
-      - '**/Cargo.toml'
 
 jobs:
-  lockfile-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      changed-crates: ${{ steps.glob-changed-files.outputs.paths }}
-    steps:
-      - id: glob-changed-files
-        uses: int128/glob-changed-files-action@1a4f75e3ee971fc3840bda9d2cbd260dc87b6998 # v2
-        with:
-          paths: |
-            crates/:crate/Cargo.toml
-          transform: |
-            :crate
-
-  lint-matrix:
+  matrix:
     runs-on: ubuntu-latest
     outputs:
       changed-crates-json: ${{ steps.glob-changed-files.outputs.paths-json }}
@@ -34,32 +19,14 @@ jobs:
           transform: |
             :crate
 
-  lockfile:
-    runs-on: ubuntu-latest
-    needs: lockfile-matrix
-    if: needs.lockfile-matrix.outputs.changed-crates != ''
-    steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
-      - uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1
-      - id: generate-token
-        uses: oakcask/gh-token-gen@d65c585678cb39f009f96046d788617e1d0b0745 # v4.0.2
-        with:
-          app-id: ${{ secrets.TOKEN_GEN_APP_ID }}
-          private-key: ${{ secrets.TOKEN_GEN_PRIVATE_KEY }}
-      - run: cargo check
-      - uses: int128/update-generated-files-action@d9aac571db84cee6c16fa20190621e9deb2bc575 # v2
-        with:
-          commit-message: "chore: update lockfile"
-          token: ${{ steps.generate-token.outputs.token }}
-
   lint:
     runs-on: ubuntu-latest
     needs:
-      - lint-matrix
-    if: needs.lint-matrix.outputs.changed-crates-json != '[]'
+      - matrix
+    if: needs.matrix.outputs.changed-crates-json != '[]'
     strategy:
       matrix:
-        crate: ${{ fromJson(needs.lint-matrix.outputs.changed-crates-json) }}
+        crate: ${{ fromJson(needs.matrix.outputs.changed-crates-json) }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c # v1
