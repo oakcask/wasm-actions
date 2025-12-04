@@ -2,6 +2,12 @@
 name = "wasm-actions-derive"
 version = "0.8.0"
 edition = "2024"
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+authors.workspace = true
+keywords.workspace = true
+categories.workspace = true
 
 [lib]
 proc-macro = true
