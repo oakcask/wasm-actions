@@ -18,3 +18,4 @@ package.license = "MIT OR Apache-2.0"
 package.readme = "README.md"
 package.categories = ["wasm"]
 package.keywords = ["wasm", "github"]
+package.authors = ["Kuya KOHARA (oakcask) <kuya.kohara@gmail.com>"]
