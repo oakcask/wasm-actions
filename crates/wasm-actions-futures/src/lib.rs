@@ -11,6 +11,9 @@ pub use js_sys::Promise;
 use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::Closure;
 
+/// JoinHandle awaits untyped promise
+pub type UnknownPromise = JoinHandle<Result<JsValue, JsValue>>;
+
 /// Invokes queueMicrotask
 ///
 /// <https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide>
@@ -208,13 +211,13 @@ impl<T: From<JsValue> + Sized + 'static, E: From<JsValue> + Sized + 'static> Fro
     /// ```
     /// # use wasm_bindgen::JsValue;
     /// # use js_sys::Promise;
-    /// # use wasm_actions_futures::JoinHandle;
+    /// # use wasm_actions_futures::UnknownPromise;
     /// # #[wasm_bindgen_test::wasm_bindgen_test]
     /// # async fn test() {
     /// let promise = JsValue::from_str("resolved!");
     /// let promise = Promise::resolve(&promise);
     ///
-    /// let fut: JoinHandle<Result<JsValue, JsValue>> = promise.into();
+    /// let fut: UnknownPromise = promise.into();
     /// assert_eq!(fut.await, Ok(JsValue::from("resolved!")));
     /// # }
     /// ```
