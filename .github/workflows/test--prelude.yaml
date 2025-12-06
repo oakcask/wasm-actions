@@ -9,6 +9,7 @@ on:
       - Cargo.toml
       - rust-toolchain.toml
       - crates/wasm-actions-core/**
+      - crates/wasm-actions-futures/**
       - crates/wasm-actions-log/**
       - crates/wasm-actions-macro/**
       - crates/wasm-actions-prelude/**
