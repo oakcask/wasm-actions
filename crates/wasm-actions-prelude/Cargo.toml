@@ -18,6 +18,7 @@ testing = ["wasm-actions-core/crypto"]
 
 [dependencies]
 wasm-actions-core = { path = "../wasm-actions-core" }
+wasm-actions-futures = { path = "../wasm-actions-futures" }
 wasm-actions-log = { path = "../wasm-actions-log" }
 wasm-actions-macro = { path = "../wasm-actions-macro" }
 

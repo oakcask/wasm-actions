@@ -5,33 +5,10 @@ use wasm_actions_parse::{InputAttr, InputSource, OutputAttr, OutputName};
 
 pub(crate) fn start_fn(input: DeriveInput) -> Result<TokenStream, Error> {
     let ident = input.ident;
-    // HACK: using #[wasm_bindgen] via wasm_bindgen_futures will generate
-    // error complain about unlinked crate named `wasm_bindgen_futures`.
-    // This provide small help for users to know that wasm-bindgen-futures
-    // is needed as dependency.
-    // But... it is painful so we might have to return a Promise directly.
-    //
-    // see wasm-actions.
     Ok(quote! {
         #[wasm_actions::derive::wasm_bindgen]
         pub fn start() -> wasm_actions::futures::Promise {
-            let j: wasm_actions::futures::JoinHandle<
-                Result<wasm_actions::derive::JsValue, wasm_actions::derive::JsError>
-            > = wasm_actions::futures::spawn_microtask(
-                    (async || {
-                        use wasm_actions::derive::Action;
-                        let input = #ident::parse_input()?;
-                        if let Some(state) = #ident::parse_state()? {
-                            #ident::post(input, state).await?
-                        } else {
-                            let output = #ident::main(input).await?;
-                            use wasm_actions::derive::ActionOutput;
-                            output.save().await?;
-                        }
-                        Ok(wasm_actions::derive::JsValue::UNDEFINED)
-                    })()
-                );
-            j.into()
+            #ident::start().into()
         }
     })
 }

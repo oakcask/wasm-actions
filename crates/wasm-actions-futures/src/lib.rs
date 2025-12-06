@@ -8,11 +8,15 @@ use std::task::{self, Context, Waker};
 
 #[doc(hidden)]
 pub use js_sys::Promise;
-use wasm_bindgen::JsValue;
+#[doc(hidden)]
+pub use wasm_bindgen::JsValue;
+#[doc(hidden)]
+pub use wasm_bindgen::JsError;
+
 use wasm_bindgen::prelude::Closure;
 
 /// JoinHandle awaits untyped promise
-pub type UnknownPromise = JoinHandle<Result<JsValue, JsValue>>;
+pub type UnknownPromise = JoinHandle<Result<JsValue, JsError>>;
 
 /// Invokes queueMicrotask
 ///
