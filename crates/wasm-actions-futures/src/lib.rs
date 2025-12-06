@@ -81,9 +81,10 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
                 let mut s = resolve_slot.borrow_mut();
                 let _ = s.tx.send(resolve(value));
                 if let Ok(mut st) = s.state.clone().lock()
-                    && let Some(w) = st.waker.take() {
-                        w.wake();
-                    }
+                    && let Some(w) = st.waker.take()
+                {
+                    w.wake();
+                }
                 drop(s.cb.take());
             })
         };
@@ -93,9 +94,10 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
                 let mut s = reject_slot.borrow_mut();
                 let _ = s.tx.send(reject(value));
                 if let Ok(mut st) = s.state.clone().lock()
-                    && let Some(w) = st.waker.take() {
-                        w.wake();
-                    }
+                    && let Some(w) = st.waker.take()
+                {
+                    w.wake();
+                }
                 drop(s.cb.take());
             })
         };
@@ -193,8 +195,8 @@ pub fn spawn_microtask<F: Future<Output = T> + 'static, T: Sized + 'static>(
     }
 }
 
-impl<T: From<JsValue> + Sized + 'static, E: From<JsValue> + Sized + 'static>
-    From<Promise> for JoinHandle<Result<T, E>>
+impl<T: From<JsValue> + Sized + 'static, E: From<JsValue> + Sized + 'static> From<Promise>
+    for JoinHandle<Result<T, E>>
 {
     /// Converts Promise into JoinHandle
     ///
