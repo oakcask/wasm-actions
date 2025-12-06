@@ -15,12 +15,13 @@ crate-type = ["rlib"]
 [features]
 default = ["derive"]
 testing = ["wasm-actions-prelude/testing"]
-derive = ["wasm-actions-prelude/derive", "wasm-actions-derive", "wasm-bindgen"]
+derive = ["wasm-actions-prelude/derive", "wasm-actions-derive", "wasm-bindgen", "serde_json"]
 
 [dependencies]
 wasm-bindgen = { version = "0.2.106", optional = true }
 wasm-actions-derive = { path = "../wasm-actions-derive", optional = true }
 wasm-actions-prelude = { path = "../wasm-actions-prelude" }
 wasm-actions-futures = { path = "../wasm-actions-futures" }
+serde_json = { version = "1.0.145", optional = true }
 
 [dev-dependencies]

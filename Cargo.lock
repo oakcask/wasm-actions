@@ -384,6 +384,7 @@ dependencies = [
 name = "wasm-actions"
 version = "0.7.0"
 dependencies = [
+ "serde_json",
  "wasm-actions-derive",
  "wasm-actions-futures",
  "wasm-actions-prelude",
@@ -420,7 +421,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "serde",
- "serde_json",
  "syn",
  "wasm-actions",
  "wasm-actions-parse",

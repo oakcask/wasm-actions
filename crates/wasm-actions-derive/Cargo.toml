@@ -18,9 +18,8 @@ quote = "1.0.42"
 syn = "2.0.111"
 wasm-bindgen = { version = "0.2.106", features = ["std"] }
 wasm-actions-parse = { path = "../wasm-actions-parse", features = ["proc-macro"] }
-serde_json = "1.0.145"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.56"
-serde = { version = "1.0.228", features = ["derive"] }
 wasm-actions = { path = "../wasm-actions", features = ["derive", "testing"] }
+serde = { version = "1.0.228", features = ["derive"]}
