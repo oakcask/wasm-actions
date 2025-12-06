@@ -194,3 +194,34 @@ pub fn spawn_microtask<F: Future<Output = T> + 'static, T: Sized + 'static>(
         state,
     }
 }
+
+
+impl<
+    T: From<JsValue> + Sized + 'static,
+    E: From<JsValue> + Sized + 'static
+>
+Into<JoinHandle<Result<T, E>>> for Promise {
+    /// Converts Promise into JoinHandle
+    /// 
+    /// The result of JoinHanle will be Ok on promise resolves,
+    /// and will be Err on promise rejects.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// # use wasm_bindgen::JsValue;
+    /// # use js_sys::Promise;
+    /// # use wasm_actions_futures::JoinHandle;
+    /// # #[wasm_bindgen_test::wasm_bindgen_test]
+    /// # async fn test() {
+    /// let promise = JsValue::from_str("resolved!");
+    /// let promise = Promise::resolve(&promise);
+    ///
+    /// let fut: JoinHandle<Result<JsValue, JsValue>> = promise.into();
+    /// assert_eq!(fut.await, Ok(JsValue::from("resolved!")));
+    /// # }
+    /// ```
+    fn into(self) -> JoinHandle<Result<T, E>> {
+        JoinHandle::from_promise(self, |r| Ok(r.into()), |e| Err(e.into()))
+    }
+}
