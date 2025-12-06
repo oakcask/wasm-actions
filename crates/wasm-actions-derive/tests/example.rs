@@ -1,8 +1,8 @@
-use wasm_actions::derive::*;
+use wasm_actions::derive::{ActionInput, ActionOutput, wasm_action, Action};
 use wasm_actions::futures::JoinHandle;
+use wasm_actions::prelude::{env, fs};
 use wasm_actions::prelude::macros::input_var;
-use wasm_actions::prelude::*;
-use wasm_actions::testing::*;
+use wasm_actions::testing::clear_env;
 use wasm_bindgen::JsError;
 use wasm_bindgen_test::wasm_bindgen_test;
 
@@ -24,7 +24,7 @@ struct Output {
 }
 
 impl Action<Input, Output> for Example {
-    async fn main(input: Input) -> Result<Output, Error> {
+    async fn main(input: Input) -> Result<Output, wasm_actions::prelude::Error> {
         Ok(Output {
             message: format!("foo = {}, bar = {}", input.foo, input.bar),
         })
