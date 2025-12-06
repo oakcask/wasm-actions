@@ -479,6 +479,7 @@ name = "wasm-actions-prelude"
 version = "0.8.0"
 dependencies = [
  "wasm-actions-core",
+ "wasm-actions-futures",
  "wasm-actions-log",
  "wasm-actions-macro",
  "wasm-bindgen-test",

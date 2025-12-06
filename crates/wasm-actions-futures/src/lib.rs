@@ -8,7 +8,11 @@ use std::task::{self, Context, Waker};
 
 #[doc(hidden)]
 pub use js_sys::Promise;
-use wasm_bindgen::JsValue;
+#[doc(hidden)]
+pub use wasm_bindgen::JsError;
+#[doc(hidden)]
+pub use wasm_bindgen::JsValue;
+
 use wasm_bindgen::prelude::Closure;
 
 /// JoinHandle awaits untyped promise
