@@ -382,7 +382,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions"
-version = "0.7.0"
+version = "0.7.1"
 dependencies = [
  "serde_json",
  "wasm-actions-derive",
@@ -416,7 +416,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-derive"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -430,7 +430,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-futures"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "js-sys",
  "wasm-actions-node-sys",
@@ -476,7 +476,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-prelude"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "wasm-actions-core",
  "wasm-actions-futures",
