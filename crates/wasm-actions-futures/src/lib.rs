@@ -8,8 +8,8 @@ use std::task::{self, Context, Waker};
 
 #[doc(hidden)]
 pub use js_sys::Promise;
-use wasm_bindgen::prelude::Closure;
 use wasm_bindgen::JsValue;
+use wasm_bindgen::prelude::Closure;
 
 /// Invokes queueMicrotask
 ///
@@ -195,19 +195,16 @@ pub fn spawn_microtask<F: Future<Output = T> + 'static, T: Sized + 'static>(
     }
 }
 
-
-impl<
-    T: From<JsValue> + Sized + 'static,
-    E: From<JsValue> + Sized + 'static
->
-Into<JoinHandle<Result<T, E>>> for Promise {
+impl<T: From<JsValue> + Sized + 'static, E: From<JsValue> + Sized + 'static>
+    Into<JoinHandle<Result<T, E>>> for Promise
+{
     /// Converts Promise into JoinHandle
-    /// 
+    ///
     /// The result of JoinHanle will be Ok on promise resolves,
     /// and will be Err on promise rejects.
-    /// 
+    ///
     /// # Example
-    /// 
+    ///
     /// ```
     /// # use wasm_bindgen::JsValue;
     /// # use js_sys::Promise;
