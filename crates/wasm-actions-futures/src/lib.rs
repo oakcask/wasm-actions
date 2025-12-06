@@ -16,7 +16,7 @@ pub use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::Closure;
 
 /// JoinHandle awaits untyped promise
-pub type UnknownPromise = JoinHandle<Result<JsValue, JsError>>;
+pub type UnknownPromise = JoinHandle<Result<JsValue, JsValue>>;
 
 /// Invokes queueMicrotask
 ///

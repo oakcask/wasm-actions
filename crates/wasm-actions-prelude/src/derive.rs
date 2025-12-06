@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use wasm_actions_futures::{JsValue, UnknownPromise, spawn_microtask};
+use wasm_actions_futures::{JoinHandle, JsValue, JsError, spawn_microtask};
 
 use crate::Error;
 
@@ -27,7 +27,7 @@ pub trait Action<I: ActionInput, O: ActionOutput> {
         O::parse()
     }
 
-    fn start() -> UnknownPromise {
+    fn start() -> JoinHandle<Result<JsValue, JsError>> {
         spawn_microtask((async || {
             let input = Self::parse_input()?;
             if let Some(state) = Self::parse_state()? {
