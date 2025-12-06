@@ -120,7 +120,7 @@ pub(crate) fn action_output_impl(
         impl wasm_actions::derive::ActionOutput for #struct_name {
             fn parse() -> Result<Option<Self>, wasm_actions::prelude::Error> {
                 if let Some(state) = wasm_actions::prelude::get_state!("wasm_actions") {
-                    Ok(Some(serde_json::from_str(&state).map_err(Error::new)?))
+                    Ok(Some(serde_json::from_str(&state).map_err(wasm_actions::prelude::Error::new)?))
                 } else {
                     Ok(None)
                 }
