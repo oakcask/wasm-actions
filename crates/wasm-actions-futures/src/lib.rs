@@ -8,8 +8,8 @@ use std::task::{self, Context, Waker};
 
 #[doc(hidden)]
 pub use js_sys::Promise;
-use wasm_bindgen::prelude::Closure;
 use wasm_bindgen::JsValue;
+use wasm_bindgen::prelude::Closure;
 
 /// Invokes queueMicrotask
 ///
@@ -80,10 +80,10 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
             Closure::once(move |value| {
                 let mut s = resolve_slot.borrow_mut();
                 let _ = s.tx.send(resolve(value));
-                if let Ok(mut st) = s.state.clone().lock() {
-                    if let Some(w) = st.waker.take() {
-                        w.wake();
-                    }
+                if let Ok(mut st) = s.state.clone().lock()
+                    && let Some(w) = st.waker.take()
+                {
+                    w.wake();
                 }
                 drop(s.cb.take());
             })
@@ -93,10 +93,10 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
             Closure::once(move |value| {
                 let mut s = reject_slot.borrow_mut();
                 let _ = s.tx.send(reject(value));
-                if let Ok(mut st) = s.state.clone().lock() {
-                    if let Some(w) = st.waker.take() {
-                        w.wake();
-                    }
+                if let Ok(mut st) = s.state.clone().lock()
+                    && let Some(w) = st.waker.take()
+                {
+                    w.wake();
                 }
                 drop(s.cb.take());
             })
@@ -192,5 +192,33 @@ pub fn spawn_microtask<F: Future<Output = T> + 'static, T: Sized + 'static>(
     JoinHandle {
         rx: Some(rx),
         state,
+    }
+}
+
+impl<T: From<JsValue> + Sized + 'static, E: From<JsValue> + Sized + 'static> From<Promise>
+    for JoinHandle<Result<T, E>>
+{
+    /// Converts Promise into JoinHandle
+    ///
+    /// The result of JoinHanle will be Ok on promise resolves,
+    /// and will be Err on promise rejects.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use wasm_bindgen::JsValue;
+    /// # use js_sys::Promise;
+    /// # use wasm_actions_futures::JoinHandle;
+    /// # #[wasm_bindgen_test::wasm_bindgen_test]
+    /// # async fn test() {
+    /// let promise = JsValue::from_str("resolved!");
+    /// let promise = Promise::resolve(&promise);
+    ///
+    /// let fut: JoinHandle<Result<JsValue, JsValue>> = promise.into();
+    /// assert_eq!(fut.await, Ok(JsValue::from("resolved!")));
+    /// # }
+    /// ```
+    fn from(val: Promise) -> Self {
+        JoinHandle::from_promise(val, |r| Ok(r.into()), |e| Err(e.into()))
     }
 }
