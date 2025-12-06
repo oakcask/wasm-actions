@@ -28,18 +28,16 @@ pub trait Action<I: ActionInput, O: ActionOutput> {
     }
 
     fn start() -> UnknownPromise {
-        spawn_microtask(
-            (async || {
-                let input = Self::parse_input()?;
-                if let Some(state) = Self::parse_state()? {
-                    Self::post(input, state).await?
-                } else {
-                    let output = Self::main(input).await?;
-                    output.save().await?;
-                }
-                Ok(JsValue::UNDEFINED)
-            })(),
-        )
+        spawn_microtask((async || {
+            let input = Self::parse_input()?;
+            if let Some(state) = Self::parse_state()? {
+                Self::post(input, state).await?
+            } else {
+                let output = Self::main(input).await?;
+                output.save().await?;
+            }
+            Ok(JsValue::UNDEFINED)
+        })())
     }
 
     #[allow(async_fn_in_trait)]
