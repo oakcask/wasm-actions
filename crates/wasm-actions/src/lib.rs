@@ -14,10 +14,6 @@ pub mod derive {
     pub use wasm_bindgen::JsValue;
     // used by wasm-actions-derive macro
     #[doc(hidden)]
-    pub use serde::Deserialize;
-    #[doc(hidden)]
-    pub use serde::Serialize;
-    #[doc(hidden)]
     pub use wasm_bindgen::JsError;
     // used by wasm-actions-derive macro
     #[doc(hidden)]

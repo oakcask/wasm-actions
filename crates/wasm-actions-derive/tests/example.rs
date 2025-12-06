@@ -1,5 +1,6 @@
+use serde::{Deserialize, Serialize};
 use wasm_actions::derive::{
-    Action, ActionInput, ActionOutput, Deserialize, Serialize, wasm_action,
+    Action, ActionInput, ActionOutput, wasm_action,
 };
 use wasm_actions::futures::JoinHandle;
 use wasm_actions::prelude::macros::input_var;
