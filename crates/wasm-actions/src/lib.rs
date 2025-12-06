@@ -15,6 +15,13 @@ pub mod derive {
     // used by wasm-actions-derive macro
     #[doc(hidden)]
     pub use wasm_bindgen::JsError;
+    #[doc(hidden)]
+    pub use serde::Deserialize;
+    #[doc(hidden)]
+    pub use serde::Serialize;
+    // used by wasm-actions-derive macro
+    #[doc(hidden)]
+    pub use serde_json;
 }
 
 #[cfg(feature = "testing")]

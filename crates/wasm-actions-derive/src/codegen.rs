@@ -120,14 +120,14 @@ pub(crate) fn action_output_impl(
         impl wasm_actions::derive::ActionOutput for #struct_name {
             fn parse() -> Result<Option<Self>, wasm_actions::prelude::Error> {
                 if let Some(state) = wasm_actions::prelude::get_state!("wasm_actions") {
-                    Ok(Some(serde_json::from_str(&state).map_err(wasm_actions::prelude::Error::new)?))
+                    Ok(Some(wasm_actions::derive::serde_json::from_str(&state).map_err(wasm_actions::prelude::Error::new)?))
                 } else {
                     Ok(None)
                 }
             }
 
             async fn save(self) -> Result<(), wasm_actions::prelude::Error> {
-                let json = serde_json::to_string(&self).map_err(wasm_actions::prelude::Error::new)?;
+                let json = wasm_actions::derive::serde_json::to_string(&self).map_err(wasm_actions::prelude::Error::new)?;
                 wasm_actions::prelude::save_state("wasm_actions", &json).await?;
                 #ts
                 Ok(())
