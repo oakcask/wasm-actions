@@ -384,7 +384,6 @@ dependencies = [
 name = "wasm-actions"
 version = "0.7.0"
 dependencies = [
- "serde",
  "serde_json",
  "wasm-actions-derive",
  "wasm-actions-futures",

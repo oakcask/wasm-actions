@@ -15,7 +15,7 @@ crate-type = ["rlib"]
 [features]
 default = ["derive"]
 testing = ["wasm-actions-prelude/testing"]
-derive = ["wasm-actions-prelude/derive", "wasm-actions-derive", "wasm-bindgen", "serde/derive", "serde_json"]
+derive = ["wasm-actions-prelude/derive", "wasm-actions-derive", "wasm-bindgen", "serde_json"]
 
 [dependencies]
 wasm-bindgen = { version = "0.2.106", optional = true }
