@@ -80,11 +80,10 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
             Closure::once(move |value| {
                 let mut s = resolve_slot.borrow_mut();
                 let _ = s.tx.send(resolve(value));
-                if let Ok(mut st) = s.state.clone().lock() {
-                    if let Some(w) = st.waker.take() {
+                if let Ok(mut st) = s.state.clone().lock()
+                    && let Some(w) = st.waker.take() {
                         w.wake();
                     }
-                }
                 drop(s.cb.take());
             })
         };
@@ -93,11 +92,10 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
             Closure::once(move |value| {
                 let mut s = reject_slot.borrow_mut();
                 let _ = s.tx.send(reject(value));
-                if let Ok(mut st) = s.state.clone().lock() {
-                    if let Some(w) = st.waker.take() {
+                if let Ok(mut st) = s.state.clone().lock()
+                    && let Some(w) = st.waker.take() {
                         w.wake();
                     }
-                }
                 drop(s.cb.take());
             })
         };
@@ -196,7 +194,7 @@ pub fn spawn_microtask<F: Future<Output = T> + 'static, T: Sized + 'static>(
 }
 
 impl<T: From<JsValue> + Sized + 'static, E: From<JsValue> + Sized + 'static>
-    Into<JoinHandle<Result<T, E>>> for Promise
+    From<Promise> for JoinHandle<Result<T, E>>
 {
     /// Converts Promise into JoinHandle
     ///
@@ -218,7 +216,7 @@ impl<T: From<JsValue> + Sized + 'static, E: From<JsValue> + Sized + 'static>
     /// assert_eq!(fut.await, Ok(JsValue::from("resolved!")));
     /// # }
     /// ```
-    fn into(self) -> JoinHandle<Result<T, E>> {
-        JoinHandle::from_promise(self, |r| Ok(r.into()), |e| Err(e.into()))
+    fn from(val: Promise) -> Self {
+        JoinHandle::from_promise(val, |r| Ok(r.into()), |e| Err(e.into()))
     }
 }
