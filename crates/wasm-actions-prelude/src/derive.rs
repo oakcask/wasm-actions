@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use wasm_actions_futures::{JoinHandle, JsValue, JsError, spawn_microtask};
+use wasm_actions_futures::{JoinHandle, JsError, JsValue, spawn_microtask};
 
 use crate::Error;
 
