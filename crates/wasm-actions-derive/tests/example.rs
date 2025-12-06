@@ -1,7 +1,7 @@
-use wasm_actions::derive::{ActionInput, ActionOutput, wasm_action, Action};
+use wasm_actions::derive::{Action, ActionInput, ActionOutput, wasm_action};
 use wasm_actions::futures::JoinHandle;
-use wasm_actions::prelude::{env, fs};
 use wasm_actions::prelude::macros::input_var;
+use wasm_actions::prelude::{env, fs};
 use wasm_actions::testing::clear_env;
 use wasm_bindgen::JsError;
 use wasm_bindgen_test::wasm_bindgen_test;
