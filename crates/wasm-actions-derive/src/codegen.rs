@@ -8,6 +8,7 @@ pub(crate) fn start_fn(input: DeriveInput) -> Result<TokenStream, Error> {
     Ok(quote! {
         #[wasm_actions::derive::wasm_bindgen]
         pub fn start() -> wasm_actions::futures::Promise {
+            use wasm_actions::derive::Action as _;
             #ident::start().into()
         }
     })
