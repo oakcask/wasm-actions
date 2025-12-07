@@ -4,8 +4,6 @@ pub use types::*;
 pub mod crypto;
 #[cfg(feature = "fs")]
 pub mod fs;
-#[cfg(feature = "io")]
-pub mod io;
 #[cfg(feature = "microtasks")]
 mod microtasks;
 #[cfg(feature = "microtasks")]
@@ -14,3 +12,5 @@ pub use microtasks::*;
 pub mod os;
 #[cfg(feature = "process")]
 pub mod process;
+#[cfg(feature = "stream")]
+pub mod stream;
