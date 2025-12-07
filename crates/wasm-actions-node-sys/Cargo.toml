@@ -13,10 +13,10 @@ categories.workspace = true
 crate-type = ["rlib"]
 
 [features]
-default = ["fs"]
+default = []
 crypto = ["web-sys/Crypto"]
 fs = []
-io = []
+stream = []
 microtasks = []
 os = []
 process = []
