@@ -3,10 +3,10 @@ use std::{cmp::min, io::Result};
 use tokio::io::ReadBuf;
 use wasm_actions_futures::JoinHandle;
 use wasm_actions_node_sys::{
-    fs::{self, FileHandle, WriteOption},
     Integer,
+    fs::{self, FileHandle, WriteOption},
 };
-use wasm_bindgen::{convert::TryFromJsValue, JsValue};
+use wasm_bindgen::{JsValue, convert::TryFromJsValue};
 
 use crate::{error::Error, fs::file::File};
 
@@ -80,8 +80,8 @@ impl ReadResult {
         let ptr = unsafe { &mut buf.unfilled_mut()[..size] };
         let buffer = self.buffer.slice(0, size.try_into().unwrap());
         buffer.copy_to_uninit(ptr); // FIXME
-                                    // Safety: buffer.copy_to_uninit invocation guarantees
-                                    // that `size` bytes in unfilled region get initialized.
+        // Safety: buffer.copy_to_uninit invocation guarantees
+        // that `size` bytes in unfilled region get initialized.
         unsafe {
             buf.assume_init(size);
             buf.advance(size);
