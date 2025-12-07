@@ -1,4 +1,4 @@
-use wasm_bindgen::prelude::{wasm_bindgen, Closure};
+use wasm_bindgen::prelude::{Closure, wasm_bindgen};
 
 #[wasm_bindgen]
 extern "C" {

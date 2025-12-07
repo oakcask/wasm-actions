@@ -1,5 +1,5 @@
 use crate::Integer;
-use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
+use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 
 #[wasm_bindgen(module = "node:fs/promises")]
 extern "C" {
