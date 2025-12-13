@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.7.0...wasm-actions-v0.7.1) (2025-12-13)
+
+
+### Bug Fixes
+
+* re-export serde derive macro and serde_json ([#120](https://github.com/oakcask/wasm-actions/issues/120)) ([aa6adf8](https://github.com/oakcask/wasm-actions/commit/aa6adf83f82b18c646dee9cc9e17e702a23d362c))
+
 ## [0.7.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.6.1...wasm-actions-v0.7.0) (2025-12-03)
 
 
