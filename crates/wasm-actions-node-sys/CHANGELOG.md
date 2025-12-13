@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-node-sys-v0.2.0...wasm-actions-node-sys-v0.3.0) (2025-12-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes io::WritableStream from wasm-actions-node-sys.
+
+### Bug Fixes
+
+* fix wrongly typed stream API ([#124](https://github.com/oakcask/wasm-actions/issues/124)) ([c75495f](https://github.com/oakcask/wasm-actions/commit/c75495f3bb7285f007aa810b6cef876b6c106360))
+
 ## [0.2.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-node-sys-v0.1.0...wasm-actions-node-sys-v0.2.0) (2025-12-01)
 
 
