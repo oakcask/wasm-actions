@@ -22,7 +22,7 @@ impl Integer {
     /// - value out of safe-integer range converted into positive/negative infinity.
     /// - value is truncated (loses its fractional part).
     /// - keeps NaN.
-    /// 
+    ///
     /// ```
     /// # use wasm_actions_node_sys::Integer;
     /// assert_eq!(Integer::from_f64_lossy(f64::INFINITY), Integer::INFINITY);
@@ -51,7 +51,7 @@ impl Integer {
     /// - value out of safe-integer range clamped to SAFE_MAX or SAFE_MIN.
     /// - NaN will be zero.
     /// - value is truncated (loses its fractional part).
-    /// 
+    ///
     /// ```
     /// # use wasm_actions_node_sys::Integer;
     /// assert_eq!(Integer::from_f64_clamping(f64::INFINITY), Integer::SAFE_MAX);
@@ -73,7 +73,7 @@ impl Integer {
     }
 
     /// Checks if the Integer is NaN.
-    /// 
+    ///
     /// ```
     /// # use wasm_actions_node_sys::Integer;
     /// assert!(Integer::from_f64_lossy(f64::NAN).is_nan());
@@ -83,7 +83,7 @@ impl Integer {
     }
 
     /// Checks if the Integer is finite (means within safe range).
-    /// 
+    ///
     /// ```
     /// # use wasm_actions_node_sys::Integer;
     /// assert!(Integer::from_f64_lossy(f64::INFINITY).is_infinite());
@@ -94,7 +94,7 @@ impl Integer {
     }
 
     /// Gets the sign number of the Integer.
-    /// 
+    ///
     /// ```
     /// # use wasm_actions_node_sys::Integer;
     /// assert!(Integer::from(-123).signum() < 0.0);
