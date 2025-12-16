@@ -7,5 +7,5 @@ extern "C" {
     pub type EventEmitter;
 
     #[wasm_bindgen(method)]
-    pub fn on(this: &EventEmitter, event_name: &str, listener: Function); 
+    pub fn on(this: &EventEmitter, event_name: &str, listener: Function);
 }

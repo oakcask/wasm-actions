@@ -13,7 +13,7 @@ extern "C" {
     pub fn read1(this: &Readable, size: Integer) -> JsValue;
     /// https://nodejs.org/api/stream.html#class-streamreadable
     #[wasm_bindgen(method)]
-    pub fn on(this: &Readable, event_name: &str, listener: Function); 
+    pub fn on(this: &Readable, event_name: &str, listener: Function);
 
     /// https://nodejs.org/api/stream.html#class-streamwritable
     #[wasm_bindgen]

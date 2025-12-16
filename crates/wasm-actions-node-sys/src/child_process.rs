@@ -19,6 +19,6 @@ extern "C" {
     #[wasm_bindgen(js_name = "stdout", method, getter)]
     pub fn stdout(this: &ChildProcess) -> Option<Readable>;
     /// https://nodejs.org/api/child_process.html#subprocessstderr
-     #[wasm_bindgen(js_name = "stderr", method, getter)]
-    pub fn stderr(this: &ChildProcess) -> Option<Readable>;   
+    #[wasm_bindgen(js_name = "stderr", method, getter)]
+    pub fn stderr(this: &ChildProcess) -> Option<Readable>;
 }
