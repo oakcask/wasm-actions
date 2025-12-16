@@ -1,4 +1,5 @@
 use core::f64;
+use std::fmt::Display;
 
 use wasm_bindgen::prelude::wasm_bindgen;
 
@@ -159,6 +160,16 @@ impl TryFrom<Integer> for usize {
         } else {
             let value: f64 = value.into();
             Ok(value as usize)
+        }
+    }
+}
+
+impl Display for Integer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if self.is_nan() || self.is_infinite() {
+            write!(f, "{}", self.0)
+        } else {
+            write!(f, "{}", self.0 as i64)
         }
     }
 }
