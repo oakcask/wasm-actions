@@ -14,3 +14,9 @@ pub mod os;
 pub mod process;
 #[cfg(feature = "stream")]
 pub mod stream;
+#[cfg(feature = "events")]
+pub mod events;
+#[cfg(feature = "child_process")]
+pub mod child_process;
+#[cfg(feature = "buffer")]
+pub mod buffer;
