@@ -79,7 +79,7 @@ impl ReadResult {
         // that `size` bytes in unfilled region get initialized.
         let ptr = unsafe { &mut buf.unfilled_mut()[..size] };
         let buffer = self.buffer.slice(0, size.try_into().unwrap());
-        buffer.copy_to_uninit(ptr); // FIXME
+        buffer.copy_to_uninit(ptr);
         // Safety: buffer.copy_to_uninit invocation guarantees
         // that `size` bytes in unfilled region get initialized.
         unsafe {
