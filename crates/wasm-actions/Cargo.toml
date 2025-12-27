@@ -22,6 +22,6 @@ wasm-bindgen = { version = "0.2.106", optional = true }
 wasm-actions-derive = { path = "../wasm-actions-derive", optional = true }
 wasm-actions-prelude = { path = "../wasm-actions-prelude" }
 wasm-actions-futures = { path = "../wasm-actions-futures" }
-serde_json = { version = "1.0.147", optional = true }
+serde_json = { version = "1.0.148", optional = true }
 
 [dev-dependencies]
