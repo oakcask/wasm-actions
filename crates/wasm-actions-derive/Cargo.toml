@@ -15,7 +15,7 @@ proc-macro = true
 [dependencies]
 proc-macro2 = "1.0.104"
 quote = "1.0.42"
-syn = "2.0.111"
+syn = "2.0.112"
 wasm-bindgen = { version = "0.2.106", features = ["std"] }
 wasm-actions-parse = { path = "../wasm-actions-parse", features = ["proc-macro"] }
 
