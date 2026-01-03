@@ -21,7 +21,7 @@ wasm-bindgen = "0.2.106"
 js-sys = { version = "0.3.83" }
 wasm-actions-node-sys = { path = "../wasm-actions-node-sys", features = ["fs", "process", "stream", "os"]}
 wasm-actions-futures = { path = "../wasm-actions-futures" }
-tokio = { version = "1.48.0", default-features = false, features = ["io-util"]}
+tokio = { version = "1.49.0", default-features = false, features = ["io-util"]}
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.56"
