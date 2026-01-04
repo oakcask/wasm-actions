@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-prelude-v0.8.0...wasm-actions-prelude-v0.8.1) (2026-01-04)
+
+
+### Bug Fixes
+
+* prevent resolution error caused by `#[wasm_action]` ([#122](https://github.com/oakcask/wasm-actions/issues/122)) ([f149fb7](https://github.com/oakcask/wasm-actions/commit/f149fb772ddb0a3b697471bf1d49f25497fe33ff))
+
 ## [0.8.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-prelude-v0.7.0...wasm-actions-prelude-v0.8.0) (2025-12-01)
 
 
