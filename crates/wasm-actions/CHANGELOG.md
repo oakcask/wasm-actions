@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.7.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.7.0...wasm-actions-v0.7.1) (2026-01-04)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde_json to 1.0.146 ([#142](https://github.com/oakcask/wasm-actions/issues/142)) ([28eddb2](https://github.com/oakcask/wasm-actions/commit/28eddb2f599ea8a24bcd5b52e1c9eb16d74f8988))
+* **deps:** update rust crate serde_json to 1.0.147 ([#144](https://github.com/oakcask/wasm-actions/issues/144)) ([dd6a39b](https://github.com/oakcask/wasm-actions/commit/dd6a39b9daa84bbe19f49b7bc1306b19c4a91d61))
+* **deps:** update rust crate serde_json to 1.0.148 ([#145](https://github.com/oakcask/wasm-actions/issues/145)) ([2bd38f5](https://github.com/oakcask/wasm-actions/commit/2bd38f5e857d4413cc6c3522c8a19844155d8281))
+* re-export serde derive macro and serde_json ([#120](https://github.com/oakcask/wasm-actions/issues/120)) ([aa6adf8](https://github.com/oakcask/wasm-actions/commit/aa6adf83f82b18c646dee9cc9e17e702a23d362c))
+
 ## [0.7.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-v0.6.1...wasm-actions-v0.7.0) (2025-12-03)
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.9.0...wasm-actions-core-v0.10.0) (2026-01-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes io::WritableStream from wasm-actions-node-sys.
+
+### Bug Fixes
+
+* **deps:** update rust crate tokio to 1.49.0 ([#155](https://github.com/oakcask/wasm-actions/issues/155)) ([4a5a266](https://github.com/oakcask/wasm-actions/commit/4a5a266982cae2008ce58d200789c4e36b391486))
+* fix wrongly typed stream API ([#124](https://github.com/oakcask/wasm-actions/issues/124)) ([c75495f](https://github.com/oakcask/wasm-actions/commit/c75495f3bb7285f007aa810b6cef876b6c106360))
+
 ## [0.9.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.8.0...wasm-actions-core-v0.9.0) (2025-12-03)
 
 

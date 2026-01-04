@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-futures-v0.2.0...wasm-actions-futures-v0.3.0) (2026-01-04)
+
+
+### Features
+
+* implement Into&lt;JoinHandle&lt;JsValue, JsValue&gt;&gt; for Promise ([#116](https://github.com/oakcask/wasm-actions/issues/116)) ([5d0f411](https://github.com/oakcask/wasm-actions/commit/5d0f41149d2ce818117dd1a1fed4548fa4da2e44))
+* provide shorthand type `UnknownPromise` ([#118](https://github.com/oakcask/wasm-actions/issues/118)) ([d831344](https://github.com/oakcask/wasm-actions/commit/d831344cf9bcd0ea2f46a11eec6470946bbd1617))
+
+
+### Bug Fixes
+
+* prevent resolution error caused by `#[wasm_action]` ([#122](https://github.com/oakcask/wasm-actions/issues/122)) ([f149fb7](https://github.com/oakcask/wasm-actions/commit/f149fb772ddb0a3b697471bf1d49f25497fe33ff))
+
 ## [0.2.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-futures-v0.1.0...wasm-actions-futures-v0.2.0) (2025-12-03)
 
 
