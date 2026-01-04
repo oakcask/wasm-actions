@@ -17,7 +17,7 @@ default = []
 proc-macro = ["proc-macro2", "quote"]
 
 [dependencies]
-syn = "2.0.112"
+syn = "2.0.113"
 proc-macro2 = { version = "1.0.104", optional = true}
 quote = { version = "1.0.42", optional = true }
 
