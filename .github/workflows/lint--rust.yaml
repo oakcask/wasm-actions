@@ -36,12 +36,12 @@ jobs:
           app-id: ${{ secrets.TOKEN_GEN_APP_ID }}
           private-key: ${{ secrets.TOKEN_GEN_PRIVATE_KEY }}
       - run: cargo --locked fmt -p ${{ matrix.crate }}
-      - uses: int128/update-generated-files-action@3d23e5bef5a471517ce6a7d07c32e7cff7903e0d # v2
+      - uses: int128/update-generated-files-action@21a93b7745379d3affb27cb6beb5f68d6cb8fd0d # v2
         with:
           commit-message: "style: `cargo --locked fmt -p ${{ matrix.crate }}`"
           token: ${{ steps.generate-token.outputs.token }}
       - run: cargo --locked clippy -p ${{ matrix.crate }} --fix
-      - uses: int128/update-generated-files-action@3d23e5bef5a471517ce6a7d07c32e7cff7903e0d # v2
+      - uses: int128/update-generated-files-action@21a93b7745379d3affb27cb6beb5f68d6cb8fd0d # v2
         with:
           commit-message: "fix: `cargo --locked clippy -p ${{ matrix.crate }} --fix`"
           token: ${{ steps.generate-token.outputs.token }}
