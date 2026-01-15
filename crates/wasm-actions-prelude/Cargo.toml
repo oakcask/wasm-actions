@@ -23,4 +23,4 @@ wasm-actions-log = { path = "../wasm-actions-log" }
 wasm-actions-macro = { path = "../wasm-actions-macro" }
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3.56"
+wasm-bindgen-test = "0.3.58"

@@ -18,7 +18,7 @@ testing = ["wasm-actions-prelude/testing"]
 derive = ["wasm-actions-prelude/derive", "wasm-actions-derive", "wasm-bindgen", "serde_json"]
 
 [dependencies]
-wasm-bindgen = { version = "0.2.106", optional = true }
+wasm-bindgen = { version = "0.2.108", optional = true }
 wasm-actions-derive = { path = "../wasm-actions-derive", optional = true }
 wasm-actions-prelude = { path = "../wasm-actions-prelude" }
 wasm-actions-futures = { path = "../wasm-actions-futures" }
