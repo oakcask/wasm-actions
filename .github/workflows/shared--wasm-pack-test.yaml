@@ -17,5 +17,5 @@ jobs:
         with:
           crate: wasm-pack
           # renovate: datasource=crate depName=wasm-pack
-          version: "0.13.1"
+          version: "0.14.0"
       - run: wasm-pack test --node ${{inputs.path}} --locked
