@@ -19,6 +19,6 @@ proc-macro = ["proc-macro2", "quote"]
 [dependencies]
 syn = "2.0.114"
 proc-macro2 = { version = "1.0.106", optional = true}
-quote = { version = "1.0.43", optional = true }
+quote = { version = "1.0.44", optional = true }
 
 [dev-dependencies]
