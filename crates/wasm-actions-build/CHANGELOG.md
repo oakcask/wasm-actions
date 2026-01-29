@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.5...wasm-actions-build-v0.1.6) (2026-01-29)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde_json to 1.0.149 ([#162](https://github.com/oakcask/wasm-actions/issues/162)) ([b6166a8](https://github.com/oakcask/wasm-actions/commit/b6166a8827902a0e8dd681a0a27fb19ba71ef5a2))
+* **deps:** update rust crate syn to 2.0.114 ([#164](https://github.com/oakcask/wasm-actions/issues/164)) ([f758eae](https://github.com/oakcask/wasm-actions/commit/f758eaed2ed34a4de809d41744903d4b8e182dd7))
+
 ## [0.1.5](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.4...wasm-actions-build-v0.1.5) (2026-01-04)
 
 
