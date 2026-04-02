@@ -16,10 +16,10 @@ proc-macro = true
 proc-macro2 = "1.0.106"
 quote = "1.0.45"
 syn = "2.0.117"
-wasm-bindgen = { version = "0.2.114", features = ["std"] }
+wasm-bindgen = { version = "0.2.117", features = ["std"] }
 wasm-actions-parse = { path = "../wasm-actions-parse", features = ["proc-macro"] }
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3.64"
+wasm-bindgen-test = "0.3.67"
 wasm-actions = { path = "../wasm-actions", features = ["derive", "testing"] }
 serde = { version = "1.0.228", features = ["derive"]}
