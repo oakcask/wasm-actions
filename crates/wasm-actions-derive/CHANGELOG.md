@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.8.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-derive-v0.8.1...wasm-actions-derive-v0.8.2) (2026-04-12)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate proc-macro2 to 1.0.105 ([#159](https://github.com/oakcask/wasm-actions/issues/159)) ([57ca5ca](https://github.com/oakcask/wasm-actions/commit/57ca5ca2cf304f39ed5590dc6b1216eb324df12f))
+* **deps:** update rust crate proc-macro2 to 1.0.106 ([#178](https://github.com/oakcask/wasm-actions/issues/178)) ([f793225](https://github.com/oakcask/wasm-actions/commit/f7932258ab32cc27837b70b77da2ac12e0857fe2))
+* **deps:** update rust crate quote to 1.0.43 ([#161](https://github.com/oakcask/wasm-actions/issues/161)) ([ddc7219](https://github.com/oakcask/wasm-actions/commit/ddc72198010dedc533e4c686d9c0b6c249adcf70))
+* **deps:** update rust crate quote to 1.0.44 ([#183](https://github.com/oakcask/wasm-actions/issues/183)) ([5a5ca23](https://github.com/oakcask/wasm-actions/commit/5a5ca23740947dcae832157a0a4d3e31091cf463))
+* **deps:** update rust crate quote to 1.0.45 ([#196](https://github.com/oakcask/wasm-actions/issues/196)) ([7ecd151](https://github.com/oakcask/wasm-actions/commit/7ecd151df633f3a2172b50020a46b733adbc3023))
+* **deps:** update rust crate syn to 2.0.114 ([#164](https://github.com/oakcask/wasm-actions/issues/164)) ([f758eae](https://github.com/oakcask/wasm-actions/commit/f758eaed2ed34a4de809d41744903d4b8e182dd7))
+* **deps:** update rust crate syn to 2.0.117 ([#197](https://github.com/oakcask/wasm-actions/issues/197)) ([45d0df6](https://github.com/oakcask/wasm-actions/commit/45d0df6feb5bcacd88c568f88a6c37e3bce7c961))
+* **deps:** update rust-wasm-bindgen monorepo ([#173](https://github.com/oakcask/wasm-actions/issues/173)) ([e81ae53](https://github.com/oakcask/wasm-actions/commit/e81ae5328a0748fa3a48717288ccdd2bb59aa15c))
+* **deps:** update rust-wasm-bindgen monorepo ([#198](https://github.com/oakcask/wasm-actions/issues/198)) ([3f66832](https://github.com/oakcask/wasm-actions/commit/3f66832a2a1840c4b5d4028b3eebdd3f2b1e43bb))
+* **deps:** update rust-wasm-bindgen monorepo ([#208](https://github.com/oakcask/wasm-actions/issues/208)) ([035dd81](https://github.com/oakcask/wasm-actions/commit/035dd81de0f19393a90e7ed5bc6bdabafc9721cb))
+
 ## [0.8.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-derive-v0.8.0...wasm-actions-derive-v0.8.1) (2026-01-04)
 
 

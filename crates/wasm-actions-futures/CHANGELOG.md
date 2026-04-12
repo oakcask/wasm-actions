@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.1](https://github.com/oakcask/wasm-actions/compare/wasm-actions-futures-v0.3.0...wasm-actions-futures-v0.3.1) (2026-04-12)
+
+
+### Bug Fixes
+
+* **deps:** update rust-wasm-bindgen monorepo ([#173](https://github.com/oakcask/wasm-actions/issues/173)) ([e81ae53](https://github.com/oakcask/wasm-actions/commit/e81ae5328a0748fa3a48717288ccdd2bb59aa15c))
+* **deps:** update rust-wasm-bindgen monorepo ([#198](https://github.com/oakcask/wasm-actions/issues/198)) ([3f66832](https://github.com/oakcask/wasm-actions/commit/3f66832a2a1840c4b5d4028b3eebdd3f2b1e43bb))
+* **deps:** update rust-wasm-bindgen monorepo ([#208](https://github.com/oakcask/wasm-actions/issues/208)) ([035dd81](https://github.com/oakcask/wasm-actions/commit/035dd81de0f19393a90e7ed5bc6bdabafc9721cb))
+
 ## [0.3.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-futures-v0.2.0...wasm-actions-futures-v0.3.0) (2026-01-04)
 
 

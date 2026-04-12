@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.3](https://github.com/oakcask/wasm-actions/compare/wasm-actions-macro-v0.6.2...wasm-actions-macro-v0.6.3) (2026-04-12)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate syn to 2.0.114 ([#164](https://github.com/oakcask/wasm-actions/issues/164)) ([f758eae](https://github.com/oakcask/wasm-actions/commit/f758eaed2ed34a4de809d41744903d4b8e182dd7))
+* **deps:** update rust crate syn to 2.0.117 ([#197](https://github.com/oakcask/wasm-actions/issues/197)) ([45d0df6](https://github.com/oakcask/wasm-actions/commit/45d0df6feb5bcacd88c568f88a6c37e3bce7c961))
+
 ## [0.6.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-macro-v0.6.1...wasm-actions-macro-v0.6.2) (2026-01-04)
 
 
