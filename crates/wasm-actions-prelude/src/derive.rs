@@ -28,7 +28,7 @@ pub trait Action<I: ActionInput, O: ActionOutput> {
     }
 
     fn start() -> JoinHandle<Result<JsValue, JsError>> {
-        spawn_microtask((async || {
+        spawn_microtask(async {
             let input = Self::parse_input()?;
             if let Some(state) = Self::parse_state()? {
                 Self::post(input, state).await?
@@ -37,7 +37,7 @@ pub trait Action<I: ActionInput, O: ActionOutput> {
                 output.save().await?;
             }
             Ok(JsValue::UNDEFINED)
-        })())
+        })
     }
 
     #[allow(async_fn_in_trait)]
@@ -62,7 +62,7 @@ where
     <T as FromStr>::Err: std::error::Error,
 {
     fn parse(s: String) -> Result<T, Error> {
-        s.as_str().parse().map_err(|e| Error::new(e))
+        s.as_str().parse().map_err(Error::new)
     }
 }
 
