@@ -84,7 +84,7 @@ fn build_metadata_yaml(path: &Path) -> Result<Yaml, Box<dyn Error>> {
                                     }
                                     InputAttr::Default(lit_str) => {
                                         input_attrs.insert(
-                                            Yaml::String(String::from("deefault")),
+                                            Yaml::String(String::from("default")),
                                             Yaml::String(lit_str.value()),
                                         );
                                     }
