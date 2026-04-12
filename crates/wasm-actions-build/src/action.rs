@@ -222,7 +222,10 @@ mod tests {
             yaml["inputs"]["greeting"]["description"].as_str(),
             Some("Greeting to use")
         );
-        assert_eq!(yaml["inputs"]["greeting"]["default"].as_str(), Some("hello"));
+        assert_eq!(
+            yaml["inputs"]["greeting"]["default"].as_str(),
+            Some("hello")
+        );
         assert!(yaml["inputs"]["greeting"]["env"].is_badvalue());
         assert_eq!(
             yaml["outputs"]["message"]["description"].as_str(),
@@ -317,7 +320,11 @@ mod tests {
 
         let error = generate_metadata_yaml(&mut output, &source_path).unwrap_err();
 
-        assert!(error.to_string().contains("#[input] cannot accept `unknown`"));
+        assert!(
+            error
+                .to_string()
+                .contains("#[input] cannot accept `unknown`")
+        );
     }
 
     #[test]
@@ -336,9 +343,11 @@ mod tests {
 
         let error = generate_metadata_yaml(&mut output, &source_path).unwrap_err();
 
-        assert!(error
-            .to_string()
-            .contains("#[output] cannot accept `required`"));
+        assert!(
+            error
+                .to_string()
+                .contains("#[output] cannot accept `required`")
+        );
     }
 
     #[test]
@@ -355,9 +364,11 @@ mod tests {
 
         let error = generate_metadata_yaml(&mut output, &source_path).unwrap_err();
 
-        assert!(error
-            .to_string()
-            .contains("#[wasm_action] cannot accept `required`"));
+        assert!(
+            error
+                .to_string()
+                .contains("#[wasm_action] cannot accept `required`")
+        );
     }
 
     #[test]
@@ -376,9 +387,11 @@ mod tests {
 
         let error = generate_metadata_yaml(&mut output, &source_path).unwrap_err();
 
-        assert!(error
-            .to_string()
-            .contains("expected literal bool after `=`"));
+        assert!(
+            error
+                .to_string()
+                .contains("expected literal bool after `=`")
+        );
     }
 
     #[test]
