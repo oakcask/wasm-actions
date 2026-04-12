@@ -73,6 +73,7 @@ impl<T: Sized + 'static, E: Sized + 'static> JoinHandle<Result<T, E>> {
         struct NeedsDrop<T, E> {
             tx: Sender<Result<T, E>>,
             state: Arc<Mutex<State>>,
+            #[allow(clippy::type_complexity)]
             cb: Option<(Closure<dyn FnMut(JsValue)>, Closure<dyn FnMut(JsValue)>)>,
         }
         let (tx, rx) = mpsc::channel();

@@ -1,7 +1,7 @@
 use proc_macro::Literal;
 use proc_macro::TokenStream;
-use syn::parse_macro_input;
 use syn::LitStr;
+use syn::parse_macro_input;
 
 #[proc_macro]
 pub fn input_var(input: TokenStream) -> TokenStream {
