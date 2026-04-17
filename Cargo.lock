@@ -599,7 +599,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions"
-version = "0.7.2"
+version = "0.7.3"
 dependencies = [
  "serde_json",
  "wasm-actions-derive",
@@ -622,7 +622,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-core"
-version = "0.10.1"
+version = "0.10.2"
 dependencies = [
  "js-sys",
  "tokio",
@@ -634,7 +634,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-derive"
-version = "0.8.2"
+version = "0.8.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -648,7 +648,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-futures"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "js-sys",
  "wasm-actions-node-sys",
@@ -659,7 +659,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-log"
-version = "0.6.3"
+version = "0.6.4"
 dependencies = [
  "log",
  "wasm-actions-core",
@@ -676,7 +676,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-node-sys"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
@@ -694,7 +694,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-actions-prelude"
-version = "0.8.2"
+version = "0.8.3"
 dependencies = [
  "wasm-actions-core",
  "wasm-actions-futures",

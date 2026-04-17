@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/oakcask/wasm-actions/compare/wasm-actions-log-v0.6.3...wasm-actions-log-v0.6.4) (2026-04-17)
+
+
+### Bug Fixes
+
+* **deps:** update rust-wasm-bindgen monorepo ([#221](https://github.com/oakcask/wasm-actions/issues/221)) ([82aaf1a](https://github.com/oakcask/wasm-actions/commit/82aaf1aa0436b675d7a82c645f9400ca7bd8d046))
+
 ## [0.6.3](https://github.com/oakcask/wasm-actions/compare/wasm-actions-log-v0.6.2...wasm-actions-log-v0.6.3) (2026-04-12)
 
 
