@@ -13,7 +13,7 @@ categories.workspace = true
 proc-macro = true
 
 [dependencies]
-syn = "2.0.117"
+syn = { workspace = true }
 
 [dev-dependencies]
-trybuild = "1.0.116"
+trybuild = { workspace = true }

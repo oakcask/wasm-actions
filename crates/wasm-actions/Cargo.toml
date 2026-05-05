@@ -18,10 +18,10 @@ testing = ["wasm-actions-prelude/testing"]
 derive = ["wasm-actions-prelude/derive", "wasm-actions-derive", "wasm-bindgen", "serde_json"]
 
 [dependencies]
-wasm-bindgen = { version = "0.2.118", optional = true }
-wasm-actions-derive = { path = "../wasm-actions-derive", optional = true }
-wasm-actions-prelude = { path = "../wasm-actions-prelude" }
-wasm-actions-futures = { path = "../wasm-actions-futures" }
-serde_json = { version = "1.0.149", optional = true }
+wasm-bindgen = { workspace = true, optional = true }
+wasm-actions-derive = { workspace = true, optional = true }
+wasm-actions-prelude = { workspace = true }
+wasm-actions-futures = { workspace = true }
+serde_json = { workspace = true, optional = true }
 
 [dev-dependencies]
