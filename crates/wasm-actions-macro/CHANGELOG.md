@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/oakcask/wasm-actions/compare/wasm-actions-macro-v0.6.3...wasm-actions-macro-v0.6.4) (2026-05-05)
+
+
+### Bug Fixes
+
+* use workspace dependencies ([#234](https://github.com/oakcask/wasm-actions/issues/234)) ([4691d4a](https://github.com/oakcask/wasm-actions/commit/4691d4a0a0bb61b29b208a127864fb95fb6ef4d8))
+
 ## [0.6.3](https://github.com/oakcask/wasm-actions/compare/wasm-actions-macro-v0.6.2...wasm-actions-macro-v0.6.3) (2026-04-12)
 
 
