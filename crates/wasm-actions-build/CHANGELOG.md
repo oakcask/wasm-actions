@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.6...wasm-actions-build-v0.1.7) (2026-05-05)
+
+
+### Bug Fixes
+
+* use workspace dependencies ([#234](https://github.com/oakcask/wasm-actions/issues/234)) ([4691d4a](https://github.com/oakcask/wasm-actions/commit/4691d4a0a0bb61b29b208a127864fb95fb6ef4d8))
+
 ## [0.1.6](https://github.com/oakcask/wasm-actions/compare/wasm-actions-build-v0.1.5...wasm-actions-build-v0.1.6) (2026-04-12)
 
 

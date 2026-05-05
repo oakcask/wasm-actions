@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/oakcask/wasm-actions/compare/wasm-actions-parse-v0.1.2...wasm-actions-parse-v0.1.3) (2026-05-05)
+
+
+### Bug Fixes
+
+* use workspace dependencies ([#234](https://github.com/oakcask/wasm-actions/issues/234)) ([4691d4a](https://github.com/oakcask/wasm-actions/commit/4691d4a0a0bb61b29b208a127864fb95fb6ef4d8))
+
 ## [0.1.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-parse-v0.1.1...wasm-actions-parse-v0.1.2) (2026-04-12)
 
 
