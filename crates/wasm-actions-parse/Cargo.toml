@@ -17,8 +17,8 @@ default = []
 proc-macro = ["proc-macro2", "quote"]
 
 [dependencies]
-syn = "2.0.117"
-proc-macro2 = { version = "1.0.106", optional = true}
-quote = { version = "1.0.45", optional = true }
+syn = { workspace = true }
+proc-macro2 = { workspace = true, optional = true }
+quote = { workspace = true, optional = true }
 
 [dev-dependencies]

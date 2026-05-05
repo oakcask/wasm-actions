@@ -13,11 +13,11 @@ categories.workspace = true
 crate-type = ["rlib"]
 
 [dependencies]
-log = { version = "0.4.29" }
-wasm-actions-core = { path = "../wasm-actions-core" }
+log = { workspace = true }
+wasm-actions-core = { workspace = true }
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3.68"
+wasm-bindgen-test = { workspace = true }
 
 [features]
 default = ["log/kv", "log/std"]
