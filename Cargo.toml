@@ -23,7 +23,7 @@ package.authors = ["Kuya KOHARA (oakcask) <kuya.kohara@gmail.com>"]
 [workspace.dependencies]
 cargo_toml = "0.22.3"
 js-sys = "0.3.95"
-log = "0.4.29"
+log = "0.4.33"
 proc-macro2 = "1.0.106"
 quote = "1.0.45"
 serde = "1.0.228"
