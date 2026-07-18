@@ -29,61 +29,45 @@ extern "C" {
 #[derive(Default)]
 pub struct WriteOption {
     #[wasm_bindgen(js_name = "offset")]
-    #[allow(dead_code)]
-    offset: Integer,
+    pub offset: Integer,
     #[wasm_bindgen(js_name = "length")]
-    #[allow(dead_code)]
-    length: Option<Integer>,
+    pub length: Option<Integer>,
     #[wasm_bindgen(js_name = "position")]
-    #[allow(dead_code)]
-    position: Option<Integer>,
+    pub position: Option<Integer>,
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(getter_with_clone)]
 #[derive(Default)]
 pub struct CreateWriteStreamOption {
     #[wasm_bindgen(js_name = "encoding")]
-    #[allow(dead_code)]
-    encoding: Option<String>,
+    pub encoding: Option<String>,
     #[wasm_bindgen(js_name = "autoClose")]
-    #[allow(dead_code)]
-    auto_close: Option<bool>,
+    pub auto_close: Option<bool>,
     #[wasm_bindgen(js_name = "emitClose")]
-    #[allow(dead_code)]
-    emit_close: Option<bool>,
+    pub emit_close: Option<bool>,
     #[wasm_bindgen(js_name = "start")]
-    #[allow(dead_code)]
-    start: Option<Integer>,
+    pub start: Option<Integer>,
     #[wasm_bindgen(js_name = "highWaterMark")]
-    #[allow(dead_code)]
-    high_water_mark: Option<Integer>,
+    pub high_water_mark: Option<Integer>,
     #[wasm_bindgen(js_name = "flush")]
-    #[allow(dead_code)]
-    flush: bool,
+    pub flush: bool,
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(getter_with_clone)]
 #[derive(Default)]
 pub struct CreateReadStreamOption {
     #[wasm_bindgen(js_name = "encoding")]
-    #[allow(dead_code)]
-    encoding: Option<String>,
+    pub encoding: Option<String>,
     #[wasm_bindgen(js_name = "autoClose")]
-    #[allow(dead_code)]
-    auto_close: Option<bool>,
+    pub auto_close: Option<bool>,
     #[wasm_bindgen(js_name = "emitClose")]
-    #[allow(dead_code)]
-    emit_close: Option<bool>,
+    pub emit_close: Option<bool>,
     #[wasm_bindgen(js_name = "start")]
-    #[allow(dead_code)]
-    start: Option<Integer>,
+    pub start: Option<Integer>,
     #[wasm_bindgen(js_name = "end")]
-    #[allow(dead_code)]
-    end: Option<Integer>,
+    pub end: Option<Integer>,
     #[wasm_bindgen(js_name = "highWaterMark")]
-    #[allow(dead_code)]
-    high_water_mark: Option<Integer>,
+    pub high_water_mark: Option<Integer>,
     #[wasm_bindgen(js_name = "signal")]
-    #[allow(dead_code)]
-    signal: bool,
+    pub signal: bool,
 }
