@@ -3,6 +3,7 @@ use crate::fs::file::ops::ReadResult;
 use std::future::Future;
 use std::io::{ErrorKind, Result};
 use std::pin::Pin;
+use std::rc::Rc;
 use std::task::{Context, Poll, ready};
 use wasm_actions_futures::JoinHandle;
 use wasm_actions_node_sys::fs::FileHandle;
@@ -10,19 +11,25 @@ mod ops;
 
 /// Provide interface alike std::fs::File.
 pub struct File {
-    handle: FileHandle,
+    handle: Rc<FileHandle>,
     state: State,
 }
 
 enum State {
     Idle,
     Busy(Operation),
+    Closed,
 }
 
 enum Operation {
     Read(Pin<Box<JoinHandle<Result<ReadResult>>>>),
     Write(Pin<Box<JoinHandle<Result<usize>>>>),
     Flush(Pin<Box<JoinHandle<Result<()>>>>),
+    Close(Pin<Box<JoinHandle<Result<()>>>>),
+}
+
+fn closed_error() -> std::io::Error {
+    std::io::Error::other(Error::from("file is closed"))
 }
 
 impl tokio::io::AsyncRead for File {
@@ -41,14 +48,16 @@ impl tokio::io::AsyncRead for File {
                     ))));
                 }
                 State::Busy(Operation::Read(ref mut op)) => {
-                    let res = ready!(op.as_mut().poll(cx))?;
-                    res.copy_to(buf);
+                    let res = ready!(op.as_mut().poll(cx));
                     this.state = State::Idle;
+                    let res = res?;
+                    res.copy_to(buf);
                     return Poll::Ready(Ok(()));
                 }
                 State::Busy(_) => {
                     unreachable!("cannot write while there is pending operation")
                 }
+                State::Closed => return Poll::Ready(Err(closed_error())),
             }
         }
     }
@@ -72,6 +81,7 @@ impl tokio::io::AsyncWrite for File {
                 State::Busy(_) => {
                     unreachable!("cannot write while there is pending operation")
                 }
+                State::Closed => return Poll::Ready(Err(closed_error())),
             }
         }
     }
@@ -94,6 +104,7 @@ impl tokio::io::AsyncWrite for File {
                 State::Busy(_) => {
                     unreachable!("cannot flush while there is pending operation")
                 }
+                State::Closed => return Poll::Ready(Ok(())),
             }
         }
     }
@@ -106,16 +117,21 @@ impl tokio::io::AsyncWrite for File {
         loop {
             match this.state {
                 State::Idle => {
-                    this.state = State::Busy(Operation::Flush(Box::pin(ops::close(&this.handle))));
+                    this.state = State::Busy(Operation::Close(Box::pin(ops::close(&this.handle))));
                 }
-                State::Busy(Operation::Flush(ref mut op)) => {
+                State::Busy(Operation::Close(ref mut op)) => {
                     let res = ready!(op.as_mut().poll(cx));
-                    this.state = State::Idle;
+                    this.state = if res.is_ok() {
+                        State::Closed
+                    } else {
+                        State::Idle
+                    };
                     return Poll::Ready(res);
                 }
                 State::Busy(_) => {
                     unreachable!("cannot close while there is pending operation")
                 }
+                State::Closed => return Poll::Ready(Ok(())),
             }
         }
     }
@@ -234,7 +250,7 @@ impl OpenOptions {
 impl File {
     fn new(handle: FileHandle) -> Self {
         File {
-            handle,
+            handle: Rc::new(handle),
             state: State::Idle,
         }
     }
@@ -263,5 +279,45 @@ impl File {
             .create_new(true)
             .open(p)
             .await
+    }
+}
+
+impl Drop for File {
+    fn drop(&mut self) {
+        if !matches!(self.state, State::Closed | State::Busy(Operation::Close(_))) {
+            drop(ops::close(&self.handle));
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[wasm_bindgen_test::wasm_bindgen_test]
+    async fn file_handle_lives_until_pending_close_settles() {
+        let file = File::open("Cargo.toml").await.unwrap();
+        let handle = Rc::downgrade(&file.handle);
+        let close = ops::close(&file.handle);
+        let mut file = file;
+        file.state = State::Closed;
+
+        drop(file);
+        assert!(handle.upgrade().is_some());
+
+        close.await.unwrap();
+        assert!(handle.upgrade().is_none());
+    }
+
+    #[wasm_bindgen_test::wasm_bindgen_test]
+    async fn shutdown_transitions_to_closed() {
+        use tokio::io::AsyncWriteExt;
+
+        let mut file = File::open("Cargo.toml").await.unwrap();
+        file.shutdown().await.unwrap();
+        assert!(matches!(file.state, State::Closed));
+
+        file.shutdown().await.unwrap();
+        assert!(matches!(file.state, State::Closed));
     }
 }
