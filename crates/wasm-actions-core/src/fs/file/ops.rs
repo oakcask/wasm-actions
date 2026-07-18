@@ -5,7 +5,7 @@ use tokio::io::ReadBuf;
 use wasm_actions_futures::JoinHandle;
 use wasm_actions_node_sys::{
     Integer,
-    fs::{self, FileHandle, WriteOption},
+    fs::{self, FileHandle},
 };
 use wasm_bindgen::{JsValue, convert::TryFromJsValue};
 
@@ -60,7 +60,7 @@ pub(super) fn write(fd: &Rc<FileHandle>, buf: &[u8]) -> JoinHandle<Result<usize>
     // we need to copy the slice because Promise returned by write2 lives longer than stack reference.
     let buf = Uint8Array::new_from_slice(buf);
     let buf = JsValue::from(buf);
-    let promise = fd.write2(&buf, WriteOption::default());
+    let promise = fd.write1(&buf);
     from_promise(fd, promise, parse_write)
 }
 
