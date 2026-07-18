@@ -1,4 +1,5 @@
 use js_sys::{Reflect, Uint8Array};
+use std::rc::Rc;
 use std::{cmp::min, io::Result};
 use tokio::io::ReadBuf;
 use wasm_actions_futures::JoinHandle;
@@ -22,7 +23,29 @@ pub(super) fn open(path: &str, flags: &str, mode: u32) -> JoinHandle<Result<File
     )
 }
 
-pub(super) fn write(fd: &FileHandle, buf: &[u8]) -> JoinHandle<Result<usize>> {
+fn from_promise<T: 'static>(
+    fd: &Rc<FileHandle>,
+    promise: js_sys::Promise,
+    resolve: impl FnOnce(JsValue) -> Result<T> + 'static,
+) -> JoinHandle<Result<T>> {
+    let resolve_fd = Rc::clone(fd);
+    let reject_fd = Rc::clone(fd);
+    JoinHandle::from_promise(
+        promise,
+        move |value| {
+            let result = resolve(value);
+            drop(resolve_fd);
+            result
+        },
+        move |error| {
+            let result = Err(translate_error(error));
+            drop(reject_fd);
+            result
+        },
+    )
+}
+
+pub(super) fn write(fd: &Rc<FileHandle>, buf: &[u8]) -> JoinHandle<Result<usize>> {
     fn parse_write(js: JsValue) -> Result<usize> {
         let bytes_written =
             Reflect::get(&js, &JsValue::from_str("bytesWritten")).map_err(translate_error)?;
@@ -38,17 +61,17 @@ pub(super) fn write(fd: &FileHandle, buf: &[u8]) -> JoinHandle<Result<usize>> {
     let buf = Uint8Array::new_from_slice(buf);
     let buf = JsValue::from(buf);
     let promise = fd.write2(&buf, WriteOption::default());
-    JoinHandle::from_promise(promise, parse_write, move |e| Err(translate_error(e)))
+    from_promise(fd, promise, parse_write)
 }
 
-pub(super) fn flush(fd: &FileHandle) -> JoinHandle<Result<()>> {
+pub(super) fn flush(fd: &Rc<FileHandle>) -> JoinHandle<Result<()>> {
     let promise = fd.sync();
-    JoinHandle::from_promise(promise, move |_| Ok(()), move |e| Err(translate_error(e)))
+    from_promise(fd, promise, move |_| Ok(()))
 }
 
-pub(super) fn close(fd: &FileHandle) -> JoinHandle<Result<()>> {
+pub(super) fn close(fd: &Rc<FileHandle>) -> JoinHandle<Result<()>> {
     let promise = fd.close();
-    JoinHandle::from_promise(promise, move |_| Ok(()), move |e| Err(translate_error(e)))
+    from_promise(fd, promise, move |_| Ok(()))
 }
 
 /// https://nodejs.org/api/fs.html#filehandlereadbuffer-options
@@ -89,12 +112,10 @@ impl ReadResult {
     }
 }
 
-pub(super) fn read(fd: &FileHandle, size: usize) -> JoinHandle<Result<ReadResult>> {
+pub(super) fn read(fd: &Rc<FileHandle>, size: usize) -> JoinHandle<Result<ReadResult>> {
     let size = min(u32::MAX as usize, size) as u32;
     let buffer = Uint8Array::new_with_length(size);
     let buffer = JsValue::from(buffer);
     let promise = fd.read1(&buffer);
-    JoinHandle::from_promise(promise, ReadResult::from_js, move |e| {
-        Err(translate_error(e))
-    })
+    from_promise(fd, promise, ReadResult::from_js)
 }
