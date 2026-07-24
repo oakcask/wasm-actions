@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-node-sys-v0.3.2...wasm-actions-node-sys-v0.4.0) (2026-07-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes unused WriteOption, CreateWriteStreamOption, CreateReadStreamOption
+
+### Bug Fixes
+
+* remove WriteOption ([#249](https://github.com/oakcask/wasm-actions/issues/249)) ([808ae02](https://github.com/oakcask/wasm-actions/commit/808ae02c44dc303666daab0bde7be878434bc1b8))
+
 ## [0.3.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-node-sys-v0.3.1...wasm-actions-node-sys-v0.3.2) (2026-05-05)
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.0](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.10.2...wasm-actions-core-v0.11.0) (2026-07-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes unused WriteOption, CreateWriteStreamOption, CreateReadStreamOption
+
+### Bug Fixes
+
+* reference count FileHandle and close on droppped ([#247](https://github.com/oakcask/wasm-actions/issues/247)) ([a7997b3](https://github.com/oakcask/wasm-actions/commit/a7997b37a71a10e8ac3b9f3e64fda2b0a1fea9cb))
+* remove WriteOption ([#249](https://github.com/oakcask/wasm-actions/issues/249)) ([808ae02](https://github.com/oakcask/wasm-actions/commit/808ae02c44dc303666daab0bde7be878434bc1b8))
+
 ## [0.10.2](https://github.com/oakcask/wasm-actions/compare/wasm-actions-core-v0.10.1...wasm-actions-core-v0.10.2) (2026-05-05)
 
 
