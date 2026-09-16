@@ -11,6 +11,7 @@
     "Update",
     "Change"
   ],
+  "prCreation": "immediate",
   "prConcurrentLimit": 1,
   "packageRules": [
     {
