@@ -28,7 +28,7 @@ proc-macro2 = "1.0.107"
 quote = "1.0.47"
 serde = "1.0.229"
 serde_json = "1.0.151"
-syn = "2.0.119"
+syn = "3.0.6"
 tempfile = "3.27.0"
 tokio = { version = "1.53.1", default-features = false }
 trybuild = "1.0.121"
