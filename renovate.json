@@ -27,6 +27,17 @@
       ],
       "matchCurrentAge": "> 5 days",
       "automerge": true
+    },
+    {
+      "matchDatasources": [
+        "npm"
+      ],
+      "matchDepNames": [
+        "renovate"
+      ],
+      "schedule": [
+        "* * * * 0"
+      ]
     }
   ],
   "rangeStrategy": "bump"
