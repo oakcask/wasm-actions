@@ -1,4 +1,3 @@
-use core::f64;
 use std::fmt::Display;
 
 use wasm_bindgen::prelude::wasm_bindgen;
