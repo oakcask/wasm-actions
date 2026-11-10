@@ -12,7 +12,7 @@ jobs:
       changed-crates-json: ${{ steps.glob-changed-files.outputs.paths-json }}
     steps:
       - id: glob-changed-files
-        uses: int128/glob-changed-files-action@6b0e629b5da3501fe2d4155a1ce87d93b851be1a # v2
+        uses: int128/glob-changed-files-action@da4390afc29a44befd3844d22a9d7968935b2eab # v2
         with:
           paths: |
             crates/:crate/**
