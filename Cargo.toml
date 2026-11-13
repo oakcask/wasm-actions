@@ -27,7 +27,7 @@ log = "0.4.35"
 proc-macro2 = "1.0.107"
 quote = "1.0.47"
 serde = "1.0.229"
-serde_json = "1.0.151"
+serde_json = "1.0.154"
 syn = "3.0.6"
 tempfile = "3.27.0"
 tokio = { version = "1.53.2", default-features = false }
