@@ -30,7 +30,7 @@ serde = "1.0.229"
 serde_json = "1.0.154"
 syn = "3.0.10"
 tempfile = "3.27.0"
-tokio = { version = "1.53.2", default-features = false }
+tokio = { version = "1.54.1", default-features = false }
 trybuild = "1.0.122"
 wasm-bindgen = "0.2.130"
 wasm-bindgen-futures = { version = "0.4.80", default-features = false }
